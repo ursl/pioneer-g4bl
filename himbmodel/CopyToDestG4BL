@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#	CopyToDestG4BL.sh - copy files to G4bl source directory
+#
+#	USAGE: ./CopyToDestG4BL.sh path
+
+if [ $# -eq 1 ]; then
+    echo "Script will execute command: rsync -av ${PWD}/G4beamline-3.06-source/" $1
+    echo -e "Continue? y/n \c "
+    read
+    if [ $REPLY = "y" ]; then
+        rsync -av ${PWD}/G4beamline-3.06-source/ $1
+    fi
+else
+    echo "No destination path passed."
+    echo "Usage: ./CopyToDestG4BL.sh path"
+fi

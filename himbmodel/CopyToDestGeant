@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#	CopyToDestGeant.sh - copy files to geant4 source directory
+#
+#	USAGE: ./CopyToDestGeant.sh path
+
+if [ $# -eq 1 ]; then
+    echo "Script will execute command: rsync -av ${PWD}/geant4.10.05.p01/" $1
+    echo -e "Continue? y/n \c "
+    read
+    if [ $REPLY = "y" ]; then
+        rsync -av ${PWD}/geant4.10.05.p01/ $1
+    fi
+else
+    echo "No destination path passed."
+    echo "Usage: ./CopyToDestGeant.sh path"
+fi
