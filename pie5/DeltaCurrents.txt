@@ -1,0 +1,35 @@
+##################### Deviations between Soll and Ist value from setpoint #######################
+# scanlog 20 p.10 bis SML ; scanlog 20 p.27 bis SML ;scanlig 2 p.39 bis QSM ;
+# Attention : Polarity of ASC different in sacnlog 2 and scanlog 20 (also delta value much bigger in scanlog 2)
+# Change --> to have same polarity but check when converting setpoint files!!!
+# Same accounts for QSK42
+param -unset deltaAHSW41cur=0
+param -unset deltaQSF41cur=0
+param -unset deltaHSC41cur=0
+param -unset deltaQSF42cur=0
+param -unset deltaQSF43cur=0
+param -unset deltaHSC42cur=0
+param -unset deltaQSF44cur=0
+param -unset deltaQSF45cur=0
+param -unset deltaHSC43cur=0
+param -unset deltaQSF46cur=0
+param -unset deltaQSF47cur=0
+param -unset deltaHSC44cur=0
+param -unset deltaQSF48cur=0
+param -unset deltaAST41cur=0
+param -unset deltaASC41cur=0
+param -unset deltaQSB41cur=0
+param -unset deltaQSB42cur=0
+param -unset deltaQSB43cur=0
+param -unset deltaSEP41cur=0
+param -unset deltaQSK41cur=0
+param -unset deltaQSK42cur=0
+param -unset deltaQSK43cur=0
+param -unset deltaSML41cur=0
+param -unset deltaASL41cur=0
+param -unset deltaQSO41cur=0
+param -unset deltaQSO42cur=0
+param -unset deltaASK41cur=0
+param -unset deltaQSM41cur=0
+param -unset deltaSEP41vol=0
+##################################################################################

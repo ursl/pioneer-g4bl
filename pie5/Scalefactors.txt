@@ -1,0 +1,96 @@
+#################################### scaling factors ####################################
+param -unset scaleAHSW=-1/360							# fieldmap measured 360 A from Vjeran |y|<10 (can be extended with calculated fieldmap)
+#param -unset scaleQSF=((9.0516/200)/7.38)*(382/394.98)	# fieldmap of QSM is used (QSM gradient=7.76 G/mm, G/A factor from fit in range x=+-100 is 7.38 G/A) - scale with QSF Gradient and effective length ratio
+param -unset scaleQSF=-1/100							# TOSCA calculation January 2018
+param -unset scaleHSC=1/0.6								# real G/A factor 9.158 - fieldmap calculated (TOSCA) for 0.6 A - TOSCA point G/A factor 9.7 or ~9.1 from fit in x=+-200 range - ~8.8-9.3 dependent on fit range
+param -unset scaleAST=1/250 							# fieldmap calculated (TOSCA) for 250 A
+param -unset scaleASC=-1/100							# fieldmap calculated (TOSCA) for -100 A
+param -unset scaleQSB=-1/4.70973 						# TOSCA model equivalent current 4.70973 A (no coil info available --> fit compared to real G/A factor)
+param -unset scaleSEP_B=1 								# find this value
+param -unset scaleSEP_E=1 								# calculate this value from E=U/d with d= from drawing 
+#param -unset scaleQSK=18.0255/(1250)					# G/A 18.0255 factor from Peter
+param -unset scaleQSK=1/40 								# TOSCA calculation spring/summer 2018 
+param -unset scaleSML=70.6/(503000)						# Find out correct sign of field, absolute value from sheet
+param -unset scaleASL=-1/44.1							# G/A from map: 25.0 	- fieldmap recalculated in TOSCA for 44.1 A (for 180 windings) - map generated for |x|<100, |y|<25, |z|<100
+param -unset scaleQSO=-1/500							# G/A from map: 7.9 	- fieldmap complemented to 3D from 2D measurement 500 A by Vjeran - range |x|<9, |y|<10, -109.6<z<69.6
+param -unset scaleASK=-1/50 							# G/A from map: 25.1 	- fieldmap recalculated in TOSCA for 50 A (for 180 windings) - map generated for |x|<100, |y|<25, |z|<100
+param -unset scaleQSM=1/210 							# G/A from map: 7.3		- fieldmap calculated (TOSCA) for 210 A - map from vjeran generated for |x|<31, |y|<15, |z|<75 --> complemented in Mathematica to |y|<31
+param -unset scaleFSH41L=1
+param -unset scaleFSH41R=1
+param -unset scaleFS42L=1
+param -unset scaleFS42R=1
+param -unset scaleFS42V=1
+param -unset scaleFSH43L=1
+param -unset scaleFSH43R=1
+#########################################################################################
+
+############## Correct currents for deviations between Soll and Ist value ###############
+param -unset corAHSW41cur=$AHSW41cur+$deltaAHSW41cur
+param -unset corQSF41cur=$QSF41cur+$deltaQSF41cur
+param -unset corHSC41cur=$HSC41cur+$deltaHSC41cur
+param -unset corQSF42cur=$QSF42cur+$deltaQSF42cur
+param -unset corQSF43cur=$QSF43cur+$deltaQSF43cur
+param -unset corHSC42cur=$HSC42cur+$deltaHSC42cur
+param -unset corQSF44cur=$QSF44cur+$deltaQSF44cur
+param -unset corQSF45cur=$QSF45cur+$deltaQSF45cur
+param -unset corHSC43cur=$HSC43cur+$deltaHSC43cur
+param -unset corQSF46cur=$QSF46cur+$deltaQSF46cur
+param -unset corQSF47cur=$QSF47cur+$deltaQSF47cur
+param -unset corHSC44cur=$HSC44cur+$deltaHSC44cur
+param -unset corQSF48cur=$QSF48cur+$deltaQSF48cur
+param -unset corAST41cur=$AST41cur+$deltaAST41cur
+param -unset corASC41cur=$ASC41cur+$deltaASC41cur
+param -unset corQSB41cur=$QSB41cur+$deltaQSB41cur
+param -unset corQSB42cur=$QSB42cur+$deltaQSB42cur
+param -unset corQSB43cur=$QSB43cur+$deltaQSB43cur
+param -unset corSEP41vol=$SEP41vol+$deltaSEP41vol
+param -unset corSEP41cur=$SEP41cur+$deltaSEP41cur
+param -unset corQSK41cur=$QSK41cur+$deltaQSK41cur
+param -unset corQSK42cur=$QSK42cur+$deltaQSK42cur
+param -unset corQSK43cur=$QSK43cur+$deltaQSK43cur
+param -unset corSML41cur=$SML41cur+$deltaSML41cur
+param -unset corASL41cur=$ASL41cur+$deltaASL41cur
+param -unset corQSO41cur=$QSO41cur+$deltaQSO41cur
+param -unset corQSO42cur=$QSO42cur+$deltaQSO42cur
+param -unset corASK41cur=$ASK41cur+$deltaASK41cur
+param -unset corQSM41cur=$QSM41cur+$deltaQSM41cur
+#########################################################################################
+
+################################## parameters to set ####################################
+param -unset AHSW41set=$corAHSW41cur*$sign*$scaleAHSW
+param -unset QSF41set=$corQSF41cur*$sign*$scaleQSF
+param -unset HSC41set=$corHSC41cur*$sign*$scaleHSC
+param -unset QSF42set=$corQSF42cur*$sign*$scaleQSF
+param -unset QSF43set=$corQSF43cur*$sign*$scaleQSF
+param -unset HSC42set=$corHSC42cur*$sign*$scaleHSC
+param -unset QSF44set=$corQSF44cur*$sign*$scaleQSF
+param -unset QSF45set=$corQSF45cur*$sign*$scaleQSF
+param -unset HSC43set=$corHSC43cur*$sign*$scaleHSC
+param -unset QSF46set=$corQSF46cur*$sign*$scaleQSF
+param -unset QSF47set=$corQSF47cur*$sign*$scaleQSF
+param -unset HSC44set=$corHSC44cur*$sign*$scaleHSC
+param -unset QSF48set=$corQSF48cur*$sign*$scaleQSF
+param -unset AST41set=$corAST41cur*$sign*$scaleAST
+param -unset ASC41set=$corASC41cur*$sign*$scaleASC
+param -unset QSB41set=$corQSB41cur*$sign*$scaleQSB
+param -unset QSB42set=$corQSB42cur*$sign*$scaleQSB
+param -unset QSB43set=$corQSB43cur*$sign*$scaleQSB
+param -unset SEP41_E_set=$corSEP41vol*$scaleSEP_E # in the electrostatic case the sign of the field stays the same independent of tracking direction
+param -unset SEP41_B_set=$corSEP41cur*$sign*$scaleSEP_B
+param -unset QSK41set=$corQSK41cur*$sign*$scaleQSK
+param -unset QSK42set=$corQSK42cur*$sign*$scaleQSK
+param -unset QSK43set=$corQSK43cur*$sign*$scaleQSK
+param -unset SML41set=$corSML41cur*$sign*$scaleSML	
+param -unset ASL41set=$corASL41cur*$sign*$scaleASL
+param -unset QSO41set=$corQSO41cur*$sign*$scaleQSO
+param -unset QSO42set=$corQSO42cur*$sign*$scaleQSO
+param -unset ASK41set=$corASK41cur*$sign*$scaleASK
+param -unset QSM41set=$corQSM41cur*$sign*$scaleQSM
+param -unset FSH41Lset=$FSH41Ldac*$scaleFSH41L
+param -unset FSH41Rset=$FSH41Rdac*$scaleFSH41R
+param -unset FS42Lset=$FS42Ldac*$scaleFS42L
+param -unset FS42Rset=$FS42Rdac*$scaleFS42R
+param -unset FS42Vset=$FS42Vdac*$scaleFS42V
+param -unset FSH43Lset=$FSH43Ldac*$scaleFSH43L
+param -unset FSH43Rset=$FSH43Rdac*$scaleFSH43R
+#########################################################################################
