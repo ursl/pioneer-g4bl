@@ -1,0 +1,31 @@
+param -unset targetX=0.0 		#target x coordinate
+param -unset targetY=0.0 		#target y coordinate
+param -unset targetZ=0.0 		#target z coordinate
+param -unset targetYRotation=45.0 	#rotation about y-axis
+param -unset targetMaterial=GRAPHITE
+
+param l=40. 		#target length
+param w=6. 		#target width
+param ang=45.0 		#cone angle wrt z axis 90-(x-y plane) (this angle is 45deg in the drawing)
+param Ravg=0.5*450. 	#average diameter of 450 mm
+
+param r1=$Ravg-0.5*($w*cos($ang*deg)+$l*sin($ang*deg))
+param r2=$Ravg-0.5*(-1*$w*cos($ang*deg)+$l*sin($ang*deg))
+param r3=$Ravg-0.5*($w*cos($ang*deg)-$l*sin($ang*deg))
+param r4=$Ravg-0.5*(-1*$w*cos($ang*deg)-$l*sin($ang*deg))
+
+param r5=$Ravg-0.5*(-1*$w*cos($ang*deg)-sin($ang*deg)*(-$l+2*$w*tan($ang*deg)))
+param r6=$Ravg-0.5*($w*cos($ang*deg)-sin($ang*deg)*($l-2*$w*tan($ang*deg)))
+
+param z1=0.5*(-1*$l*cos($ang*deg)+$w*sin($ang*deg))
+param z2=0.5*(-1*$l*cos($ang*deg)-$w*sin($ang*deg))
+param z3=0.5*($l*cos($ang*deg)+$w*sin($ang*deg))
+param z4=0.5*($l*cos($ang*deg)-$w*sin($ang*deg))
+
+polycone TargetCone innerRadius=$r2,$r1,$r6,$r3 outerRadius=$r2,$r5,$r4,$r3 z=$z2,$z1,$z4,$z3 material=$targetMaterial
+
+## old placement — do not use
+#place TargetCone z=-1*($targetZ+$Ravg*sin(($targetYRotation+$ang)*deg)) x=-1*($targetX+$Ravg*cos(($targetYRotation+$ang)*deg)) y=$targetY rotation=Y($targetYRotation) coordinates=global
+
+#target is placed such that the target material is centered at 0,0,0 and in the z-axis direction #no guarantee this is correct for all coordinate systems
+#place TargetCone z=($targetZ+$Ravg*sin($targetYRotation*deg)) x=-1*($targetX+$Ravg*cos($targetYRotation*deg)) y=$targetY rotation=Y(180+$targetYRotation) coordinates=global

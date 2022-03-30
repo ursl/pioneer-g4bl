@@ -1,0 +1,4 @@
+######################### Positions - PIONEER for G4V7M 14072015 ############################
+param -unset posCALOENTR=17199.
+param -unset posATAR=18000. ##posQSK43=16084.5, calo is outerRadius=800
+param -unset posCALO=18000.
