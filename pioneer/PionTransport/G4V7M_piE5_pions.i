@@ -48,7 +48,7 @@ param targetYRotation=45.-15.
 param targetZ=0.
 param targetX=0.
 param targetY=0.
-include "/psi/home/langenegger/data/g4bl/g4bl_pioneer_example/TargetE/polyconeTarget.txt"
+include "$G4BLPIONEER/pioneer/TargetE/polyconeTarget.txt"
 place TargetCone z=($targetZ+$Ravg*sin($targetYRotation*deg)) x=-1*($targetX+$Ravg*cos($targetYRotation*deg)) y=$targetY rotation=Y(180+$targetYRotation) coordinates=global color=0,0,0
 
 tubs killCyl innerRadius=500 radius=510 length=750 kill=1 color=1,1,1,0.2
@@ -60,14 +60,14 @@ place killCap z=-250
 ################################# Elements Strengths ####################################
 param -unset sign=1 		       # sign=-1 for backtracking ::: sign=1 for normal DS tracking
 # currents according to setpoint
-include "/psi/home/langenegger/data/g4bl/pie5/CurrentsCMBL2018.txt" 		    
+include "$G4BLPIONEER/pie5/CurrentsCMBL2018.txt" 		    
 # Deviations between Soll and Ist value that is corrected in the Scalefactors.txt
-include "/psi/home/langenegger/data/g4bl/pie5/DeltaCurrents.txt"  
+include "$G4BLPIONEER/pie5/DeltaCurrents.txt"  
 # scaling factors for fieldmaps/generic elements/fieldexpressions
-include "/psi/home/langenegger/data/g4bl/pie5/Scalefactors.txt" 	 
+include "$G4BLPIONEER/pie5/Scalefactors.txt" 	 
 # Positions generated with Mathematica Notebook pathlength from Inventor model
-include "/psi/home/langenegger/data/g4bl/pie5/Positions.txt"		    
-include "/psi/home/langenegger/data/g4bl/pioneer-g4bl/pioneer/positions/PositionsPIONEER.txt"
+include "$G4BLPIONEER/pie5/Positions.txt"		    
+include "$G4BLPIONEER/pioneer/positions/PositionsPIONEER.txt"
 #########################################################################################
 									
 
@@ -76,16 +76,16 @@ include "/psi/home/langenegger/data/g4bl/pioneer-g4bl/pioneer/positions/Position
 #########################################################################################
 									
 ######################################### AHSW ##########################################
-fieldmap AHSW41 file="/psi/home/langenegger/data/g4bl/piE5/feldahsw.dat"
+fieldmap AHSW41 file="$G4BLPIONEER/pie5/feldahsw.dat"
 #########################################################################################
 
 ######################################### QSM ###########################################
-fieldmap QSM41 file="/psi/home/langenegger/data/g4bl/piE5/feldqsm.dat"
+fieldmap QSM41 file="$G4BLPIONEER/pie5/feldqsm.dat"
 genericquad QSM41DUMMY gradient=0 kill=1 ironRadius=600 ironLength=500 ironColor=1,0,0,0.6 fieldLength=1 poleTipRadius=200 coilRadius=250 coilHalfwidth=80
 #########################################################################################
 
 ######################################### ASK ###########################################
-fieldmap ASK41 file="/psi/home/langenegger/data/g4bl/piE5/feldask.dat" current=$ASK41set #*1.07 # From TOSCA generated end of 2014
+fieldmap ASK41 file="$G4BLPIONEER/pie5/feldask.dat" current=$ASK41set #*1.07 # From TOSCA generated end of 2014
 genericbend ASK41DUMMY fieldWidth=800 fieldHeight=240 By=0 fieldLength=1 ironWidth=1780 ironHeight=1000 ironLength=500 ironColor=0,0,1,0.6 kill=1
 #########################################################################################
 
@@ -100,12 +100,12 @@ virtualdetector ATARr width=20 height=20 length=1 color=1,1,0,0.6 material=Vacuu
 #########################################################################################
 
 ######################################### QSO ###########################################
-fieldmap QSO file="/psi/home/langenegger/data/g4bl/piE5/feldqso.dat" # measured fieldmap from Vjeran -     x=+-9cm    y=+-10cm
+fieldmap QSO file="$G4BLPIONEER/pie5/feldqso.dat" # measured fieldmap from Vjeran -     x=+-9cm    y=+-10cm
 tubs QSODUMMY innerRadius=125 outerRadius=200 length=400 material=Vacuum kill=1 color=1,0,0,0.5
 #########################################################################################
 
 ######################################### ASL ###########################################
-fieldmap ASL41 file="/psi/home/langenegger/data/g4bl/piE5/feldasl.dat" current=$ASL41set #*1.07 # From TOSCA generated end of 2014
+fieldmap ASL41 file="$G4BLPIONEER/pie5/feldasl.dat" current=$ASL41set #*1.07 # From TOSCA generated end of 2014
 genericbend ASL41DUMMY fieldWidth=800 fieldHeight=180 By=0 fieldLength=1 ironWidth=1780 ironHeight=1000 ironLength=1000 ironColor=0,0,1,0.3 kill=1
 #########################################################################################
 
@@ -117,22 +117,22 @@ tubs MEGCOL innerRadius=60 outerRadius=159 length=50 material=Pb color=1,0,1,0.8
 
 ######################################### QSK ###########################################
 #genericquad QSK kill=1 ironRadius=500 ironLength=400 ironColor=1,0,0,0.6 fieldLength=390 poleTipRadius=125 coilRadius=160 coilHalfwidth=55 fringeFactor=0.68
-fieldmap QSK file="/psi/home/langenegger/data/g4bl/piE5/feldqsk.dat"
+fieldmap QSK file="$G4BLPIONEER/pie5/feldqsk.dat"
 genericquad QSK41DUMMY kill=1 ironRadius=500 ironLength=400 ironColor=1,0,0,0.6 fieldLength=1 poleTipRadius=125 coilRadius=160 coilHalfwidth=55
 genericquad QSK42DUMMY kill=1 ironRadius=500 ironLength=400 ironColor=1,0,0,0.6 fieldLength=1 poleTipRadius=125 coilRadius=160 coilHalfwidth=55
 genericquad QSK43DUMMY kill=1 ironRadius=500 ironLength=400 ironColor=1,0,0,0.6 fieldLength=1 poleTipRadius=125 coilRadius=160 coilHalfwidth=55
 #########################################################################################
 
 ######################################## SEP41 ##########################################
-fieldmap SEP41E195 file="/psi/home/langenegger/data/g4bl/piE5/feldsep41E195_fine.dat"
-fieldmap SEP41B45 file="/psi/home/langenegger/data/g4bl/piE5/feldsep41B45_newfine.dat"
+fieldmap SEP41E195 file="$G4BLPIONEER/pie5/feldsep41E195_fine.dat"
+fieldmap SEP41B45 file="$G4BLPIONEER/pie5/feldsep41B45_newfine.dat"
 genericbend SEP41_plates fieldWidth=400 fieldHeight=190 By=0 fieldLength=1 ironWidth=800 ironHeight=600 ironLength=800 ironColor=0,0,1,0.7 kill=1
 #########################################################################################
 
 #########################################################################################
 
 ######################################### QSB ###########################################
-fieldmap QSB file="/psi/home/langenegger/data/g4bl/piE5/feldqsb.dat"
+fieldmap QSB file="$G4BLPIONEER/pie5/feldqsb.dat"
 genericquad QSB41DUMMY kill=1 ironRadius=500 ironLength=270 ironColor=1,0,0,0.6 fieldLength=1 poleTipRadius=125 coilRadius=190 coilHalfwidth=55
 genericquad QSB42DUMMY kill=1 ironRadius=500 ironLength=270 ironColor=1,0,0,0.6 fieldLength=1 poleTipRadius=125 coilRadius=190 coilHalfwidth=55
 genericquad QSB43DUMMY kill=1 ironRadius=500 ironLength=270 ironColor=1,0,0,0.6 fieldLength=1 poleTipRadius=125 coilRadius=190 coilHalfwidth=55
@@ -143,7 +143,7 @@ tubs ASCapertOut innerRadius=160 outerRadius=350 length=100 material=Fe kill=1 c
 #########################################################################################
 
 ######################################### ASC ###########################################
-fieldmap ASCfieldmap file="/psi/home/langenegger/data/g4bl/piE5/feldasc.dat" current=-1
+fieldmap ASCfieldmap file="$G4BLPIONEER/pie5/feldasc.dat" current=-1
 box ASCdummy height=200 length=1200 width=1200 color=0,0,1,0.6 kill=1
 #########################################################################################
 
@@ -153,7 +153,7 @@ tubs flangeASTASC innerRadius=160 outerRadius=500 length=60 material=Fe kill=1 c
 
 ######################################### AST ###########################################
 trap ASTdummy height=853 upperWidth=38 lowerWidth=800 Xul=-19 Xur=19 Xll=-400 Xlr=400 length=200 color=0,0,1,0.8 kill=1
-fieldmap ASTfieldmap file="/psi/home/langenegger/data/g4bl/piE5/feldast.dat"
+fieldmap ASTfieldmap file="$G4BLPIONEER/pie5/feldast.dat"
 tubs ASTapertIn innerRadius=225 outerRadius=350 length=150 material=Fe kill=1 color=0,0,1,0.8 
 #########################################################################################
 
@@ -198,7 +198,7 @@ endgroup
 
 ######################################### QSF ###########################################
 # No fieldmap available - Due to similarity the fieldmap of the QSM is reused with a different scaling factor
-fieldmap QSF file="/psi/home/langenegger/data/g4bl/piE5/feldqsf.dat"
+fieldmap QSF file="$G4BLPIONEER/pie5/feldqsf.dat"
 genericquad QSF41DUMMY gradient=0 kill=1 ironRadius=600 ironLength=500 ironColor=1,0,0,0.6 fieldLength=1 poleTipRadius=200 coilRadius=250 coilHalfwidth=80
 genericquad QSF42DUMMY gradient=0 kill=1 ironRadius=600 ironLength=500 ironColor=1,0,0,0.6 fieldLength=1 poleTipRadius=200 coilRadius=250 coilHalfwidth=80
 genericquad QSF43DUMMY gradient=0 kill=1 ironRadius=600 ironLength=500 ironColor=1,0,0,0.6 fieldLength=1 poleTipRadius=200 coilRadius=250 coilHalfwidth=80
@@ -210,7 +210,7 @@ genericquad QSF48DUMMY gradient=0 kill=1 ironRadius=600 ironLength=500 ironColor
 #########################################################################################
 
 ######################################### HSC ###########################################
-fieldmap HSC file="/psi/home/langenegger/data/g4bl/piE5/feldhsc.dat"
+fieldmap HSC file="$G4BLPIONEER/pie5/feldhsc.dat"
 genericquad HSC41DUMMY gradient=0 kill=1 ironRadius=600 ironLength=400 ironColor=0,1,0,0.6 fieldLength=1 poleTipRadius=200 coilRadius=250 coilHalfwidth=80
 genericquad HSC42DUMMY gradient=0 kill=1 ironRadius=600 ironLength=400 ironColor=0,1,0,0.6 fieldLength=1 poleTipRadius=200 coilRadius=250 coilHalfwidth=80
 genericquad HSC43DUMMY gradient=0 kill=1 ironRadius=600 ironLength=400 ironColor=0,1,0,0.6 fieldLength=1 poleTipRadius=200 coilRadius=250 coilHalfwidth=80
@@ -267,7 +267,7 @@ place exitflangeaperture z=1069.8 x=364.48 rotation=Y180-132.25+180 kill=1 # ori
 ##  BEAM LOCATION 1
 ##  Use the beam file to send pions from downstream Target E through PiE5
 #######################################################################################################################
-#beam ascii file="/psi/home/langenegger/data/g4bl/g4bl_pioneer_example/pioneer/BLTrackFile2_PDGid211_DetEMuPiFromTarget_1-100MeVc.txt"
+#beam ascii file="$G4BLPIONEER/pioneer/BLTrackFile2_PDGid211_DetEMuPiFromTarget_1-100MeVc.txt"
 #######################################################################################################################
 									
 #######################################################################################################################
@@ -338,7 +338,7 @@ place ASCapertOut z=$posASCapertOut
 ##  BEAM LOCATION 2
 ## Use the beam file sending pions from ASC41 aperture through QSB and QSK triplets and to CALO center
 #######################################################################################################################
-beam ascii file="../BLTrackFile2_PDGid211_AtASCApertOut_65MeVc.txt"
+beam ascii file="$G4BLPIONEER/data/bl2/BLTrackFile2_PDGid211_AtASCApertOut_65MeVc.txt"
 #######################################################################################################################
 
 #######################################################################################################################

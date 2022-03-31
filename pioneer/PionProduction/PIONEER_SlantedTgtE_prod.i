@@ -30,13 +30,13 @@ virtualdetector DetEMuPiFromTarget radius=300 length=0.1 require=PDGid==-11||PDG
 param scaleMom=2.7105 ## scale magnet currents from 28 MeV/c to X MeV/c
 param -unset sign=1 		       # sign=-1 for backtracking ::: sign=1 for normal DS tracking
 # currents according to setpoint
-include "/psi/home/langenegger/data/g4bl/pie5/CurrentsCMBL2018.txt"
+include "$G4BLPIONEER/pie5/CurrentsCMBL2018.txt"
 # Deviations between Soll and Ist value that is corrected in the Scalefactors.txt
-include "/psi/home/langenegger/data/g4bl/pie5/DeltaCurrents.txt" 
+include "$G4BLPIONEER/pie5/DeltaCurrents.txt" 
 # scaling factors for fieldmaps/generic elements/fieldexpressions
-include "/psi/home/langenegger/data/g4bl/pie5/Scalefactors.txt" 	 
+include "$G4BLPIONEER/pie5/Scalefactors.txt" 	 
 # Positions generated with Mathematica Notebook pathlength from Inventor model
-include "/psi/home/langenegger/data/g4bl/pie5/Positions.txt"
+include "$G4BLPIONEER/pie5/Positions.txt"
 #########################################################################################
 
 #########################################################################################
@@ -44,19 +44,19 @@ include "/psi/home/langenegger/data/g4bl/pie5/Positions.txt"
 #########################################################################################
 									
 ######################################### AHSW ##########################################
-fieldmap AHSW41 file="/psi/home/langenegger/data/g4bl/pie5/feldahsw.dat"
+fieldmap AHSW41 file="$G4BLPIONEER/pie5/feldahsw.dat"
 #########################################################################################
   
 ######################################### QSF ###########################################
 # No fieldmap available - Due to similarity the fieldmap of the QSM is reused with a different scaling factor
-fieldmap QSF file="/psi/home/langenegger/data/g4bl/pie5/feldqsf.dat"
+fieldmap QSF file="$G4BLPIONEER/pie5/feldqsf.dat"
 genericquad QSF41DUMMY gradient=0 kill=1 ironRadius=600 ironLength=500 ironColor=1,0,0,0.6 fieldLength=1 poleTipRadius=200 coilRadius=250 coilHalfwidth=80
 genericquad QSF42DUMMY gradient=0 kill=1 ironRadius=600 ironLength=500 ironColor=1,0,0,0.6 fieldLength=1 poleTipRadius=200 coilRadius=250 coilHalfwidth=80
 genericquad QSF43DUMMY gradient=0 kill=1 ironRadius=600 ironLength=500 ironColor=1,0,0,0.6 fieldLength=1 poleTipRadius=200 coilRadius=250 coilHalfwidth=80
 #########################################################################################
 
 ######################################### HSC ###########################################
-fieldmap HSC file="/psi/home/langenegger/data/g4bl/pie5/feldhsc.dat"
+fieldmap HSC file="$G4BLPIONEER/pie5/feldhsc.dat"
 genericquad HSC41DUMMY gradient=0 kill=1 ironRadius=600 ironLength=400 ironColor=0,1,0,0.6 fieldLength=1 poleTipRadius=200 coilRadius=250 coilHalfwidth=80
 #########################################################################################
 
@@ -79,7 +79,7 @@ param targetX=0.
 param targetY=0.
 param slabLength=60.0
 param AngP=5.0
-include "/psi/home/langenegger/data/g4bl/g4bl_pioneer_example/TargetE/polyconeTargetSlanted.txt"
+include "$G4BLPIONEER/pioneer/TargetE/polyconeTargetSlanted.txt"
 place TargetCone z=($targetZ+$Ravg*sin($targetYRotation*deg)) x=-1*($targetX+$Ravg*cos($targetYRotation*deg)) y=$targetY rotation=Y(180+$targetYRotation) coordinates=global color=0,0,0
 
 tubs killCyl innerRadius=500 radius=510 length=500 kill=1 color=1,1,1,0.2
