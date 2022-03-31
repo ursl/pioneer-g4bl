@@ -267,7 +267,7 @@ place exitflangeaperture z=1069.8 x=364.48 rotation=Y180-132.25+180 kill=1 # ori
 ##  BEAM LOCATION 1
 ##  Use the beam file to send pions from downstream Target E through PiE5
 #######################################################################################################################
-#beam ascii file="$G4BLPIONEER/pioneer/BLTrackFile2_PDGid211_DetEMuPiFromTarget_1-100MeVc.txt"
+beam ascii file="$G4BLPIONEER/data/bl2/BLTrackFile2_PDGid211_DetEMuPiFromTarget.txt"
 #######################################################################################################################
 									
 #######################################################################################################################
@@ -338,7 +338,7 @@ place ASCapertOut z=$posASCapertOut
 ##  BEAM LOCATION 2
 ## Use the beam file sending pions from ASC41 aperture through QSB and QSK triplets and to CALO center
 #######################################################################################################################
-beam ascii file="$G4BLPIONEER/data/bl2/BLTrackFile2_PDGid211_AtASCApertOut_65MeVc.txt"
+#beam ascii file="$G4BLPIONEER/data/bl2/BLTrackFile2_PDGid211_AtASCApertOut_65MeVc.txt"
 #######################################################################################################################
 
 #######################################################################################################################
