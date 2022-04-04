@@ -16,8 +16,7 @@
 #include <limits>
 
 // fNameList is the path to an ascii file with full paths of ROOT files generated from G4Beamline simulation, one file per line
-void ConvertRootToBLTrack2(std::string fNameList)
-{
+void ConvertRootToBLTrack2(std::string fNameList, std::string outDirectory = "/psi/home/langenegger/data/data/pioneer-g4bl/bl2/") {
   int cut_pdgid = 211;
     double ptot_cut_low = 1;
     double ptot_cut_high = 100;
@@ -51,7 +50,7 @@ void ConvertRootToBLTrack2(std::string fNameList)
     TString outFilename = Form("BLTrackFile2_PDGid%d_%s.txt",cut_pdgid,vdetName.c_str());
 
     ofstream outfile;
-    TString txtfilename = outFilename;
+    std::string txtfilename = Form("%s/%s", outDirectory.c_str(), outFilename.Data());
     outfile.open(txtfilename, fstream::app);
     if(outfile){std::cout<<"Created file: " << txtfilename << std::endl;}
     else{std::cout<<"FILE CREATION FAILED!"<<std::endl; exit(1);}
