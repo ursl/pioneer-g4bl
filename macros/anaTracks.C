@@ -24,8 +24,13 @@ TTree* fillTree(string filename) {
   }
 
   // -- parse beginning to set up tree
+  int valFirstLine(1);
   string tname = vlines[0].substr(1); 
-  string dname = tname.substr(tname.find(" ")+1); 
+  if (string::npos != vlines[0].find("g4beamline")) {
+    tname = vlines[0].substr(2); 
+    valFirstLine = 2;
+  }
+  string dname = tname.substr(tname.find(" ") + 1); 
 
   vector<string> vars;
   map<string, double*> varDouble;
@@ -67,7 +72,7 @@ TTree* fillTree(string filename) {
 
 
   // -- read rest of file and fill into tree
-  for (unsigned int il = 2; il < vlines.size(); ++il) {
+  for (unsigned int il = valFirstLine; il < vlines.size(); ++il) {
     if (VERBOSE > 9) cout << "line " << il << endl;
     istringstream values(vlines[il]); 
     for (unsigned int i = 0; i < vars.size(); ++i) {
