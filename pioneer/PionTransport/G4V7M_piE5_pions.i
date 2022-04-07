@@ -267,7 +267,7 @@ place exitflangeaperture z=1069.8 x=364.48 rotation=Y180-132.25+180 kill=1 # ori
 ##  BEAM LOCATION 1
 ##  Use the beam file to send pions from downstream Target E through PiE5
 #######################################################################################################################
-beam ascii file=" $G4BLPIONEER/data/bl2/$G4BLTRACKFILE"
+beam ascii file="$G4BLPIONEER/data/bl2/$G4BLTRACKFILE"
 #######################################################################################################################
 									
 #######################################################################################################################
