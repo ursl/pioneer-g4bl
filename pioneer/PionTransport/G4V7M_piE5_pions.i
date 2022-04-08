@@ -372,4 +372,4 @@ place CALOENTR z=$posCALOENTR
 place CALOCNTR z=$posATAR
 #######################################################################################################################
 place CALO z=$posCALO
-profile zloop=$posQSF41,$posATAR,10 filename="profile.txt" particle=pi+
+profile zloop=$posQSF41,$posATAR,10 filename=$G4BLOUTPUTDIR/profile.txt particle=pi+
