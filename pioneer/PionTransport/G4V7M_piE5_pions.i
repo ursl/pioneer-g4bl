@@ -90,8 +90,8 @@ genericbend ASK41DUMMY fieldWidth=800 fieldHeight=240 By=0 fieldLength=1 ironWid
 #########################################################################################
 
 ######################################### PILL ##########################################
-virtualdetector PILL radius=200 length=1 color=1,1,0,0.6 material=Vacuum format=asciiExtended
-virtualdetector PILLr radius=200 length=1 color=1,1,0,0.6 material=Vacuum format=rootExtended
+virtualdetector CALOENTR radius=200 length=1 color=1,1,0,0.6 material=Vacuum format=asciiExtended file=$G4BLOUTPUTDIR/CALOENTR.txt
+virtualdetector CALOENTRr radius=200 length=1 color=1,1,0,0.6 material=Vacuum format=rootExtended file=$G4BLOUTPUTDIR/CALOENTR.txt
 #########################################################################################
 
 ######################################### ATAR ##########################################
@@ -224,8 +224,8 @@ boolean op=subtraction CALO CALOSphere CALOCyl kill=1
 #########################################################################################
 									
 ##################################### CALOCNTR ##########################################
-virtualdetector CALOCNTR radius=49.5 length=0.1 color=1,1,0,0.6 material=Vacuum format=asciiExtended
-virtualdetector CALOCNTRr radius=49.5 length=0.1 color=1,1,0,0.6 material=Vacuum format=rootExtended
+virtualdetector CALOCNTR radius=49.5 length=0.1 color=1,1,0,0.6 material=Vacuum format=asciiExtended file=$G4BLOUTPUTDIR/CALOCNTR.txt
+virtualdetector CALOCNTRr radius=49.5 length=0.1 color=1,1,0,0.6 material=Vacuum format=rootExtended file=$G4BLOUTPUTDIR/CALOCNTR.root
 #########################################################################################
 									
 ######################################## KILL ###########################################
@@ -368,7 +368,7 @@ place QSK43DUMMY z=$posQSK43
 #place SML41DUMMY z=$posSML41
 #######################################################################################################################
 #place MEGCOL z=$posMEGCOL
-place PILL rename=CALOENTR z=$posCALOENTR
+place CALOENTR z=$posCALOENTR
 place CALOCNTR z=$posATAR
 #######################################################################################################################
 place CALO z=$posCALO
