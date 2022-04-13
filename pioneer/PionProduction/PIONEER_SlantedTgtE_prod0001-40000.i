@@ -3,9 +3,10 @@ physics QGSP_BERT_EMY
 
 trackcuts kineticEnergyCut=0.0 kill=gamma,nu_mu,anti_nu_mu,nu_e,anti_nu_e
 
-randomseed Set     40000
-param -unset first=$randomseed
-param -unset numEvents=1000000
+#randomseed set 40000 print=1
+randomseed set 40000 
+param -unset first=1
+param -unset numEvents=100000000
 
 ######################## Primary Proton Beam ##########################
 param eventTimeLimit=1000
