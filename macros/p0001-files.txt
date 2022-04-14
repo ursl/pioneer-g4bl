@@ -1,0 +1,12 @@
+/psi/home/langenegger/data/slurm/pioneer-g4bl/prod0001/PIONEER_SlantedTgtE_prod0001-40001.root
+/psi/home/langenegger/data/slurm/pioneer-g4bl/prod0001/PIONEER_SlantedTgtE_prod0001-40002.root
+/psi/home/langenegger/data/slurm/pioneer-g4bl/prod0001/PIONEER_SlantedTgtE_prod0001-40003.root
+/psi/home/langenegger/data/slurm/pioneer-g4bl/prod0001/PIONEER_SlantedTgtE_prod0001-40004.root
+/psi/home/langenegger/data/slurm/pioneer-g4bl/prod0001/PIONEER_SlantedTgtE_prod0001-40007.root
+/psi/home/langenegger/data/slurm/pioneer-g4bl/prod0001/PIONEER_SlantedTgtE_prod0001-40008.root
+/psi/home/langenegger/data/slurm/pioneer-g4bl/prod0001/PIONEER_SlantedTgtE_prod0001-40009.root
+/psi/home/langenegger/data/slurm/pioneer-g4bl/prod0001/PIONEER_SlantedTgtE_prod0001-40013.root
+/psi/home/langenegger/data/slurm/pioneer-g4bl/prod0001/PIONEER_SlantedTgtE_prod0001-40015.root
+/psi/home/langenegger/data/slurm/pioneer-g4bl/prod0001/PIONEER_SlantedTgtE_prod0001-40016.root
+/psi/home/langenegger/data/slurm/pioneer-g4bl/prod0001/PIONEER_SlantedTgtE_prod0001-40018.root
+/psi/home/langenegger/data/slurm/pioneer-g4bl/prod0001/PIONEER_SlantedTgtE_prod0001-40019.root
