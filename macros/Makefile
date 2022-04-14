@@ -55,7 +55,7 @@ $(addprefix lib/,%.pcm) :
 	cd lib && ln -s $< && cd -
 
 # -- Targets
-all: prep lib convertRootToBLTrack2
+all: prep lib convertRootToBLTrack2 checkDuplicateTracks
 
 
 lib: $(addprefix obj/,$(STUFF)  $(DICT))
@@ -64,6 +64,9 @@ lib: $(addprefix obj/,$(STUFF)  $(DICT))
 
 convertRootToBLTrack2:  $(addprefix obj/,$(STUFF)) obj/runConvertRootToBLTrack2.o
 	$(LD) $(LDFLAGS) -o bin/convertRootToBLTrack2 obj/runConvertRootToBLTrack2.o $(GLIBS)  lib/libStuff.so
+
+checkDuplicateTracks:  $(addprefix obj/,$(STUFF)) obj/runCheckDuplicateTracks.o
+	$(LD) $(LDFLAGS) -o bin/checkDuplicateTracks obj/runCheckDuplicateTracks.o
 
 
 # -- create directories if not yet existing
