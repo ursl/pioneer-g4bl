@@ -17,8 +17,8 @@
 using namespace std;
 
 // ----------------------------------------------------------------------
-void ConvertRootToBLTrack2(string fNameList, string outDirectory, string vdetName) {
-  int cut_pdgid = 211;
+void ConvertRootToBLTrack2(string fNameList, string outDirectory, int pdgid, string vdetName) {
+  int cut_pdgid = pdgid;
   double ptot_cut_low = 1;
   double ptot_cut_high = 100;
 

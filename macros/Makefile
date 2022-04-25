@@ -66,7 +66,7 @@ convertRootToBLTrack2:  $(addprefix obj/,$(STUFF)) obj/runConvertRootToBLTrack2.
 	$(LD) $(LDFLAGS) -o bin/convertRootToBLTrack2 obj/runConvertRootToBLTrack2.o $(GLIBS)  lib/libStuff.so
 
 checkDuplicateTracks:  $(addprefix obj/,$(STUFF)) obj/runCheckDuplicateTracks.o
-	$(LD) $(LDFLAGS) -o bin/checkDuplicateTracks obj/runCheckDuplicateTracks.o
+	$(LD) $(LDFLAGS) -o bin/checkDuplicateTracks obj/runCheckDuplicateTracks.o $(GLIBS)
 
 
 # -- create directories if not yet existing
