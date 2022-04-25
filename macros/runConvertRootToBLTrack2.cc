@@ -7,7 +7,7 @@
 
 using namespace std;
 
-extern void ConvertRootToBLTrack2(string fNameList, string outDirectory, string vdetName);
+extern void ConvertRootToBLTrack2(string fNameList, string outDirectory, int pdgid, string vdetName);
 
 // ----------------------------------------------------------------------
 int main(int argc, char *argv[]) {
@@ -18,15 +18,17 @@ int main(int argc, char *argv[]) {
     , outdir("/psi/home/langenegger/data/data/pioneer-g4bl/bl2/")
     , vdet("DetEMuPiFromTarget") /*DetFSH41*/
     ;
-
+  int pdgid(211);
+  
   // -- command line arguments
   for (int i = 0; i < argc; i++){           
     if (!strcmp(argv[i], "-f"))  {fnameList = argv[++i];} 
     if (!strcmp(argv[i], "-o"))  {outdir = argv[++i];} 
+    if (!strcmp(argv[i], "-p"))  {pdgid = atoi(argv[++i]);} 
     if (!strcmp(argv[i], "-v"))  {vdet = argv[++i];} 
   }
   
-  ConvertRootToBLTrack2(fnameList, outdir, vdet);
+  ConvertRootToBLTrack2(fnameList, outdir, pdgid, vdet);
   
   return 0; 
 }
