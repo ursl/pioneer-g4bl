@@ -17,7 +17,7 @@
 using namespace std;
 
 // ----------------------------------------------------------------------
-void ConvertRootToBLTrack2(string fNameList, string outDirectory, int pdgid, string vdetName) {
+void ConvertRootToBLTrack2(string fNameList, string outDirectory, int pdgid, string prefix, string vdetName) {
   int cut_pdgid = pdgid;
   double ptot_cut_low = 1;
   double ptot_cut_high = 100;
@@ -47,7 +47,7 @@ void ConvertRootToBLTrack2(string fNameList, string outDirectory, int pdgid, str
   fList.close();
   //----------------------------------------------------------
     
-  TString outFilename = Form("BLTrackFile2_PDGid%d_%s.txt", cut_pdgid, vdetName.c_str());
+  TString outFilename = Form("%sBLTrackFile2_PDGid%d_%s.txt", prefix.c_str(), cut_pdgid, vdetName.c_str());
 
   ofstream outfile;
   std::string txtfilename = Form("%s/%s", outDirectory.c_str(), outFilename.Data());
