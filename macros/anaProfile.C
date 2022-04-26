@@ -24,7 +24,27 @@
 
 
 // ----------------------------------------------------------------------
-void drawPS(double meanX, double meanY, double sigmaX, double sigmaY, double rho) {
+void drawPS2(double meanX, double meanY, double sigma1, double sigma2, double rho) {
+  TEllipse e; 
+  e.SetLineColor(kBlue); 
+  e.SetLineWidth(2); 
+  e.SetFillStyle(0); 
+
+  // double phi     = 0.5*TMath::ATan((2*rho*sigmaX*sigmaY)/(sigmaX*sigmaX - sigmaY*sigmaY));
+  // double cos2phi = TMath::Cos(phi)*TMath::Cos(phi);
+  // double sin2phi = TMath::Sin(phi)*TMath::Sin(phi);
+
+  //  double a1 = sigma1*sigma1*sin2a
+  
+
+
+  
+  // e.DrawEllipse(meanX, meanY, a, b, 0., 360., phi);
+}
+
+
+// ----------------------------------------------------------------------
+void drawPS1(double meanX, double meanY, double sigmaX, double sigmaY, double rho) {
   TEllipse e; 
   e.SetLineColor(kBlue); 
   e.SetLineWidth(2); 
@@ -42,7 +62,7 @@ void drawPS(double meanX, double meanY, double sigmaX, double sigmaY, double rho
   double b       = ((cos2phi*sigmaY*sigmaY) - (sin2phi*sigmaX*sigmaX))/(cos2phi - sin2phi);
   a = TMath::Sqrt(a);
   b = TMath::Sqrt(b);
-  e.DrawEllipse(meanX, meanY, a, b, 0., 360., phi);
+  e.DrawEllipse(meanX, meanY, a, b, 0., 360., phiDeg);
 }
 
 
@@ -140,6 +160,12 @@ TTree* fillTree(string filename) {
 
 // ----------------------------------------------------------------------
 void anaProfile(string filename = "profile.txt") {
+  if (string::npos != filename.find("~")) {
+    string home = gSystem->Getenv("HOME");
+    cout << "home ->" << home << "<-" << endl;
+    filename.replace(filename.find("~"), 1, home);
+    cout << "filename now ->" << filename << "<-" << endl;
+  }
   TTree *t = fillTree(filename);
   t->Print();
 
@@ -148,16 +174,21 @@ void anaProfile(string filename = "profile.txt") {
 
 
 // ----------------------------------------------------------------------
-void drawPad(double x = 100., double y = 50.) {
+void drawPad(double x0 = -76., double y0 = -36., double x1 = 35., double y1 = 10.) {
 
   gStyle->SetOptStat(0);
-  
-  TH2D *h2 = new TH2D("h2", "", 100., -x, x, 100., -y, y);
+
+  TCanvas *c1 = new TCanvas("c1", "");
+  c1->SetWindowSize(700, 800); 
+    
+  TH2D *h2 = new TH2D("h2", "", 100., x0, x1, 100., y0, y1);
 
   h2->Draw("axis");
   gPad->SetGridx(1);
   gPad->SetGridy(1);
 
+
+  
   //  drawPS(-21.7, -13.0, eps, beta, phi);
   
 }
