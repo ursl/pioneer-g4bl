@@ -6,7 +6,7 @@
 // cd pioneer-g4bl/macros
 // root
 // root [0] .L anaTracks.C 
-// root [1] anaTracks()
+// root [1] anaTracks("some BL2TrackFile")
 // root [2] CALOCNTR->Draw("EventID")
 // ----------------------------------------------------------------------
 
@@ -19,19 +19,27 @@ TTree* fillTree(string filename) {
   vector<string> vlines; 
   string sline;
   INS.open(filename);
+  int cntLines(0);
   while (getline(INS, sline)) {
     vlines.push_back(sline);
+    ++cntLines;
   }
-
+  cout << "read " << cntLines << " lines" << endl;
+  
   // -- parse beginning to set up tree
   int valFirstLine(1);
   string tname = vlines[0].substr(1); 
-  if (string::npos != vlines[0].find("g4beamline")) {
+  if (string::npos != vlines[0].find("g4beamline profile")) {
     tname = vlines[0].substr(2); 
     valFirstLine = 2;
   }
-  string dname = tname.substr(tname.find(" ") + 1); 
-
+  string dname("tree");
+  cout << "hallo tname->" << tname << "<-" << endl;
+  if (string::npos != tname.find(" ")) {
+    dname = tname.substr(tname.find(" ") + 1);
+  } 
+  cout << "dname ->" << dname << "<-" << endl;
+  
   vector<string> vars;
   map<string, double*> varDouble;
   map<string, int*> varInt;
@@ -93,6 +101,12 @@ TTree* fillTree(string filename) {
 
 // ----------------------------------------------------------------------
 void anaTracks(string filename = "../pioneer/PionTransport/CALOCNTR.txt") {
+  if (string::npos != filename.find("~")) {
+    string home = gSystem->Getenv("HOME");
+    cout << "home ->" << home << "<-" << endl;
+    filename.replace(filename.find("~"), 1, home);
+    cout << "filename now ->" << filename << "<-" << endl;
+  }
   TTree *t = fillTree(filename);
   t->Print();
 
