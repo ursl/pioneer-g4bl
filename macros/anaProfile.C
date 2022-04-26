@@ -21,6 +21,49 @@
 // a          = ((cos2phi*sigmaX*sigmaX) - (sin2phi*sigmaY*sigmaY))/(cos2phi - sin2phi)
 // b          = ((cos2phi*sigmaY*sigmaY) - (sin2phi*sigmaX*sigmaX))/(cos2phi - sin2phi)
 
+// -- map of beamline elements for which the positions should be read in 
+map<string, double> gBeamlinePositions = {
+  {"QSF41", -99.},
+  {"QSF41", -99.},
+  {"HSC41", -99.},
+  {"QSF42", -99.},
+  {"QSF43", -99.},
+  {"FSH41", -99.},
+  {"HSC42", -99.},
+  {"QSF44", -99.},
+  {"FS42H", -99.},
+  {"FS42V", -99.},
+  {"ColPiE5", -99.},
+  {"QSF45", -99.},
+  {"HSC43", -99.},
+  {"FSH43", -99.},
+  {"QSF46", -99.},
+  {"QSF47", -99.},
+  {"HSC44", -99.},
+  {"QSF48", -99.},  
+
+  {"zAST41", -99.},  
+  {"frontarcAST41", -99.},  
+  //  {"flangeASTASC", -99.},  
+  {"zASC41", -99.},  
+  //  {"frontarcASC41", -99.},  
+
+  {"QSB41", -99.},  
+  {"QSB42", -99.},  
+  {"QSB43", -99.},  
+  {"SEP41", -99.},  
+  {"QSK41", -99.},  
+  {"QSK42", -99.},  
+  {"QSK43", -99.},  
+  {"PILL1", -99.},  
+  {"SML41", -99.},  
+  {"MEGCOL", -99.},  
+  {"zASL41", -99.},  
+  //  {"frontarcASL41", -99.},  
+  // {"QSO41", -99.},  
+  // {"QSO42", -99.},  
+  // {"zASK41", -99.}  
+};
 
 
 // ----------------------------------------------------------------------
@@ -77,7 +120,59 @@ void drawPS0(double mean, double meanPrime, double eps, double beta, double phi)
   e.DrawEllipse(mean, meanPrime, eps, beta, 0., 360., phi);
 }
 
+// ----------------------------------------------------------------------
+void readPositions() {
+  // -- find placement files
+  string g4blpioneer = gSystem->Getenv("G4BLPIONEER");
+  string g4blPositions = g4blpioneer + "/pie5/Positions.txt";
+  cout << g4blPositions << endl;
 
+  ifstream INS;
+  string sline;
+  INS.open(g4blPositions);
+  while (getline(INS, sline)) {
+    for (auto it = gBeamlinePositions.begin(); it != gBeamlinePositions.end(); ++it) {
+      if (string::npos != sline.find(it->first)) {
+        string sval = sline.substr(sline.find(it->first) + it->first.length() + 1);
+        double dval = atof(sval.c_str());
+        cout << "found " << it->first << " with sval ->" << sval << "<-"
+             << " resulting in double = " << dval
+             << endl;
+        if (dval > 0.) {
+          it->second = dval;
+        }
+      }
+    }
+  }
+}
+
+
+//----------------------------------------------------------------------
+void markup(double y = 0., double ymin = -60.) {
+  if (gBeamlinePositions["QSF41"] < 0.) readPositions();
+
+  TLine  *pl = new TLine();
+  pl->SetLineStyle(kDotted);
+  pl->SetLineColor(kBlue+2);
+
+  TLatex *tl = new TLatex();
+
+  gPad->GetCanvas()->SetWindowSize(1200, 300); 
+  
+  tl->SetNDC(kFALSE);
+  tl->SetTextAngle(45.);
+  tl->SetTextSize(0.03);
+  tl->SetTextColor(kBlack);
+  for (auto it = gBeamlinePositions.begin(); it != gBeamlinePositions.end(); ++it) {
+    tl->DrawLatex(it->second, y, it->first.c_str());
+    cout << "tl->DrawLatex(" << it->second << ", " << y << ", " << it->first.c_str() << ");" << endl;
+    pl->DrawLine(it->second, ymin, it->second, 0.9*y);
+  }
+
+  pl->SetLineStyle(kDashed);
+  pl->SetLineColor(kBlack);
+  pl->DrawLine(0., 0., gBeamlinePositions["zASL41"], 0.);
+}
 
 //----------------------------------------------------------------------
 TTree* fillTree(string filename) {
@@ -93,7 +188,7 @@ TTree* fillTree(string filename) {
   // -- parse beginning to set up tree
   int valFirstLine(1);
   string tname = vlines[0].substr(1); 
-  if (string::npos != vlines[0].find("g4beamline")) {
+  if (string::npos != vlines[0].find("g4beamline profile")) {
     tname = vlines[0].substr(2); 
     valFirstLine = 2;
   }
@@ -109,15 +204,7 @@ TTree* fillTree(string filename) {
   while (!istring.fail()) {
     if (VERBOSE > 0) cout << sline << " "; 
     vars.push_back(sline);
-    if ((string::npos != sline.find("PDGid"))
-        || (string::npos != sline.find("EventID"))
-        || (string::npos != sline.find("TrackID"))
-        || (string::npos != sline.find("ParentID"))
-        ) {
-      varInt.insert(make_pair(sline, new int));
-    } else {
-      varDouble.insert(make_pair(sline, new double));
-    }
+    varDouble.insert(make_pair(sline, new double));
     istring >> sline; 
   }
   if (VERBOSE > 0) cout << endl;
@@ -130,13 +217,8 @@ TTree* fillTree(string filename) {
       if (VERBOSE > 1) cout << varDouble[vars[i]] << " (double)";
       t->Branch(vars[i].c_str(), varDouble[vars[i]], Form("%s/D", vars[i].c_str()));
     }
-    if (varInt.end() != varInt.find(vars[i])) {
-      if (VERBOSE > 1) cout << varInt[vars[i]] << " (int)";
-      t->Branch(vars[i].c_str(), varInt[vars[i]], Form("%s/I", vars[i].c_str()));
-    }
     if (VERBOSE > 1) cout << endl;
   }
-
 
   // -- read rest of file and fill into tree
   for (unsigned int il = valFirstLine; il < vlines.size(); ++il) {
@@ -146,10 +228,6 @@ TTree* fillTree(string filename) {
       if (varDouble.end() != varDouble.find(vars[i])) {
         values >> *varDouble[vars[i]]; 
         if (VERBOSE > 9) cout << "parsed " << vars[i] << " = " << *varDouble[vars[i]] << endl;
-      }
-      if (varInt.end() != varInt.find(vars[i])) {
-        values >> *varInt[vars[i]]; 
-        if (VERBOSE > 9) cout << "parsed " << vars[i] << " = " << *varInt[vars[i]] << endl;
       }
     }
     t->Fill();
@@ -166,11 +244,28 @@ void anaProfile(string filename = "profile.txt") {
     filename.replace(filename.find("~"), 1, home);
     cout << "filename now ->" << filename << "<-" << endl;
   }
+
+  gStyle->SetOptTitle(0);
+  
+
+  TCanvas *c1 = new TCanvas("c1", "");
+  c1->SetWindowSize(700, 800); 
+  
   TTree *t = fillTree(filename);
   t->Print();
 
   t->Draw("meanX:Z");
+  markup(75., -50.);
+  c1->SaveAs("pie5-meanX.pdf");
+
+  t->Draw("meanY:Z");
+  markup(0.6, -0.6);
+  c1->SaveAs("pie5-meany.pdf");
+
+  
+    
 }
+
 
 
 // ----------------------------------------------------------------------
