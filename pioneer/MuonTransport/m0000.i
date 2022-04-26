@@ -27,7 +27,7 @@ param -unset last=$first+$numEvents-1
 
   
 ######################## Reference Beam ##########################
-reference particle=pi+ referenceMomentum=65 beamX=0 beamY=0 beamZ=150 meanXp=-0.0167 meanYp=0
+reference particle=mu+ referenceMomentum=65 beamX=0 beamY=0 beamZ=150 meanXp=-0.0167 meanYp=0
 
 ######################## Visualiztion helpers ##########################
 g4ui when=4 "/vis/viewer/set/viewpointThetaPhi 180 0."
@@ -322,12 +322,10 @@ place QSF48DUMMY z=$posQSF48
 place ASTapertIn z=$posASTapertIn
 place ASTdummy x=$posxAST41 z=$poszAST41 y=-210 rotation=X90
 place ASTdummy x=$posxAST41 z=$poszAST41 y=210 rotation=X90
-#place ASTfieldmap x=$posxAST41 rotation=Y0 z=$poszAST41 current=AST41setPions
 place ASTfieldmap x=$posxAST41 rotation=Y0 z=$poszAST41 current=$scaleMom*$AST41set
 cornerarc CAST z=$posfrontarcAST41 angle=-47.5 centerRadius=774.4 radiusCut=500
 #######################################################################################################################
 place flangeASTASC z=$posflangeASTASC
-#place ASCfieldmap x=$posxASC41 rotation=Y82.5 z=$poszASC41 current=ASC41setPions
 place ASCfieldmap x=$posxASC41 rotation=Y82.5 z=$poszASC41 current=$scaleMom*$ASC41set
 place ASCdummy z=$poszASC41+223.5 y=-210 rotation=Y82.5 x=-289.3
 place ASCdummy z=$poszASC41+223.5 y=210 rotation=Y82.5 x=-289.3
@@ -372,4 +370,4 @@ place CALOENTR z=$posCALOENTR
 place CALOCNTR z=$posATAR
 #######################################################################################################################
 place CALO z=$posCALO
-profile zloop=$posQSF41,$posATAR,10 filename=$G4BLOUTPUTDIR/profile.txt particle=pi+
+profile zloop=$posQSF41,$posATAR,10 filename=$G4BLOUTPUTDIR/profile.txt particle=mu+
