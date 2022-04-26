@@ -13,7 +13,7 @@
 
 
 //----------------------------------------------------------------------
-TTree* fillTree(string filename) {
+TTree* fillTree(string filename, int nlines) {
   int VERBOSE(0);
   ifstream INS;
   vector<string> vlines; 
@@ -23,7 +23,11 @@ TTree* fillTree(string filename) {
   while (getline(INS, sline)) {
     vlines.push_back(sline);
     ++cntLines;
+    if ((nlines > 0) && (cntLines > nlines)) {
+      break;
+    }
   }
+  INS.close();
   cout << "read " << cntLines << " lines" << endl;
   
   // -- parse beginning to set up tree
@@ -81,6 +85,9 @@ TTree* fillTree(string filename) {
 
   // -- read rest of file and fill into tree
   for (unsigned int il = valFirstLine; il < vlines.size(); ++il) {
+    if (0 == il%10000) {
+      cout << "\r" << "reading line " << il << flush; 
+    }
     if (VERBOSE > 9) cout << "line " << il << endl;
     istringstream values(vlines[il]); 
     for (unsigned int i = 0; i < vars.size(); ++i) {
@@ -95,19 +102,19 @@ TTree* fillTree(string filename) {
     }
     t->Fill();
   }
-  
+  cout << endl;
   return t; 
 }
 
 // ----------------------------------------------------------------------
-void anaTracks(string filename = "../pioneer/PionTransport/CALOCNTR.txt") {
+void anaTracks(string filename = "../pioneer/PionTransport/CALOCNTR.txt", int nlines = -1) {
   if (string::npos != filename.find("~")) {
     string home = gSystem->Getenv("HOME");
     cout << "home ->" << home << "<-" << endl;
     filename.replace(filename.find("~"), 1, home);
     cout << "filename now ->" << filename << "<-" << endl;
   }
-  TTree *t = fillTree(filename);
+  TTree *t = fillTree(filename, nlines);
   t->Print();
 
   t->Draw("y:x", "", "colz");
