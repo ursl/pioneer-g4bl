@@ -237,6 +237,11 @@ TTree* fillTree(string filename) {
 }
 
 // ----------------------------------------------------------------------
+TGraph* t2g(TTree *t, string sy, string sx) {
+
+}
+
+// ----------------------------------------------------------------------
 void anaProfile(string filename = "profile.txt") {
   if (string::npos != filename.find("~")) {
     string home = gSystem->Getenv("HOME");
@@ -266,6 +271,7 @@ void anaProfile(string filename = "profile.txt") {
   TTree *t = fillTree(filename);
   t->Print();
 
+  TGraph *gr = t2g(t, "meanX", "Z");
   t->Draw("meanX:Z");
   TH2 *h2 = (TH2*)gPad->FindObject("htemp");
   cout << "h2: " << h2 << endl;
