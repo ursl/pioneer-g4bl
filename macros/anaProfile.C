@@ -244,10 +244,22 @@ void anaProfile(string filename = "profile.txt") {
     filename.replace(filename.find("~"), 1, home);
     cout << "filename now ->" << filename << "<-" << endl;
   }
+  string pdfname = filename; 
+  if (string::npos != pdfname.rfind("/")) {
+    pdfname.replace(pdfname.begin(), pdfname.begin() + pdfname.rfind("/") + 1, "");
+  }
 
+  if (string::npos != pdfname.find(".dat")) {
+    pdfname.replace(pdfname.find(".dat"), 4, "");
+  }
+  if (string::npos != pdfname.find(".txt")) {
+    pdfname.replace(pdfname.find(".txt"), 4, "");
+  }
+  cout << "pdfname: ->" << pdfname << "<-" << endl;
+  
   gStyle->SetOptTitle(0);
   
-
+  
   TCanvas *c1 = new TCanvas("c1", "");
   c1->SetWindowSize(700, 800); 
   
@@ -255,12 +267,24 @@ void anaProfile(string filename = "profile.txt") {
   t->Print();
 
   t->Draw("meanX:Z");
+  TH2 *h2 = (TH2*)gPad->FindObject("htemp");
+  cout << "h2: " << h2 << endl;
+  if (h2) {
+    cout << h2->GetMaximum() << endl;
+    cout << h2->GetMinimum() << endl;
+  }
   markup(75., -50.);
-  c1->SaveAs("pie5-meanX.pdf");
+  c1->SaveAs(Form("%s-meanX.pdf", pdfname.c_str()));
 
   t->Draw("meanY:Z");
+  h2 = (TH2*)gPad->FindObject("htemp");
+  cout << "h2: " << h2 << endl;
+  if (h2) {
+    cout << h2->GetMaximum() << endl;
+    cout << h2->GetMinimum() << endl;
+  }
   markup(0.6, -0.6);
-  c1->SaveAs("pie5-meany.pdf");
+  c1->SaveAs(Form("%s-meanY.pdf", pdfname.c_str()));
 
   
     
