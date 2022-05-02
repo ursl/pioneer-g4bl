@@ -43,7 +43,7 @@ map<string, double> gBeamlinePositions = {
   {"QSF48", -99.},  
 
   {"zAST41", -99.},  
-  {"frontarcAST41", -99.},  
+  //  {"frontarcAST41", -99.},  
   //  {"flangeASTASC", -99.},  
   {"zASC41", -99.},  
   //  {"frontarcASC41", -99.},  
@@ -146,9 +146,25 @@ void readPositions() {
   }
 }
 
+// ----------------------------------------------------------------------
+string varTitle(string var) {
+  if ("Z" == var) {
+    return string("Z [mm]");
+  } else if ("meanX" == var) {
+    return string("<X> [mm]");
+  } else if ("meanY" == var) {
+    return string("<Y> [mm]");
+  } else if ("sigmaX" == var) {
+    return string("#sigma(X) [mm]");
+  } else if ("sigmaY" == var) {
+    return string("#sigma(Y) [mm]");
+  }
+  return string("no title");
+}
+
 
 //----------------------------------------------------------------------
-void markup(double y = 0., double ymin = -60.) {
+void markup(double ymax = 0., double ymin = -60., double xmax = 20000.) {
   if (gBeamlinePositions["QSF41"] < 0.) readPositions();
 
   TLine  *pl = new TLine();
@@ -160,18 +176,19 @@ void markup(double y = 0., double ymin = -60.) {
   gPad->GetCanvas()->SetWindowSize(1200, 300); 
   
   tl->SetNDC(kFALSE);
-  tl->SetTextAngle(45.);
+  tl->SetTextAngle(90.);
   tl->SetTextSize(0.03);
   tl->SetTextColor(kBlack);
   for (auto it = gBeamlinePositions.begin(); it != gBeamlinePositions.end(); ++it) {
-    tl->DrawLatex(it->second, y, it->first.c_str());
-    cout << "tl->DrawLatex(" << it->second << ", " << y << ", " << it->first.c_str() << ");" << endl;
-    pl->DrawLine(it->second, ymin, it->second, 0.9*y);
+    if (it->second > xmax) continue;
+    tl->DrawLatex(it->second, 0.95*ymax, it->first.c_str());
+    cout << "tl->DrawLatex(" << it->second << ", " << ymax << ", " << it->first.c_str() << ");" << endl;
+    pl->DrawLine(it->second, ymin, it->second, 0.9*ymax);
   }
 
   pl->SetLineStyle(kDashed);
   pl->SetLineColor(kBlack);
-  pl->DrawLine(0., 0., gBeamlinePositions["zASL41"], 0.);
+  pl->DrawLine(0., 0., xmax, 0.);
 }
 
 //----------------------------------------------------------------------
@@ -237,17 +254,44 @@ TTree* fillTree(string filename) {
 }
 
 // ----------------------------------------------------------------------
-TGraph* t2g(TTree *t, string sy, string sx) {
+void graphExtrema(TGraph *gr, double& xmin, double& xmax, double& ymin, double& ymax) {
+  xmin = ymin = 1.e99;
+  xmax = ymax = -1.e99;
+  for (int i = 0; i < gr->GetN(); ++i) {
+    int x = gr->GetPointX(i); 
+    int y = gr->GetPointY(i); 
+    if (x > xmax) xmax = x;
+    if (y > ymax) ymax = y;
+    if (x < xmin) xmin = x;
+    if (y < ymin) ymin = y;
+  }  
+}
 
+// ----------------------------------------------------------------------
+TGraph* t2g(TTree *t, string sy, string sx) {
+  double valx, valy;
+  t->SetBranchAddress(sy.c_str(), &valy);
+  t->SetBranchAddress(sx.c_str(), &valx);
+
+
+  long long int n_entries = t->GetEntries();
+  long long int i(0);
+
+  TGraph *gr = new TGraph(n_entries);
+  
+  for (long long int entry = 0; entry < n_entries; ++entry) {
+    t->GetEntry(entry);
+    gr->AddPoint(valx, valy);
+  }
+
+  return gr;
 }
 
 // ----------------------------------------------------------------------
 void anaProfile(string filename = "profile.txt") {
   if (string::npos != filename.find("~")) {
     string home = gSystem->Getenv("HOME");
-    cout << "home ->" << home << "<-" << endl;
     filename.replace(filename.find("~"), 1, home);
-    cout << "filename now ->" << filename << "<-" << endl;
   }
   string pdfname = filename; 
   if (string::npos != pdfname.rfind("/")) {
@@ -271,28 +315,98 @@ void anaProfile(string filename = "profile.txt") {
   TTree *t = fillTree(filename);
   t->Print();
 
-  TGraph *gr = t2g(t, "meanX", "Z");
-  t->Draw("meanX:Z");
-  TH2 *h2 = (TH2*)gPad->FindObject("htemp");
-  cout << "h2: " << h2 << endl;
-  if (h2) {
-    cout << h2->GetMaximum() << endl;
-    cout << h2->GetMinimum() << endl;
-  }
-  markup(75., -50.);
+  double xmin, xmax, ymin, ymax;
+  TGraph *grX = t2g(t, "meanX", "Z");
+  graphExtrema(grX, xmin, xmax, ymin, ymax);
+  grX->Draw("alp");
+  markup(ymax, ymin, xmax);
   c1->SaveAs(Form("%s-meanX.pdf", pdfname.c_str()));
 
-  t->Draw("meanY:Z");
-  h2 = (TH2*)gPad->FindObject("htemp");
-  cout << "h2: " << h2 << endl;
-  if (h2) {
-    cout << h2->GetMaximum() << endl;
-    cout << h2->GetMinimum() << endl;
-  }
-  markup(0.6, -0.6);
+  TGraph *grY = t2g(t, "meanY", "Z");
+  graphExtrema(grY, xmin, xmax, ymin, ymax);
+  grY->Draw("alp");
+  markup(ymax, ymin, xmax);
   c1->SaveAs(Form("%s-meanY.pdf", pdfname.c_str()));
+    
+}
 
+
+// ----------------------------------------------------------------------
+void cmpProfile(string vary = "sigmaX", string varx = "Z", 
+                string filename1 = "../../CMBL_g4beamline/profiles/CMBL2021_QSK41newLQ_final_profile.dat",
+                string filename2 = "../../CMBL_g4beamline/profiles/profileCMBL2021_05_COSY_coll1_new.dat") {
+  if (string::npos != filename1.find("~")) {
+    string home = gSystem->Getenv("HOME");
+    filename1.replace(filename1.find("~"), 1, home);
+  }
+  if (string::npos != filename2.find("~")) {
+    string home = gSystem->Getenv("HOME");
+    filename2.replace(filename2.find("~"), 1, home);
+  }
+  string pdfname1 = filename1; 
+  if (string::npos != pdfname1.rfind("/")) {
+    pdfname1.replace(pdfname1.begin(), pdfname1.begin() + pdfname1.rfind("/") + 1, "");
+  }
+
+  if (string::npos != pdfname1.find(".dat")) {
+    pdfname1.replace(pdfname1.find(".dat"), 4, "");
+  }
+  if (string::npos != pdfname1.find(".txt")) {
+    pdfname1.replace(pdfname1.find(".txt"), 4, "");
+  }
+  string pdfname2 = filename2; 
+  if (string::npos != pdfname2.rfind("/")) {
+    pdfname2.replace(pdfname2.begin(), pdfname2.begin() + pdfname2.rfind("/") + 1, "");
+  }
+
+  if (string::npos != pdfname2.find(".dat")) {
+    pdfname2.replace(pdfname2.find(".dat"), 4, "");
+  }
+  if (string::npos != pdfname2.find(".txt")) {
+    pdfname2.replace(pdfname2.find(".txt"), 4, "");
+  }
   
+  string pdfname = pdfname1 + pdfname2;
+  cout << "pdfname: ->" << pdfname << "<-" << endl;
+  
+  gStyle->SetOptTitle(0);
+
+  TLatex *tl = new TLatex();
+  tl->SetTextSize(0.07);
+  Color_t mcol; 
+  
+  TCanvas *c1 = new TCanvas("c1", "");
+  c1->SetWindowSize(700, 800); 
+  
+  TTree *t1 = fillTree(filename1);
+
+  double xmin, xmax, ymin, ymax;
+  TGraph *gr1 = t2g(t1, vary, varx);
+  graphExtrema(gr1, xmin, xmax, ymin, ymax);
+  xmax = 13000.;
+  mcol = kBlue; 
+  gr1->SetLineColor(mcol);
+  gr1->SetMarkerColor(mcol);
+  gr1->Draw("alp");
+  gr1->GetYaxis()->SetTitleSize(0.05);
+  gr1->GetYaxis()->SetTitle(varTitle(vary).c_str());
+  gr1->GetXaxis()->SetTitleSize(0.05);
+  gr1->GetXaxis()->SetTitle(varTitle(varx).c_str());
+  tl->SetTextColor(mcol);
+  tl->DrawLatexNDC(0.1, 0.92, pdfname1.c_str());
+
+  TTree *t2 = fillTree(filename2);
+  TGraph *gr2 = t2g(t2, vary, varx);
+  mcol = kRed;
+  gr2->SetLineColor(mcol);
+  gr2->SetMarkerColor(mcol);
+  gr2->Draw("lp");
+  tl->SetTextColor(mcol);
+  tl->DrawLatexNDC(0.6, 0.92, pdfname2.c_str());
+
+  markup(ymax, ymin, xmax);
+  c1->SaveAs(Form("cmp-%s-%s-%s.pdf", vary.c_str(), varx.c_str(), pdfname.c_str()));
+
     
 }
 
