@@ -21,49 +21,145 @@
 // a          = ((cos2phi*sigmaX*sigmaX) - (sin2phi*sigmaY*sigmaY))/(cos2phi - sin2phi)
 // b          = ((cos2phi*sigmaY*sigmaY) - (sin2phi*sigmaX*sigmaX))/(cos2phi - sin2phi)
 
-// -- map of beamline elements for which the positions should be read in 
-map<string, double> gBeamlinePositions = {
-  {"QSF41", -99.},
-  {"QSF41", -99.},
-  {"HSC41", -99.},
-  {"QSF42", -99.},
-  {"QSF43", -99.},
-  {"FSH41", -99.},
-  {"HSC42", -99.},
-  {"QSF44", -99.},
-  {"FS42H", -99.},
-  {"FS42V", -99.},
-  {"ColPiE5", -99.},
-  {"QSF45", -99.},
-  {"HSC43", -99.},
-  {"FSH43", -99.},
-  {"QSF46", -99.},
-  {"QSF47", -99.},
-  {"HSC44", -99.},
-  {"QSF48", -99.},  
+// // -- map of beamline elements for which the positions should be read in 
+// map<string, double> gBeamlinePositions = {
+//   {"QSF41", -9999.},
+//   {"QSF41", -9999.},
+//   {"HSC41", -9999.},
+//   {"QSF42", -9999.},
+//   {"QSF43", -9999.},
+//   {"FSH41", -9999.},
+//   {"HSC42", -9999.},
+//   {"QSF44", -9999.},
+//   {"FS42H", -9999.},
+//   {"FS42V", -9999.},
+//   {"ColPiE5", -9999.},
+//   {"QSF45", -9999.},
+//   {"HSC43", -9999.},
+//   {"FSH43", -9999.},
+//   {"QSF46", -9999.},
+//   {"QSF47", -9999.},
+//   {"HSC44", -9999.},
+//   {"QSF48", -9999.},  
 
-  {"zAST41", -99.},  
-  //  {"frontarcAST41", -99.},  
-  //  {"flangeASTASC", -99.},  
-  {"zASC41", -99.},  
-  //  {"frontarcASC41", -99.},  
+//   {"zAST41", -9999.},  
+//   //  {"frontarcAST41", -9999.},  
+//   //  {"flangeASTASC", -9999.},  
+//   {"zASC41", -9999.},  
+//   //  {"frontarcASC41", -9999.},  
 
-  {"QSB41", -99.},  
-  {"QSB42", -99.},  
-  {"QSB43", -99.},  
-  {"SEP41", -99.},  
-  {"QSK41", -99.},  
-  {"QSK42", -99.},  
-  {"QSK43", -99.},  
-  {"PILL1", -99.},  
-  {"SML41", -99.},  
-  {"MEGCOL", -99.},  
-  {"zASL41", -99.},  
-  //  {"frontarcASL41", -99.},  
-  // {"QSO41", -99.},  
-  // {"QSO42", -99.},  
-  // {"zASK41", -99.}  
+//   {"QSB41", -9999.},  
+//   {"QSB42", -9999.},  
+//   {"QSB43", -9999.},  
+//   {"SEP41", -9999.},  
+//   {"QSK41", -9999.},  
+//   {"QSK42", -9999.},  
+//   {"QSK43", -9999.},  
+//   {"PILL1", -9999.},  
+//   {"SML41", -9999.},  
+//   {"MEGCOL", -9999.},  
+//   {"zASL41", -9999.},  
+//   //  {"frontarcASL41", -9999.},  
+//   // {"QSO41", -9999.},  
+//   // {"QSO42", -9999.},  
+//   // {"zASK41", -9999.}  
+// };
+
+// -- struct for beamline element display
+struct bl {
+  double z;
+  Color_t col;
+  double tsiz;
 };
+
+// -- quadrupoles
+double  qsiz(0.05);
+Color_t qcol(kRed);
+
+// -- sextupoles
+double  ssiz(0.05);
+Color_t scol(kYellow+2);
+
+// -- dipoles
+double  dsiz(0.05);
+Color_t dcol(kBlue+1);
+
+// -- AST/ASC dipoles
+double  dassiz(0.05);
+Color_t dascol(kBlue+2);
+
+// -- separators
+double  sesiz(0.05);
+Color_t secol(kBlue+4);
+
+// -- collimators/slits
+double  csiz(0.05);
+Color_t ccol(kGreen+2);
+
+// -- stuff
+double  stusiz(0.05);
+Color_t stucol(kGray+2);
+
+// -- det
+double  detsiz(0.05);
+Color_t detcol(kOrange-3);
+
+// -- map of beamline elements for which the positions should be read in 
+map<string, struct bl> gBeamlinePositions = {
+  {"QSF41", {-9999., qcol, qsiz}}
+  ,{"HSC41", {-9999., scol, ssiz}}
+  ,{"QSF42", {-9999., qcol, qsiz}}
+  ,{"QSF43", {-9999., qcol, qsiz}}
+  ,{"FSH41", {-9999., ccol, csiz}}
+
+  ,{"HSC42", {-9999., scol, ssiz}}
+  ,{"QSF44", {-9999., qcol, qsiz}}
+  ,{"FS42H", {-9999., ccol, csiz}}
+  ,{"FS42V", {-9999., ccol, csiz}}
+
+  ,{"ColPiE5", {-9999., ccol, csiz}}
+
+  ,{"QSF45", {-9999., qcol, qsiz}}
+  ,{"HSC43", {-9999., scol, ssiz}}
+  ,{"FSH43", {-9999., ccol, csiz}}
+  ,{"QSF46", {-9999., qcol, qsiz}}
+  ,{"QSF47", {-9999., qcol, qsiz}}
+  ,{"HSC44", {-9999., scol, ssiz}}
+  ,{"QSF48", {-9999., qcol, qsiz}}  
+
+  ,{"zAST41", {-9999., dascol, dassiz}}  
+  ,{"frontarcAST41", {-9999., dascol, dassiz}}  
+  ,{"zASC41", {-9999., dascol, dassiz}}  
+  ,{"frontarcASC41", {-9999., dascol, dassiz}}  
+
+  ,{"QSB41", {-9999., qcol, qsiz}}  
+  ,{"QSB42", {-9999., qcol, qsiz}}  
+  ,{"QSB43", {-9999., qcol, qsiz}}  
+  ,{"SEP41", {-9999., secol, sesiz}}  
+  ,{"QSK41", {-9999., qcol, qsiz}}  
+  ,{"QSK42", {-9999., qcol, qsiz}}  
+  ,{"QSK43", {-9999., qcol, qsiz}}  
+  ,{"PILL1", {-9999., ccol, csiz}}  
+  ,{"SML41", {-9999., stucol, stusiz}}  
+  ,{"MEGCOL", {-9999., stucol, stusiz}}  
+  ,{"zASL41", {-9999., stucol, stusiz}}  
+  ,{"frontarcASL41", {-9999., stucol, stusiz}}  
+  ,{"QSO41", {-9999., qcol, qsiz}}  
+  ,{"QSO42", {-9999., qcol, qsiz}}  
+  ,{"zASK41", {-9999., stucol, stusiz}}
+  ,{"posQSM41",  {-9999., stucol, stusiz}}
+
+  ,{"PILL0", {-9999., ccol, csiz}}  
+  ,{"PILL1", {-9999., ccol, csiz}}  
+  ,{"PILL2", {-9999., ccol, csiz}}  
+  ,{"PILL3", {-9999., ccol, csiz}}
+
+  ,{"poszMU3ESOLTUBI1", {-9999., detcol, detsiz}}  
+  ,{"poszMU3ESOLTUBO1", {-9999., detcol, detsiz}}  
+  
+  
+};
+
 
 
 // ----------------------------------------------------------------------
@@ -121,15 +217,14 @@ void drawPS0(double mean, double meanPrime, double eps, double beta, double phi)
 }
 
 // ----------------------------------------------------------------------
-void readPositions() {
-  // -- find placement files
-  string g4blpioneer = gSystem->Getenv("G4BLPIONEER");
-  string g4blPositions = g4blpioneer + "/pie5/Positions.txt";
-  cout << g4blPositions << endl;
-
+void readPositions(string filename) {
+  // -- reset
+  for (auto it = gBeamlinePositions.begin(); it != gBeamlinePositions.end(); ++it) {
+    it->second.z = -99999.;
+  }
   ifstream INS;
   string sline;
-  INS.open(g4blPositions);
+  INS.open(filename);
   while (getline(INS, sline)) {
     for (auto it = gBeamlinePositions.begin(); it != gBeamlinePositions.end(); ++it) {
       if (string::npos != sline.find(it->first)) {
@@ -139,7 +234,7 @@ void readPositions() {
              << " resulting in double = " << dval
              << endl;
         if (dval > 0.) {
-          it->second = dval;
+          it->second.z = dval;
         }
       }
     }
@@ -164,8 +259,8 @@ string varTitle(string var) {
 
 
 //----------------------------------------------------------------------
-void markup(double ymax = 0., double ymin = -60., double xmax = 20000.) {
-  if (gBeamlinePositions["QSF41"] < 0.) readPositions();
+void markup(double ymax = 0., double ymin = -60., double xmax = 20000., string filename = "nada") {
+  if (gBeamlinePositions["QSF41"].z < 0.) readPositions(filename);
 
   TLine  *pl = new TLine();
   pl->SetLineStyle(kDotted);
@@ -180,10 +275,10 @@ void markup(double ymax = 0., double ymin = -60., double xmax = 20000.) {
   tl->SetTextSize(0.03);
   tl->SetTextColor(kBlack);
   for (auto it = gBeamlinePositions.begin(); it != gBeamlinePositions.end(); ++it) {
-    if (it->second > xmax) continue;
-    tl->DrawLatex(it->second, 0.95*ymax, it->first.c_str());
-    cout << "tl->DrawLatex(" << it->second << ", " << ymax << ", " << it->first.c_str() << ");" << endl;
-    pl->DrawLine(it->second, ymin, it->second, 0.9*ymax);
+    if (it->second.z > xmax) continue;
+    tl->DrawLatex(it->second.z, 0.95*ymax, it->first.c_str());
+    cout << "tl->DrawLatex(" << it->second.z << ", " << ymax << ", " << it->first.c_str() << ");" << endl;
+    pl->DrawLine(it->second.z, ymin, it->second.z, 0.9*ymax);
   }
 
   pl->SetLineStyle(kDashed);
@@ -305,9 +400,14 @@ void anaProfile(string filename = "profile.txt") {
     pdfname.replace(pdfname.find(".txt"), 4, "");
   }
   cout << "pdfname: ->" << pdfname << "<-" << endl;
+
+  // -- find placement files
+  string g4blpioneer = gSystem->Getenv("G4BLPIONEER");
+  string g4blPositions = g4blpioneer + "/pie5/Positions.txt";
+  cout << g4blPositions << endl;
   
   gStyle->SetOptTitle(0);
-  
+ 
   
   TCanvas *c1 = new TCanvas("c1", "");
   c1->SetWindowSize(700, 800); 
@@ -319,13 +419,13 @@ void anaProfile(string filename = "profile.txt") {
   TGraph *grX = t2g(t, "meanX", "Z");
   graphExtrema(grX, xmin, xmax, ymin, ymax);
   grX->Draw("alp");
-  markup(ymax, ymin, xmax);
+  markup(ymax, ymin, xmax, g4blPositions);
   c1->SaveAs(Form("%s-meanX.pdf", pdfname.c_str()));
 
   TGraph *grY = t2g(t, "meanY", "Z");
   graphExtrema(grY, xmin, xmax, ymin, ymax);
   grY->Draw("alp");
-  markup(ymax, ymin, xmax);
+  markup(ymax, ymin, xmax, g4blPositions);
   c1->SaveAs(Form("%s-meanY.pdf", pdfname.c_str()));
     
 }
@@ -334,7 +434,8 @@ void anaProfile(string filename = "profile.txt") {
 // ----------------------------------------------------------------------
 void cmpProfile(string vary = "sigmaX", string varx = "Z", 
                 string filename1 = "../../CMBL_g4beamline/profiles/CMBL2021_QSK41newLQ_final_profile.dat",
-                string filename2 = "../../CMBL_g4beamline/profiles/profileCMBL2021_05_COSY_coll1_new.dat") {
+                string filename2 = "../../CMBL_g4beamline/profiles/profileCMBL2021_05_COSY_coll1_new.dat",
+                string positions = "../../CMBL_g4beamline/Settings/Positions.txt") {
   if (string::npos != filename1.find("~")) {
     string home = gSystem->Getenv("HOME");
     filename1.replace(filename1.find("~"), 1, home);
@@ -404,12 +505,20 @@ void cmpProfile(string vary = "sigmaX", string varx = "Z",
   tl->SetTextColor(mcol);
   tl->DrawLatexNDC(0.6, 0.92, pdfname2.c_str());
 
-  markup(ymax, ymin, xmax);
+  markup(ymax, ymin, xmax, positions);
   c1->SaveAs(Form("cmp-%s-%s-%s.pdf", vary.c_str(), varx.c_str(), pdfname.c_str()));
 
     
 }
 
+
+// ----------------------------------------------------------------------
+void cmpProfileAll() {
+  cmpProfile("sigmaX");
+  cmpProfile("sigmaY");
+  cmpProfile("meanX");
+  cmpProfile("meanY");
+}
 
 
 // ----------------------------------------------------------------------
