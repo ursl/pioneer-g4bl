@@ -302,7 +302,7 @@ TTree* fillTree(string filename) {
   string tname = vlines[0].substr(1); 
   if (string::npos != vlines[0].find("g4beamline profile")) {
     tname = vlines[0].substr(2); 
-    valFirstLine = 2;
+    valFirstLine = 3;
   }
   string dname = tname.substr(tname.find(" ") + 1); 
 
@@ -350,40 +350,45 @@ TTree* fillTree(string filename) {
 
 // ----------------------------------------------------------------------
 void graphExtrema(TGraph *gr, double& xmin, double& xmax, double& ymin, double& ymax) {
-  xmin = ymin = 1.e99;
-  xmax = ymax = -1.e99;
+  xmin = ymin = 99999.;
+  xmax = ymax = -99999.;
   for (int i = 0; i < gr->GetN(); ++i) {
-    int x = gr->GetPointX(i); 
-    int y = gr->GetPointY(i); 
+    double x = gr->GetPointX(i); 
+    double y = gr->GetPointY(i); 
     if (x > xmax) xmax = x;
     if (y > ymax) ymax = y;
     if (x < xmin) xmin = x;
     if (y < ymin) ymin = y;
-  }  
+    //    cout << "i = " << i << " ymin = " << ymin << " ymax = " << ymax << endl;
+  }
+  cout << "graphExtrema ymin = " << ymin <<  " ymax = " << ymax << endl;
 }
 
 // ----------------------------------------------------------------------
-TGraph* t2g(TTree *t, string sy, string sx) {
+TGraph* t2g(TTree *t, string sy, string sx, double offsetX = 0.) {
   double valx, valy;
   t->SetBranchAddress(sy.c_str(), &valy);
   t->SetBranchAddress(sx.c_str(), &valx);
 
-
   long long int n_entries = t->GetEntries();
   long long int i(0);
 
-  TGraph *gr = new TGraph(n_entries);
+  TGraph *gr = new TGraph();
   
   for (long long int entry = 0; entry < n_entries; ++entry) {
     t->GetEntry(entry);
-    gr->AddPoint(valx, valy);
+    gr->AddPoint(valx + offsetX, valy);
   }
 
+  cout << "DBX gr: " << gr->GetPointX(0) << "  " << gr->GetPointY(0) << endl;
+  
   return gr;
 }
 
 // ----------------------------------------------------------------------
-void anaProfile(string filename = "profile.txt") {
+void anaProfile(string var1 = "meanX",
+                string filename = "profile.txt",
+                string positions = "../pie5/Positions.txt") {
   if (string::npos != filename.find("~")) {
     string home = gSystem->Getenv("HOME");
     filename.replace(filename.find("~"), 1, home);
@@ -401,11 +406,6 @@ void anaProfile(string filename = "profile.txt") {
   }
   cout << "pdfname: ->" << pdfname << "<-" << endl;
 
-  // -- find placement files
-  string g4blpioneer = gSystem->Getenv("G4BLPIONEER");
-  string g4blPositions = g4blpioneer + "/pie5/Positions.txt";
-  cout << g4blPositions << endl;
-  
   gStyle->SetOptTitle(0);
  
   
@@ -416,17 +416,11 @@ void anaProfile(string filename = "profile.txt") {
   t->Print();
 
   double xmin, xmax, ymin, ymax;
-  TGraph *grX = t2g(t, "meanX", "Z");
+  TGraph *grX = t2g(t, var1, "Z");
   graphExtrema(grX, xmin, xmax, ymin, ymax);
   grX->Draw("alp");
-  markup(ymax, ymin, xmax, g4blPositions);
-  c1->SaveAs(Form("%s-meanX.pdf", pdfname.c_str()));
-
-  TGraph *grY = t2g(t, "meanY", "Z");
-  graphExtrema(grY, xmin, xmax, ymin, ymax);
-  grY->Draw("alp");
-  markup(ymax, ymin, xmax, g4blPositions);
-  c1->SaveAs(Form("%s-meanY.pdf", pdfname.c_str()));
+  markup(ymax, ymin, xmax, positions);
+  c1->SaveAs(Form("%s-%s.pdf", pdfname.c_str(), var1.c_str()));
     
 }
 
@@ -435,6 +429,7 @@ void anaProfile(string filename = "profile.txt") {
 void cmpProfile(string vary = "sigmaX", string varx = "Z", 
                 string filename1 = "../../CMBL_g4beamline/profiles/CMBL2021_QSK41newLQ_final_profile.dat",
                 string filename2 = "../../CMBL_g4beamline/profiles/profileCMBL2021_05_COSY_coll1_new.dat",
+                double offset2   = 0.,
                 string positions = "../../CMBL_g4beamline/Settings/Positions.txt") {
   if (string::npos != filename1.find("~")) {
     string home = gSystem->Getenv("HOME");
@@ -467,7 +462,7 @@ void cmpProfile(string vary = "sigmaX", string varx = "Z",
     pdfname2.replace(pdfname2.find(".txt"), 4, "");
   }
   
-  string pdfname = pdfname1 + pdfname2;
+  string pdfname = pdfname1 + "-" + pdfname2;
   cout << "pdfname: ->" << pdfname << "<-" << endl;
   
   gStyle->SetOptTitle(0);
@@ -478,33 +473,62 @@ void cmpProfile(string vary = "sigmaX", string varx = "Z",
   
   TCanvas *c1 = new TCanvas("c1", "");
   c1->SetWindowSize(700, 800); 
+  c1->SetRightMargin(0.01); 
+  c1->SetLeftMargin(0.05); 
   
   TTree *t1 = fillTree(filename1);
 
   double xmin, xmax, ymin, ymax;
   TGraph *gr1 = t2g(t1, vary, varx);
   graphExtrema(gr1, xmin, xmax, ymin, ymax);
+
+  gStyle->SetOptStat(0);
+  TH1D *h1 = new TH1D("h1", "", 100, 0, xmax);
+  double hmax(1.5*ymax);
+  double hmin(ymin > 0.? 0.: 1.5*ymin);
+  if (vary == "meanX") {
+    hmin = -100.;
+    hmax = 100.;
+  } else if (vary == "meanY") {
+    hmin = -30.;
+    hmax = 30.;
+  }
+  h1->SetMinimum(hmin); 
+  h1->SetMaximum(hmax);
+
+  h1->GetXaxis()->SetLabelSize(0.05);
+  h1->GetYaxis()->SetLabelSize(0.05);
+
+  h1->GetYaxis()->SetTitleSize(0.05);
+  h1->GetYaxis()->SetTitleOffset(0.4);
+  h1->GetYaxis()->SetTitle(varTitle(vary).c_str());
+  h1->GetXaxis()->SetTitleSize(0.05);
+  h1->GetXaxis()->SetTitle(varTitle(varx).c_str());
+  h1->Draw("axis");
+  
   xmax = 13000.;
   mcol = kBlue; 
   gr1->SetLineColor(mcol);
   gr1->SetMarkerColor(mcol);
-  gr1->Draw("alp");
-  gr1->GetYaxis()->SetTitleSize(0.05);
-  gr1->GetYaxis()->SetTitle(varTitle(vary).c_str());
-  gr1->GetXaxis()->SetTitleSize(0.05);
-  gr1->GetXaxis()->SetTitle(varTitle(varx).c_str());
+  gr1->Draw("lp");
   tl->SetTextColor(mcol);
   tl->DrawLatexNDC(0.1, 0.92, pdfname1.c_str());
 
   TTree *t2 = fillTree(filename2);
-  TGraph *gr2 = t2g(t2, vary, varx);
+  TGraph *gr2 = t2g(t2, vary, varx, offset2);
+    
   mcol = kRed;
   gr2->SetLineColor(mcol);
   gr2->SetMarkerColor(mcol);
   gr2->Draw("lp");
   tl->SetTextColor(mcol);
   tl->DrawLatexNDC(0.6, 0.92, pdfname2.c_str());
-
+  if (offset2 > 0.) {
+    tl->SetTextColor(kBlack);
+    tl->SetTextSize(0.05);
+    tl->DrawLatexNDC(0.7, 0.18, Form("offset = %f", offset2));
+  }
+  
   markup(ymax, ymin, xmax, positions);
   c1->SaveAs(Form("cmp-%s-%s-%s.pdf", vary.c_str(), varx.c_str(), pdfname.c_str()));
 
@@ -518,6 +542,38 @@ void cmpProfileAll() {
   cmpProfile("sigmaY");
   cmpProfile("meanX");
   cmpProfile("meanY");
+}
+
+// ----------------------------------------------------------------------
+void cmpProfile1(double offset2 = 0, string var1 = "nada") {
+  string file1("/Users/ursl/data/pioneer/slurm/muontransport/m0000/m0000-profile.txt");
+  string file2("../../CMBL_g4beamline/profiles/CMBL2021_QSK41newLQ_final_profile.dat");
+  // 14630
+  if (var1 != "nada") {
+    cmpProfile(var1, "Z", file1, file2, offset2, "../pie5/Positions.txt");
+  } else {
+    cmpProfile("meanX",  "Z", file1, file2, offset2, "../pie5/Positions.txt");
+    cmpProfile("meanY",  "Z", file1, file2, offset2, "../pie5/Positions.txt");
+    cmpProfile("sigmaX", "Z", file1, file2, offset2, "../pie5/Positions.txt");
+    cmpProfile("sigmaY", "Z", file1, file2, offset2, "../pie5/Positions.txt");
+  }
+  
+}
+
+// ----------------------------------------------------------------------
+void cmpProfile2(double offset2 = 0, string var1 = "nada") {
+  string file1("/Users/ursl/data/pioneer/slurm/muontransport/m0000/m0000-profile.txt");
+  string file2("/Users/ursl/data/pioneer/slurm/piontransport/d0002/d0002-profile.txt");
+  // 14630
+  if (var1 != "nada") {
+    cmpProfile(var1, "Z", file1, file2, offset2, "../pie5/Positions.txt");
+  } else {
+    cmpProfile("meanX",  "Z", file1, file2, offset2, "../pie5/Positions.txt");
+    cmpProfile("meanY",  "Z", file1, file2, offset2, "../pie5/Positions.txt");
+    cmpProfile("sigmaX", "Z", file1, file2, offset2, "../pie5/Positions.txt");
+    cmpProfile("sigmaY", "Z", file1, file2, offset2, "../pie5/Positions.txt");
+  }
+  
 }
 
 
