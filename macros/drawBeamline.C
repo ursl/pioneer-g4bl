@@ -6,7 +6,7 @@ struct bl {
 };
 
 // -- quadrupoles
-double  qsiz(0.05);
+double  qsiz(0.1);
 Color_t qcol(kRed);
 
 // -- sextupoles
@@ -18,15 +18,15 @@ double  dsiz(0.05);
 Color_t dcol(kBlue+1);
 
 // -- AST/ASC dipoles
-double  dassiz(0.05);
+double  dassiz(0.1);
 Color_t dascol(kBlue+2);
 
 // -- separators
-double  sesiz(0.05);
+double  sesiz(0.1);
 Color_t secol(kBlue+4);
 
 // -- collimators/slits
-double  csiz(0.05);
+double  csiz(0.1);
 Color_t ccol(kGreen+2);
 
 // -- stuff
@@ -48,7 +48,7 @@ map<string, struct bl> gBeamlinePositions = {
   ,{"HSC42", {-9999., scol, ssiz}}
   ,{"QSF44", {-9999., qcol, qsiz}}
   ,{"FS42H", {-9999., ccol, csiz}}
-  ,{"FS42V", {-9999., ccol, csiz}}
+  ,{"FS42V", {-9999., ccol, stusiz}}
 
   ,{"ColPiE5", {-9999., ccol, csiz}}
 
@@ -72,20 +72,20 @@ map<string, struct bl> gBeamlinePositions = {
   ,{"QSK41", {-9999., qcol, qsiz}}  
   ,{"QSK42", {-9999., qcol, qsiz}}  
   ,{"QSK43", {-9999., qcol, qsiz}}  
-  ,{"PILL1", {-9999., ccol, csiz}}  
-  ,{"SML41", {-9999., stucol, stusiz}}  
+  ,{"PILL1", {-9999., stucol, stusiz}}  
+  ,{"SML41", {-9999., ccol, csiz}}  
   ,{"MEGCOL", {-9999., stucol, stusiz}}  
-  ,{"zASL41", {-9999., stucol, stusiz}}  
-  ,{"frontarcASL41", {-9999., stucol, stusiz}}  
+  ,{"zASL41", {-9999., dascol, dassiz}}  
+  ,{"frontarcASL41", {-9999., dascol, stusiz}}  
   ,{"QSO41", {-9999., qcol, qsiz}}  
   ,{"QSO42", {-9999., qcol, qsiz}}  
-  ,{"zASK41", {-9999., stucol, stusiz}}
+  ,{"zASK41", {-9999., dascol, dassiz}}
   ,{"posQSM41",  {-9999., stucol, stusiz}}
 
-  ,{"PILL0", {-9999., ccol, csiz}}  
-  ,{"PILL1", {-9999., ccol, csiz}}  
-  ,{"PILL2", {-9999., ccol, csiz}}  
-  ,{"PILL3", {-9999., ccol, csiz}}
+  ,{"PILL0", {-9999., stucol, stusiz}}  
+  ,{"PILL1", {-9999., stucol, stusiz}}  
+  ,{"PILL2", {-9999., stucol, stusiz}}  
+  ,{"PILL3", {-9999., stucol, stusiz}}
 
   ,{"poszMU3ESOLTUBI1", {-9999., detcol, detsiz}}  
   ,{"poszMU3ESOLTUBO1", {-9999., detcol, detsiz}}  
@@ -126,7 +126,7 @@ void drawBeamline(string filename = "../pie5/Positions.txt", string pdfname = "p
   
   TCanvas *c1 = new TCanvas("c1", "");
   c1->SetWindowSize(1200, 200); 
-  c1->SetRightMargin(0.01); 
+  c1->SetRightMargin(0.02); 
   c1->SetLeftMargin(0.02); 
   c1->Draw();
 
@@ -137,7 +137,8 @@ void drawBeamline(string filename = "../pie5/Positions.txt", string pdfname = "p
   h1->SetMinimum(0.);
   h1->SetMaximum(1.);
   h1->SetNdivisions(0, "Y");
-  h1->SetNdivisions(588, "X");
+  h1->SetNdivisions(520, "X");
+  h1->SetLabelSize(0.1, "X");
   h1->Draw();
   
   TLatex *tl  = new TLatex();

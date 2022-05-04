@@ -253,6 +253,26 @@ string varTitle(string var) {
     return string("#sigma(X) [mm]");
   } else if ("sigmaY" == var) {
     return string("#sigma(Y) [mm]");
+  } else if ("emitX" == var) {
+    return string("#epsilon(X) [mm rad]");
+  } else if ("emitY" == var) {
+    return string("#epsilon(Y) [mm rad]");
+  } else if ("emitTrans" == var) {
+    return string("#epsilon(T) [mm rad]");
+  } else if ("betaX" == var) {
+    return string("#beta(X) [mm]");
+  } else if ("betaY" == var) {
+    return string("#beta(Y) [mm]");
+  } else if ("betaTrans" == var) {
+    return string("#beta(T) [mm]");
+  } else if ("alphaX" == var) {
+    return string("#alpha(X) ");
+  } else if ("alphaY" == var) {
+    return string("#alpha(Y) ");
+  } else if ("alphaTrans" == var) {
+    return string("#alpha(T) ");
+  } else if ("meanP" == var) {
+    return string("<p> [MeV] ");
   }
   return string("no title");
 }
@@ -490,8 +510,8 @@ void cmpProfile(string vary = "sigmaX", string varx = "Z",
     hmin = -100.;
     hmax = 100.;
   } else if (vary == "meanY") {
-    hmin = -30.;
-    hmax = 30.;
+    hmin = -40.;
+    hmax = 40.;
   }
   h1->SetMinimum(hmin); 
   h1->SetMaximum(hmax);
@@ -506,7 +526,6 @@ void cmpProfile(string vary = "sigmaX", string varx = "Z",
   h1->GetXaxis()->SetTitle(varTitle(varx).c_str());
   h1->Draw("axis");
   
-  xmax = 13000.;
   mcol = kBlue; 
   gr1->SetLineColor(mcol);
   gr1->SetMarkerColor(mcol);
@@ -546,8 +565,36 @@ void cmpProfileAll() {
 
 // ----------------------------------------------------------------------
 void cmpProfile1(double offset2 = 0, string var1 = "nada") {
-  string file1("/Users/ursl/data/pioneer/slurm/muontransport/m0000/m0000-profile.txt");
+  string file1("/Users/ursl/data/pioneer/slurm/muontransport/m0002/m0002-profile.txt");
   string file2("../../CMBL_g4beamline/profiles/CMBL2021_QSK41newLQ_final_profile.dat");
+  // 14630
+  if (var1 != "nada") {
+    cmpProfile(var1, "Z", file1, file2, offset2, "../pie5/Positions.txt");
+  } else {
+    cmpProfile("meanX",  "Z", file1, file2, offset2, "../pie5/Positions.txt");
+    cmpProfile("meanY",  "Z", file1, file2, offset2, "../pie5/Positions.txt");
+    cmpProfile("sigmaX", "Z", file1, file2, offset2, "../pie5/Positions.txt");
+    cmpProfile("sigmaY", "Z", file1, file2, offset2, "../pie5/Positions.txt");
+
+    cmpProfile("meanP", "Z", file1, file2, offset2, "../pie5/Positions.txt");
+
+    cmpProfile("emitX", "Z", file1, file2, offset2, "../pie5/Positions.txt");
+    cmpProfile("emitY", "Z", file1, file2, offset2, "../pie5/Positions.txt");
+    cmpProfile("emitTrans", "Z", file1, file2, offset2, "../pie5/Positions.txt");
+    cmpProfile("betaX", "Z", file1, file2, offset2, "../pie5/Positions.txt");
+    cmpProfile("betaY", "Z", file1, file2, offset2, "../pie5/Positions.txt");
+    cmpProfile("betaTrans", "Z", file1, file2, offset2, "../pie5/Positions.txt");
+    cmpProfile("alphaX", "Z", file1, file2, offset2, "../pie5/Positions.txt");
+    cmpProfile("alphaY", "Z", file1, file2, offset2, "../pie5/Positions.txt");
+    cmpProfile("alphaTrans", "Z", file1, file2, offset2, "../pie5/Positions.txt");
+  }
+  
+}
+
+// ----------------------------------------------------------------------
+void cmpProfile2(double offset2 = 0, string var1 = "nada") {
+  string file1("/Users/ursl/data/pioneer/slurm/muontransport/m0000/m0000-profile.txt");
+  string file2("/Users/ursl/data/pioneer/slurm/piontransport/m0002/m0002-profile.txt");
   // 14630
   if (var1 != "nada") {
     cmpProfile(var1, "Z", file1, file2, offset2, "../pie5/Positions.txt");
@@ -561,20 +608,15 @@ void cmpProfile1(double offset2 = 0, string var1 = "nada") {
 }
 
 // ----------------------------------------------------------------------
-void cmpProfile2(double offset2 = 0, string var1 = "nada") {
+void cmpProfile3(double offset2 = 0, string var1 = "nada") {
   string file1("/Users/ursl/data/pioneer/slurm/muontransport/m0000/m0000-profile.txt");
-  string file2("/Users/ursl/data/pioneer/slurm/piontransport/d0002/d0002-profile.txt");
-  // 14630
-  if (var1 != "nada") {
-    cmpProfile(var1, "Z", file1, file2, offset2, "../pie5/Positions.txt");
-  } else {
-    cmpProfile("meanX",  "Z", file1, file2, offset2, "../pie5/Positions.txt");
-    cmpProfile("meanY",  "Z", file1, file2, offset2, "../pie5/Positions.txt");
-    cmpProfile("sigmaX", "Z", file1, file2, offset2, "../pie5/Positions.txt");
-    cmpProfile("sigmaY", "Z", file1, file2, offset2, "../pie5/Positions.txt");
-  }
-  
+  string file2("/Users/ursl/data/pioneer/slurm/muontransport/m0002/m0002-profile.txt");
+  cmpProfile("meanX",  "Z", file1, file2, offset2, "../pie5/Positions.txt");
+  cmpProfile("meanY",  "Z", file1, file2, offset2, "../pie5/Positions.txt");
+  cmpProfile("sigmaX", "Z", file1, file2, offset2, "../pie5/Positions.txt");
+  cmpProfile("sigmaY", "Z", file1, file2, offset2, "../pie5/Positions.txt");
 }
+  
 
 
 // ----------------------------------------------------------------------
