@@ -545,7 +545,7 @@ void cmpProfile(string vary = "sigmaX", string varx = "Z",
   if (offset2 > 0.) {
     tl->SetTextColor(kBlack);
     tl->SetTextSize(0.05);
-    tl->DrawLatexNDC(0.7, 0.18, Form("offset = %f", offset2));
+    tl->DrawLatexNDC(0.7, 0.18, Form("offset = %8.2f", offset2));
   }
   
   markup(ymax, ymin, xmax, positions);
@@ -564,10 +564,10 @@ void cmpProfileAll() {
 }
 
 // ----------------------------------------------------------------------
-void cmpProfile1(double offset2 = 0, string var1 = "nada") {
-  string file1("/Users/ursl/data/pioneer/slurm/muontransport/m0002/m0002-profile.txt");
-  string file2("../../CMBL_g4beamline/profiles/CMBL2021_QSK41newLQ_final_profile.dat");
-  // 14630
+void cmpProfile1(double offset2 = 14634., string var1 = "nada") {
+  string file1("/Users/ursl/data/pioneer/slurm/muontransport/m0003/m0003-profile.txt");
+  string file2("../../CMBL_g4beamline/profiles/profileCMBL2021_05_COSY_coll1_new.dat");
+  // 14634
   if (var1 != "nada") {
     cmpProfile(var1, "Z", file1, file2, offset2, "../pie5/Positions.txt");
   } else {
@@ -575,8 +575,6 @@ void cmpProfile1(double offset2 = 0, string var1 = "nada") {
     cmpProfile("meanY",  "Z", file1, file2, offset2, "../pie5/Positions.txt");
     cmpProfile("sigmaX", "Z", file1, file2, offset2, "../pie5/Positions.txt");
     cmpProfile("sigmaY", "Z", file1, file2, offset2, "../pie5/Positions.txt");
-
-    cmpProfile("meanP", "Z", file1, file2, offset2, "../pie5/Positions.txt");
 
     cmpProfile("emitX", "Z", file1, file2, offset2, "../pie5/Positions.txt");
     cmpProfile("emitY", "Z", file1, file2, offset2, "../pie5/Positions.txt");
@@ -592,10 +590,9 @@ void cmpProfile1(double offset2 = 0, string var1 = "nada") {
 }
 
 // ----------------------------------------------------------------------
-void cmpProfile2(double offset2 = 0, string var1 = "nada") {
+void cmpProfile2(double offset2 = 0., string var1 = "nada") {
   string file1("/Users/ursl/data/pioneer/slurm/muontransport/m0000/m0000-profile.txt");
   string file2("/Users/ursl/data/pioneer/slurm/piontransport/m0002/m0002-profile.txt");
-  // 14630
   if (var1 != "nada") {
     cmpProfile(var1, "Z", file1, file2, offset2, "../pie5/Positions.txt");
   } else {
