@@ -121,7 +121,8 @@ void ConvertRootToBLTrack2(string fNameList, string outDirectory, int pdgid, str
       }
         
       Ptot=sqrt(pow(det_Px,2)+pow(det_Py,2)+pow(det_Pz,2));
-      if (det_PDGid==cut_pdgid && Ptot>ptot_cut_low && Ptot<ptot_cut_high) {
+      if ((TMath::Abs(cut_pdgid) > 0.1) && (det_PDGid != cut_pdgid)) continue;
+      if (Ptot>ptot_cut_low && Ptot<ptot_cut_high) {
         det_TrackID=1;
         det_EventID=++i;
         
@@ -154,8 +155,7 @@ void ConvertRootToBLTrack2(string fNameList, string outDirectory, int pdgid, str
                 << (float)det_InitT<<" "
                 << (float)det_InitKE
                 << endl;
-      }
-      else continue;
+      } else continue;
     }
   outfile.close();
   std::cout<<"\n"<<std::endl;
