@@ -25,7 +25,7 @@ virtualdetector DetPiE5 radius=250 length=0.1 material=Vacuum require=PDGid==-11
 virtualdetector DetEMuPiFromTarget radius=300 length=0.1 require=PDGid==-11||PDGid==11||PDGid==-13||PDGid==13||PDGid==211||PDGid==-211||PDGid==2212 format=rootExtended color=0.5,0.5,0,0.5
 
 ################################# Elements Strengths ####################################
-param scaleMom=1.0 
+param scaleMom=28.0/28.0
 param -unset sign=1
 # currents according to setpoint
 include "$G4BLPIONEER/pie5/CurrentsCMBL2018.txt"
