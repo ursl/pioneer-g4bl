@@ -4,11 +4,13 @@
 #include <vector>
 #include <algorithm>
 
+#include <unistd.h>
 #include <dirent.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "TString.h"
 
 using namespace std;
 
@@ -18,6 +20,8 @@ extern void ConvertRootToBLTrack2(string fNameList, string outDirectory, int pdg
 int main(int argc, char *argv[]) {
 
   cout << "Hallo" << endl;
+
+  int p_id = getpid();
   
   string dirName("nada")
     , fnameList("files.txt")
@@ -26,7 +30,8 @@ int main(int argc, char *argv[]) {
     , vdet("DetEMuPiFromTarget") /*DetFSH41*/
     ;
   int pdgid(211);
-
+  bool removeFileList(false);
+  
   // -- command line arguments
   for (int i = 0; i < argc; i++){           
     if (!strcmp(argv[i], "-d"))  {dirName = argv[++i];} 
@@ -46,20 +51,21 @@ int main(int argc, char *argv[]) {
     if(folder == NULL) {
       puts("Unable to read directory");
       return(1);
-    } else  {
-      puts("Directory is opened!");
-    }
+    } 
     
     while ((entry=readdir(folder))) {
       if (8 == entry->d_type) {
         vfiles.push_back(dirName + "/" + entry->d_name);
-        printf("%s type %d\n", entry->d_name, entry->d_type);
+        // printf("%s type %d\n", entry->d_name, entry->d_type);
       }
     }
     closedir(folder);
 
     sort(vfiles.begin(), vfiles.end());    
 
+    fnameList = Form("%s-%d", fnameList.c_str(), p_id);
+    cout << "open temporary file " << fnameList << endl;
+    removeFileList = true;
     ofstream o(fnameList);
     for (unsigned int i = 0; i < vfiles.size(); ++i) {
       cout << vfiles[i] << endl;
@@ -73,7 +79,14 @@ int main(int argc, char *argv[]) {
   if (0 == pdgid) {
     ConvertRootToBLTrack2(fnameList, outdir, -13, name, vdet);
     ConvertRootToBLTrack2(fnameList, outdir, 211, name, vdet);
+  } else {
+    ConvertRootToBLTrack2(fnameList, outdir, pdgid, name, vdet);
   }
+
+  if (removeFileList) {
+    remove(fnameList.c_str());
+  }
+
   
   return 0; 
 }
