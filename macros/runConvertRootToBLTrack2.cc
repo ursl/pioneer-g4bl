@@ -19,8 +19,6 @@ extern void ConvertRootToBLTrack2(string fNameList, string outDirectory, int pdg
 // ----------------------------------------------------------------------
 int main(int argc, char *argv[]) {
 
-  cout << "Hallo" << endl;
-
   int p_id = getpid();
   
   string dirName("nada")
@@ -48,7 +46,7 @@ int main(int argc, char *argv[]) {
     struct dirent *entry;
     
     folder = opendir(dirName.c_str());
-    if(folder == NULL) {
+    if (folder == NULL) {
       puts("Unable to read directory");
       return(1);
     } 
@@ -56,7 +54,6 @@ int main(int argc, char *argv[]) {
     while ((entry=readdir(folder))) {
       if (8 == entry->d_type) {
         vfiles.push_back(dirName + "/" + entry->d_name);
-        // printf("%s type %d\n", entry->d_name, entry->d_type);
       }
     }
     closedir(folder);
