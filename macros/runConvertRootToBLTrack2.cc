@@ -70,7 +70,10 @@ int main(int argc, char *argv[]) {
   }
   
   
-  ConvertRootToBLTrack2(fnameList, outdir, pdgid, name, vdet);
+  if (0 == pdgid) {
+    ConvertRootToBLTrack2(fnameList, outdir, -13, name, vdet);
+    ConvertRootToBLTrack2(fnameList, outdir, 211, name, vdet);
+  }
   
   return 0; 
 }
