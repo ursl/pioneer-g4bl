@@ -16,7 +16,7 @@ else
   CXX         := c++
 endif
 
-CXXFLAGS      = -g -O0 -Wall -fPIC -pipe
+CXXFLAGS      = -g -O0 -Wall -fPIC -pipe -std=c++17
 LD            = $(CXX)
 LDFLAGS       = -g
 SOFLAGS       = -shared

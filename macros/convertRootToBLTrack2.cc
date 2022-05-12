@@ -22,17 +22,15 @@ void ConvertRootToBLTrack2(string fNameList, string outDirectory, int pdgid, str
   double ptot_cut_low = 1;
   double ptot_cut_high = 100;
 
-  //----------------------------------------------------------
   TChain* globChain = new TChain(Form("VirtualDetector/%s",vdetName.c_str()));
   
   std::cout << ">>> Load Chain from file: " << fNameList << std::endl;
     
   ifstream fList(fNameList.c_str());
-  if (!fList)
-    {
-      std::cout << "!!! Can't open file " << fNameList << std::endl;
-      return;
-    }
+  if (!fList)    {
+    std::cout << "!!! Can't open file " << fNameList << std::endl;
+    return;
+  }
         
   char lineFromFile[255];
   while(fList.getline(lineFromFile, 250)) {
@@ -45,7 +43,6 @@ void ConvertRootToBLTrack2(string fNameList, string outDirectory, int pdgid, str
     
   std::cout << ">> Total number of entries: " << globChain->GetEntries() <<std::endl;
   fList.close();
-  //----------------------------------------------------------
     
   TString outFilename = Form("%sBLTrackFile2_PDGid%d_%s.txt", prefix.c_str(), cut_pdgid, vdetName.c_str());
 
