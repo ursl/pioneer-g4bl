@@ -81,6 +81,7 @@ int main(int argc, char *argv[]) {
   }
 
   if (removeFileList) {
+    cout << "removing " << fnameList << endl;
     remove(fnameList.c_str());
   }
 
