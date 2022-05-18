@@ -163,58 +163,66 @@ map<string, struct bl> gBeamlinePositions = {
 
 
 // ----------------------------------------------------------------------
-void drawPS2(double meanX, double meanY, double sigma1, double sigma2, double rho) {
-  TEllipse e; 
-  e.SetLineColor(kBlue); 
-  e.SetLineWidth(2); 
-  e.SetFillStyle(0); 
-
-  // double phi     = 0.5*TMath::ATan((2*rho*sigmaX*sigmaY)/(sigmaX*sigmaX - sigmaY*sigmaY));
-  // double cos2phi = TMath::Cos(phi)*TMath::Cos(phi);
-  // double sin2phi = TMath::Sin(phi)*TMath::Sin(phi);
-
-  //  double a1 = sigma1*sigma1*sin2a
-  
-
-
-  
-  // e.DrawEllipse(meanX, meanY, a, b, 0., 360., phi);
+// -- from Giovanni
+// ----------------------------------------------------------------------
+void quadPars(double s11, double s12, double s22, double* results){
+    double e = sqrt(s11*s22-s12*s12)*1e3;
+    double a = -s12/e*1e3;
+    double b = s11/e;
+    double g = s22/e*1e6;
+    cout << endl << "alpha = " << a << ", beta = " << b << ", gamma = " << g << endl;
+    results[0] = b;
+    results[1] = a;
+    results[2] = g;
+    results[3] = e;
 }
 
 
 // ----------------------------------------------------------------------
-void drawPS1(double meanX, double meanY, double sigmaX, double sigmaY, double rho) {
-  TEllipse e; 
-  e.SetLineColor(kBlue); 
-  e.SetLineWidth(2); 
-  e.SetFillStyle(0); 
-
-  double phi     = 0.5*TMath::ATan((2*rho*sigmaX*sigmaY)/(sigmaX*sigmaX - sigmaY*sigmaY));
-  double phiDeg  = phi*TMath::RadToDeg();
-  cout << "phi = " << phiDeg << endl;
-  cout << "tan(2phi) = " << TMath::Tan(2.*phi) << endl;
-  cout << "calc:       " << (2.*rho*sigmaX*sigmaY)/(sigmaX*sigmaX - sigmaY*sigmaY) << endl;
-
-  double cos2phi = TMath::Cos(phi)*TMath::Cos(phi);
-  double sin2phi = TMath::Sin(phi)*TMath::Sin(phi);
-  double a       = ((cos2phi*sigmaX*sigmaX) - (sin2phi*sigmaY*sigmaY))/(cos2phi - sin2phi);
-  double b       = ((cos2phi*sigmaY*sigmaY) - (sin2phi*sigmaX*sigmaX))/(cos2phi - sin2phi);
-  a = TMath::Sqrt(a);
-  b = TMath::Sqrt(b);
-  e.DrawEllipse(meanX, meanY, a, b, 0., 360., phiDeg);
+// -- from Giovanni
+// ----------------------------------------------------------------------
+void ellipse(double *pars, double *result){
+    double A = pars[2];
+    double B = 2*pars[1];
+    double C = pars[0];
+    double F = -pars[3];
+    
+    double a = -sqrt(2*(B*B-4*A*C)*F*((A+C)+sqrt((A-C)*(A-C)+B*B)))/(B*B-4*A*C);
+    double b = -sqrt(2*(B*B-4*A*C)*F*((A+C)-sqrt((A-C)*(A-C)+B*B)))/(B*B-4*A*C);
+    
+    double theta = 0;
+    
+    if(B == 0 && A > C){
+        theta = 90;
+    }
+    else if(B != 0){
+        theta = 180*atan((C-A-sqrt((A-C)*(A-C)+B*B))/B)/TMath::Pi();
+    }
+    
+    result[0] = a;
+    result[1] = b;
+    result[2] = theta;
 }
 
 
 // ----------------------------------------------------------------------
-void drawPS0(double mean, double meanPrime, double eps, double beta, double phi) {
+// 250 mm US of QSK41 center
+void profile2PS(double meanX, double sigmaX, double meanY, double sigmaX, double emitX, double emitY) {
   TEllipse e; 
   e.SetLineColor(kBlue); 
   e.SetLineWidth(2); 
   e.SetFillStyle(0); 
-  // test1(600, 2.5, 15)
-  //  e.DrawEllipse(mean, meanPrime, TMath::Sqrt(eps*beta), TMath::Sqrt(eps/beta), 0., 360., phi);
-  e.DrawEllipse(mean, meanPrime, eps, beta, 0., 360., phi);
+
+  double resultsx[4] = {0};
+  double resultsy[4] = {0};
+  double ellx[3] = {0};
+  double elly[3] = {0};
+
+  quadPars(parsx[0], parsx[1], parsx[2], resultsx);
+  ellipse(resultsx, ellx);
 }
+
+
 
 // ----------------------------------------------------------------------
 void readPositions(string filename) {
@@ -606,14 +614,25 @@ void cmpProfile2(double offset2 = 0., string var1 = "nada") {
 
 // ----------------------------------------------------------------------
 void cmpProfile3(double offset2 = 0, string var1 = "nada") {
-  string file1("/Users/ursl/data/pioneer/slurm/muontransport/m0000/m0000-profile.txt");
-  string file2("/Users/ursl/data/pioneer/slurm/muontransport/m0002/m0002-profile.txt");
+  string file1("/Users/ursl/data/pioneer/slurm/muontransport/m0003/m0003-profile.txt");
+  string file2("/Users/ursl/data/pioneer/slurm/muontransport/m0005/m0005-profile.txt");
   cmpProfile("meanX",  "Z", file1, file2, offset2, "../pie5/Positions.txt");
   cmpProfile("meanY",  "Z", file1, file2, offset2, "../pie5/Positions.txt");
   cmpProfile("sigmaX", "Z", file1, file2, offset2, "../pie5/Positions.txt");
   cmpProfile("sigmaY", "Z", file1, file2, offset2, "../pie5/Positions.txt");
 }
-  
+
+
+// ----------------------------------------------------------------------
+void cmpProfile4(double offset2 = 14634., string var1 = "nada") {
+  string file1("/Users/ursl/data/pioneer/slurm/muontransport/m0005/m0005-profile.txt");
+  string file2("../../CMBL_g4beamline/profiles/profileCMBL2021_05_COSY_coll1_new.dat");
+  cmpProfile("meanX",  "Z", file1, file2, offset2, "../pie5/Positions.txt");
+  cmpProfile("meanY",  "Z", file1, file2, offset2, "../pie5/Positions.txt");
+  cmpProfile("sigmaX", "Z", file1, file2, offset2, "../pie5/Positions.txt");
+  cmpProfile("sigmaY", "Z", file1, file2, offset2, "../pie5/Positions.txt");
+}
+
 
 
 // ----------------------------------------------------------------------
