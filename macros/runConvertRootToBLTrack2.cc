@@ -16,6 +16,11 @@ using namespace std;
 
 extern void ConvertRootToBLTrack2(string fNameList, string outDirectory, int pdgid, string prefix, string vdetName);
 
+// -- Usage: bin/convertRootToBLTrack2 -n p28-muprod0003- -d ~/data/slurm/pioneer-g4bl/p28-muprod0003 -p 0 [-o /psi/home/...]
+// -- pdgid filtering:   -p 0   all particles
+//                       -p -1  standard set of runs: -13, 211, 0
+//                       -p 211 positive pions only
+// -- naming:            -n bla adds this to the names
 // ----------------------------------------------------------------------
 int main(int argc, char *argv[]) {
 
@@ -73,9 +78,10 @@ int main(int argc, char *argv[]) {
   }
   
   
-  if (0 == pdgid) {
+  if (-1 == pdgid) {
     ConvertRootToBLTrack2(fnameList, outdir, -13, name, vdet);
     ConvertRootToBLTrack2(fnameList, outdir, 211, name, vdet);
+    ConvertRootToBLTrack2(fnameList, outdir,   0, name, vdet);
   } else {
     ConvertRootToBLTrack2(fnameList, outdir, pdgid, name, vdet);
   }

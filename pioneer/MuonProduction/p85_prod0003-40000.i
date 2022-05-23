@@ -6,7 +6,7 @@ randomseed set 40000
 param -unset first=1
 param -unset numEvents=200000000
 
-param momentum=28.
+param momentum=85.
   
 ######################## Primary Proton Beam ##########################
 param eventTimeLimit=1000
