@@ -168,7 +168,8 @@ endgroup
 #########################################################################################
 
 ######################################## ColPiE5 ########################################
-tubs ColPiE5 innerRadius=160 outerRadius=400 length=200 material=Fe kill=1 color=1,1,1,0.5 # this could be also 250 mm diameter (not clear from the drawing) - could be also shifted (according to drawing)
+tubs ColPiE5 innerRadius=160 outerRadius=400 length=200 material=Fe kill=1 color=1,1,1,0.5
+# this could be also 250 mm diameter (not clear from the drawing) - could be also shifted (according to drawing)
 #########################################################################################
 
 ######################################### FS42V #########################################
@@ -192,7 +193,9 @@ endgroup
 box FSH41L height=600 length=50 width=400 kill=1 material=Cu color=0.8,0.8,0.8
 box FSH41R height=600 length=50 width=400 kill=1 material=Cu color=0.8,0.8,0.8
 group FSH41 length=50
-place FSH41L x=200+$FSH41Lset y=0 z=0 # is this right? is FSH41L the slit on the left when looking into beam direction? - this questions accounts for the other slits as well
+place FSH41L x=200+$FSH41Lset y=0 z=0
+# is this right? is FSH41L the slit on the left when looking into beam direction?
+# - this questions accounts for the other slits as well
 place FSH41R x=-200-$FSH41Rset y=0 z=0
 endgroup
 #########################################################################################
