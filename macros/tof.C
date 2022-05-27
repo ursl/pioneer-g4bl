@@ -22,12 +22,14 @@ void beta() {
 
   gPad->SetGridx(1);
   gPad->SetGridy(1);
-  
+  gPad->SetLeftMargin(0.15);
   fpi->Draw();
   fpi->SetMinimum(0.);
-  fpi->SetMaximum(0.);
+  fpi->SetMaximum(0.7);
   fpi->GetXaxis()->SetTitle("p [MeV]");
-  fpi->GetYaxis()->SetTitleOffset(1.35);
+  fpi->GetYaxis()->SetTitleOffset(1.8);
+  fpi->GetYaxis()->SetNdivisions(528, "Y");
+  fpi->GetXaxis()->SetNdivisions(528, "Y");
   fpi->GetYaxis()->SetTitle("#beta = |p|/#sqrt{m^{2} + |p|^{2}}");
   fmu->Draw("same");
   fpr->Draw("same");
@@ -37,6 +39,7 @@ void beta() {
   t->AddEntry(fmu, "Muons");
   t->AddEntry(fpr, "Protons");
   t->Draw();
+  c0.SaveAs("beta-pimupr.pdf");
 }
 
 // ----------------------------------------------------------------------
@@ -85,8 +88,8 @@ void tofp(double p = 28.0, double beamline = 18.0, int newline = 1) {
     qual = "**";
   }
   
-  cout << Form("p = %4.1f(pi:%4.2f/mu:%4.2f) z = %5.2f pr=%5.1f pi=%5.1f mu=%5.1f el=%5.1f %3s",
-               p, bpi, bmu, beamline, rpr, rpi, rmu, rel, qual.c_str());
+  cout << Form("p = %4.1f(pi:%4.2f/mu:%4.2f/el:%4.2f) z = %5.2f pr=%5.1f pi=%5.1f mu=%5.1f el=%5.1f %3s",
+               p, bpi, bmu, bel, beamline, rpr, rpi, rmu, rel, qual.c_str());
   if (1 == newline) {
     cout << endl;
   } else {
