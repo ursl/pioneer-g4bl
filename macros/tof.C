@@ -1,3 +1,43 @@
+double f_beta(double *x, double *par) {
+  return x[0]/TMath::Sqrt(par[0]*par[0] + x[0]*x[0]);
+}
+
+// ----------------------------------------------------------------------
+void beta() {
+  
+  double mel = 0.5109989461;
+  double mmu = 105.6583745;
+  double mpi = 139.57039;
+  double mpr = 938.272081;
+
+  gStyle->SetOptTitle(false);
+
+  double pmin(25.), pmax(85.);
+  TF1 *fpi = new TF1("betaPi", f_beta, pmin, pmax, 1); fpi->SetParameter(0, mpi);
+  fpi->SetLineColor(kGreen+2); fpi->SetLineWidth(4);
+  TF1 *fmu = new TF1("betaMu", f_beta, pmin, pmax, 1); fmu->SetParameter(0, mmu);
+  fmu->SetLineColor(kBlue); fmu->SetLineWidth(4);
+  TF1 *fpr = new TF1("betaPr", f_beta, pmin, pmax, 1); fpr->SetParameter(0, mpr);
+  fpr->SetLineColor(kBlack); fpr->SetLineWidth(4);
+
+  gPad->SetGridx(1);
+  gPad->SetGridy(1);
+  
+  fpi->Draw();
+  fpi->SetMinimum(0.);
+  fpi->SetMaximum(0.);
+  fpi->GetXaxis()->SetTitle("p [MeV]");
+  fpi->GetYaxis()->SetTitleOffset(1.35);
+  fpi->GetYaxis()->SetTitle("#beta = |p|/#sqrt{m^{2} + |p|^{2}}");
+  fmu->Draw("same");
+  fpr->Draw("same");
+
+  TLegend *t = newLegend(0.2, 0.6, 0.4, 0.8);
+  t->AddEntry(fpi, "Pions");
+  t->AddEntry(fmu, "Muons");
+  t->AddEntry(fpr, "Protons");
+  t->Draw();
+}
 
 // ----------------------------------------------------------------------
 void tofp(double p = 28.0, double beamline = 18.0, int newline = 1) {
@@ -45,8 +85,8 @@ void tofp(double p = 28.0, double beamline = 18.0, int newline = 1) {
     qual = "**";
   }
   
-  cout << Form("p = %4.1f z = %5.2f pr=%5.1f pi=%5.1f mu=%5.1f el=%5.1f %3s",
-               p, beamline, rpr, rpi, rmu, rel, qual.c_str());
+  cout << Form("p = %4.1f(pi:%4.2f/mu:%4.2f) z = %5.2f pr=%5.1f pi=%5.1f mu=%5.1f el=%5.1f %3s",
+               p, bpi, bmu, beamline, rpr, rpi, rmu, rel, qual.c_str());
   if (1 == newline) {
     cout << endl;
   } else {
