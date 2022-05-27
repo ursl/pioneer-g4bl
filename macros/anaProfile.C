@@ -207,19 +207,42 @@ void ellipse(double *pars, double *result){
 
 // ----------------------------------------------------------------------
 // 250 mm US of QSK41 center
-void profile2PS(double meanX, double sigmaX, double meanY, double sigmaX, double emitX, double emitY) {
+void ellipse0() {
   TEllipse e; 
   e.SetLineColor(kBlue); 
   e.SetLineWidth(2); 
   e.SetFillStyle(0); 
-
-  double resultsx[4] = {0};
-  double resultsy[4] = {0};
+  
+  double resultsx[5] = {-21.7, -13.0, 0., 0.};
+  double parsx[5] = {-21.7, -13.0, 0., 0.};
   double ellx[3] = {0};
-  double elly[3] = {0};
 
   quadPars(parsx[0], parsx[1], parsx[2], resultsx);
   ellipse(resultsx, ellx);
+
+
+  double sx = sqrt(resultsx[0]*resultsx[3]), sxp = sqrt(resultsx[2]*resultsx[3]);
+  
+  TGraph* Gx = new TGraph();
+  Gx->SetPoint(0, 0, 0);
+  Gx->GetXaxis()->SetLimits(-1.2*sx+parsx[3], 1.2*sx+parsx[3]);
+  Gx->GetYaxis()->SetRangeUser(-1.2*sxp+parsx[4], 1.2*sxp+parsx[4]);
+  
+ 
+  TEllipse* X = new TEllipse(parsx[3], parsx[4], ellx[0], ellx[1], 0, 360, ellx[2]);
+  X->SetFillColorAlpha(kBlack, 0);
+  
+  TCanvas* can = new TCanvas("can", "can", 1920, 1080);
+  gPad->SetGrid();
+  gPad->SetMargin(0.15, 0.15, 0.1, 0.1);
+  
+  Gx->Draw("alp");
+  
+  X->SetLineWidth(3);
+  X->SetLineColor(kBlue);
+  X->Draw("same");
+   
+
 }
 
 
@@ -281,6 +304,8 @@ string varTitle(string var) {
     return string("#alpha(T) ");
   } else if ("meanP" == var) {
     return string("<p> [MeV] ");
+  } else if ("N" == var) {
+    return string("N ");
   }
   return string("no title");
 }
@@ -514,6 +539,12 @@ void cmpProfile(string vary = "sigmaX", string varx = "Z",
   TH1D *h1 = new TH1D("h1", "", 100, 0, xmax);
   double hmax(1.5*ymax);
   double hmin(ymin > 0.? 0.: 1.5*ymin);
+  if (vary == "N") {
+    hmin = 0.5;
+    gPad->SetLogy(1);
+  } else {
+    gPad->SetLogy(0);
+  }
   if (vary == "meanX") {
     hmin = -100.;
     hmax = 100.;
@@ -556,7 +587,11 @@ void cmpProfile(string vary = "sigmaX", string varx = "Z",
     tl->DrawLatexNDC(0.7, 0.18, Form("offset = %8.2f", offset2));
   }
   
-  markup(ymax, ymin, xmax, positions);
+  if (vary == "N") {
+    markup(10., 0.5, xmax, positions);
+  } else {
+    markup(ymax, ymin, xmax, positions);
+  }
   c1->SaveAs(Form("cmp-%s-%s-%s.pdf", vary.c_str(), varx.c_str(), pdfname.c_str()));
 
     
@@ -631,6 +666,46 @@ void cmpProfile4(double offset2 = 14634., string var1 = "nada") {
   cmpProfile("meanY",  "Z", file1, file2, offset2, "../pie5/Positions.txt");
   cmpProfile("sigmaX", "Z", file1, file2, offset2, "../pie5/Positions.txt");
   cmpProfile("sigmaY", "Z", file1, file2, offset2, "../pie5/Positions.txt");
+}
+
+
+// ----------------------------------------------------------------------
+void cmpProfile5(string var1 = "p28_m0001", string var2 = "p65_m0001",
+                 string dir1 = "muontransport", string dir2 = "muontransport") {
+
+  double offset2(0.);
+  
+  string home("/Users/ursl/data/pioneer/slurm/");
+  string file1 = home + dir1 + "/muprod0002-" + var1 + "/" + var1 + "-profile.txt";
+  string file2 = home + dir2 + "/muprod0002-" + var2 + "/" + var2 + "-profile.txt";
+
+  cout << "file1 = " << file1 << endl;
+  cout << "file2 = " << file2 << endl;
+  cmpProfile("meanX",  "Z", file1, file2, offset2, "../pie5/Positions.txt");
+  cmpProfile("meanY",  "Z", file1, file2, offset2, "../pie5/Positions.txt");
+  cmpProfile("sigmaX", "Z", file1, file2, offset2, "../pie5/Positions.txt");
+  cmpProfile("sigmaY", "Z", file1, file2, offset2, "../pie5/Positions.txt");
+}
+
+// ----------------------------------------------------------------------
+void cmpProfiles(string fil1 = "p28-muprod0003-megcol-pi0001-profile-211.txt",
+                 string dir1 = "p28-muprod0003-megcol-pi0001",
+                 string fil2 = "p28-muprod0003-megcol-pi0002-profile-211.txt", 
+                 string dir2 = "p28-muprod0003-megcol-pi0002") {
+
+  double offset2(0.);
+  
+  string home("/Users/ursl/data/pioneer/slurm/transport");
+  string file1 = home + "/" + dir1 + "/" + fil1;
+  string file2 = home + "/" + dir2 + "/" + fil2;
+
+  cout << "file1 = " << file1 << endl;
+  cout << "file2 = " << file2 << endl;
+  cmpProfile("meanX",  "Z", file1, file2, offset2, "../pie5/Positions.txt");
+  cmpProfile("meanY",  "Z", file1, file2, offset2, "../pie5/Positions.txt");
+  cmpProfile("sigmaX", "Z", file1, file2, offset2, "../pie5/Positions.txt");
+  cmpProfile("sigmaY", "Z", file1, file2, offset2, "../pie5/Positions.txt");
+  cmpProfile("N", "Z", file1, file2, offset2, "../pie5/Positions.txt");
 }
 
 
