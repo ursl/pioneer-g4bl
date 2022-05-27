@@ -3,6 +3,65 @@
 #include <sstream>
 #include <cstdarg>
 
+struct profileData {
+  //Declaration of leaves types
+  Double_t        Z;
+  Double_t        N;
+  Double_t        meanX;
+  Double_t        sigmaX;
+  Double_t        meanY;
+  Double_t        sigmaY;
+  Double_t        emitX;
+  Double_t        emitY;
+  Double_t        emitTrans;
+  Double_t        betaX;
+  Double_t        betaY;
+  Double_t        betaTrans;
+  Double_t        alphaX;
+  Double_t        alphaY;
+  Double_t        alphaTrans;
+  Double_t        meanP;
+};
+
+// ----------------------------------------------------------------------
+struct profileData readData(double z, TTree *profile) {
+
+  struct profileData data;
+  
+  // Set branch addresses.
+  profile->SetBranchAddress("Z", &data.Z);
+  profile->SetBranchAddress("N", &data.N);
+  profile->SetBranchAddress("meanX", &data.meanX);
+  profile->SetBranchAddress("sigmaX", &data.sigmaX);
+  profile->SetBranchAddress("meanY", &data.meanY);
+  profile->SetBranchAddress("sigmaY", &data.sigmaY);
+  profile->SetBranchAddress("emitX", &data.emitX);
+  profile->SetBranchAddress("emitY", &data.emitY);
+  profile->SetBranchAddress("emitTrans", &data.emitTrans);
+  profile->SetBranchAddress("betaX", &data.betaX);
+  profile->SetBranchAddress("betaY", &data.betaY);
+  profile->SetBranchAddress("betaTrans", &data.betaTrans);
+  profile->SetBranchAddress("alphaX", &data.alphaX);
+  profile->SetBranchAddress("alphaY", &data.alphaY);
+  profile->SetBranchAddress("alphaTrans", &data.alphaTrans);
+  profile->SetBranchAddress("meanP", &data.meanP);
+  
+  Long64_t nentries = profile->GetEntries();
+  int nbytes(0);
+  
+  for (Long64_t i=0; i<nentries;i++) {
+    nbytes += profile->GetEntry(i);
+    // cout << "data.Z = " << data.Z << " TMath::Abs(data.Z - z) = " << TMath::Abs(data.Z - z) << endl;
+    if (TMath::Abs(data.Z - z) < 1e-3) {
+      return data;
+    }
+  }
+  
+  return data; 
+}
+
+
+
 
 //----------------------------------------------------------------------
 TTree* fillTree(string filename) {
@@ -67,44 +126,9 @@ TTree* fillTree(string filename) {
 }
 
 // ----------------------------------------------------------------------
-void graphExtrema(TGraph *gr, double& xmin, double& xmax, double& ymin, double& ymax) {
-  xmin = ymin = 99999.;
-  xmax = ymax = -99999.;
-  for (int i = 0; i < gr->GetN(); ++i) {
-    double x = gr->GetPointX(i); 
-    double y = gr->GetPointY(i); 
-    if (x > xmax) xmax = x;
-    if (y > ymax) ymax = y;
-    if (x < xmin) xmin = x;
-    if (y < ymin) ymin = y;
-    //    cout << "i = " << i << " ymin = " << ymin << " ymax = " << ymax << endl;
-  }
-  cout << "graphExtrema ymin = " << ymin <<  " ymax = " << ymax << endl;
-}
-
-// ----------------------------------------------------------------------
-TGraph* t2g(TTree *t, string sy, string sx, double offsetX = 0.) {
-  double valx, valy;
-  t->SetBranchAddress(sy.c_str(), &valy);
-  t->SetBranchAddress(sx.c_str(), &valx);
-
-  long long int n_entries = t->GetEntries();
-  long long int i(0);
-
-  TGraph *gr = new TGraph();
+void anaScan(string var1 = "meanX", double z = 18000., string scan = "QSK41", int n = 0, ...) {
+  TH1D *h1 = new TH1D("h1", "", n, 0., n);
   
-  for (long long int entry = 0; entry < n_entries; ++entry) {
-    t->GetEntry(entry);
-    gr->AddPoint(valx + offsetX, valy);
-  }
-
-  cout << "DBX gr: " << gr->GetPointX(0) << "  " << gr->GetPointY(0) << endl;
-  
-  return gr;
-}
-
-// ----------------------------------------------------------------------
-void anaScan(string var1 = "meanX", double z = 18000., int n = 0, ...) {
   va_list vl;
   va_start(vl, n);
   vector<string> vfiles;
@@ -116,8 +140,27 @@ void anaScan(string var1 = "meanX", double z = 18000., int n = 0, ...) {
   }
   va_end(vl);
 
+
+  
   for (unsigned int i = 0; i < vfiles.size(); ++i) {
     cout << vfiles[i] << endl;
+    // -- parse bin label from filenames based on scan
+    string blabel = vfiles[i];
+    rmPath(blabel);
+    string::size_type foundpos = blabel.find(scan);
+    if (foundpos != string::npos)  blabel.erase(blabel.begin(), blabel.begin()+foundpos);
+    foundpos = blabel.find("-pi");
+    if (foundpos != string::npos)  blabel.erase(blabel.begin() + foundpos, blabel.end());
+    foundpos = blabel.find("-mu");
+    if (foundpos != string::npos)  blabel.erase(blabel.begin() + foundpos, blabel.end());
+    foundpos = blabel.find("-pr");
+    if (foundpos != string::npos)  blabel.erase(blabel.begin() + foundpos, blabel.end());
+    foundpos = blabel.find("-el");
+    if (foundpos != string::npos)  blabel.erase(blabel.begin() + foundpos, blabel.end());
+    cout << "->" << blabel << endl;
+    vector<string> ssplit  = split(blabel, '=');
+    h1->GetXaxis()->SetBinLabel(i+1, ssplit[1].c_str());
+    h1->GetXaxis()->SetTitle(ssplit[0].c_str());
 
     string filename = vfiles[i];
     if (string::npos != filename.find("~")) {
@@ -137,12 +180,30 @@ void anaScan(string var1 = "meanX", double z = 18000., int n = 0, ...) {
     }
     cout << "pdfname: ->" << pdfname << "<-" << endl;
     
-    gStyle->SetOptTitle(0);
+    gStyle->SetOptTitle(1);
+    gStyle->SetOptStat(0);
     
     
     TTree *t = fillTree(filename);
-    t->Print();
-
+    struct profileData a = readData(z, t);
+    cout << "z = " << a.Z <<  " N =  " << a.N << endl;
+    h1->SetBinContent(i+1, a.N);
   }    
+  gPad->SetLeftMargin(0.15);
+  h1->GetYaxis()->SetTitle(var1.c_str());
+  h1->Draw();
+  c0.SaveAs(Form("anaScan-%s-%s.pdf", scan.c_str(), var1.c_str()));
 }
 
+
+
+// ----------------------------------------------------------------------
+void qsk41scan(double z = 17999.) {
+  anaScan("N", z, "QSK41set"
+          , 3
+          , "/Users/ursl/data/pioneer/slurm/transport/p55-QSK41set=-0.64-pi0001/p55-QSK41set=-0.64-pi0001-profile-211.txt"
+          , "/Users/ursl/data/pioneer/slurm/transport/p55-QSK41set=-0.68-pi0001/p55-QSK41set=-0.68-pi0001-profile-211.txt"
+          , "/Users/ursl/data/pioneer/slurm/transport/p55-QSK41set=-0.72-pi0001/p55-QSK41set=-0.72-pi0001-profile-211.txt"
+          );
+  
+}
