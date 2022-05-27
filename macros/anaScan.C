@@ -126,7 +126,7 @@ TTree* fillTree(string filename) {
 }
 
 // ----------------------------------------------------------------------
-void anaScan(string var1 = "meanX", double z = 18000., string scan = "QSK41", int n = 0, ...) {
+TH1D* anaScan(string var1 = "meanX", double z = 18000., string scan = "QSK41set", int n = 0, ...) {
   TH1D *h1 = new TH1D("h1", "", n, 0., n);
   
   va_list vl;
@@ -190,20 +190,94 @@ void anaScan(string var1 = "meanX", double z = 18000., string scan = "QSK41", in
     h1->SetBinContent(i+1, a.N);
   }    
   gPad->SetLeftMargin(0.15);
-  h1->GetYaxis()->SetTitle(var1.c_str());
-  h1->Draw();
-  c0.SaveAs(Form("anaScan-%s-%s.pdf", scan.c_str(), var1.c_str()));
+  //  h1->GetYaxis()->SetTitle(var1.c_str());
+  h1->GetYaxis()->SetTitle((var1 + Form(" (at z = %5.0f mm)", z)).c_str());
+  return h1;
+}
+
+
+// ----------------------------------------------------------------------
+TH1D* cmpMulti(string var1 = "meanX", double z = 18000., int n = 2, ...) {
+  TH1D *h1 = new TH1D("h1", "", n, 0., n);
+  
+  va_list vl;
+  va_start(vl, n);
+  vector<string> vfiles;
+  string as("");
+  for (int i = 0; i < n; ++i) {
+    char *ac = va_arg(vl, char *);
+    as = string(ac);
+    vfiles.push_back(ac);
+  }
+  va_end(vl);
+
+
+  
+  for (unsigned int i = 0; i < vfiles.size(); ++i) {
+    cout << vfiles[i] << endl;
+    string blabel = vfiles[i];
+    rmPath(blabel);
+    h1->GetXaxis()->SetBinLabel(i+1, blabel.c_str());
+
+    string filename = vfiles[i];
+    if (string::npos != filename.find("~")) {
+      string home = gSystem->Getenv("HOME");
+      filename.replace(filename.find("~"), 1, home);
+    }
+    string pdfname = filename; 
+    if (string::npos != pdfname.rfind("/")) {
+      pdfname.replace(pdfname.begin(), pdfname.begin() + pdfname.rfind("/") + 1, "");
+    }
+    
+    if (string::npos != pdfname.find(".dat")) {
+      pdfname.replace(pdfname.find(".dat"), 4, "");
+    }
+    if (string::npos != pdfname.find(".txt")) {
+      pdfname.replace(pdfname.find(".txt"), 4, "");
+    }
+    cout << "pdfname: ->" << pdfname << "<-" << endl;
+    
+    gStyle->SetOptTitle(1);
+    gStyle->SetOptStat(0);
+    
+    
+    TTree *t = fillTree(filename);
+    struct profileData a = readData(z, t);
+    cout << "z = " << a.Z <<  " N =  " << a.N << endl;
+    h1->SetBinContent(i+1, a.N);
+  }    
+  gPad->SetLeftMargin(0.15);
+  h1->GetYaxis()->SetTitle((var1 + Form(" (at z = %5.0f mm)", z)).c_str());
+  return h1; 
 }
 
 
 
 // ----------------------------------------------------------------------
 void qsk41scan(double z = 17999.) {
-  anaScan("N", z, "QSK41set"
-          , 3
-          , "/Users/ursl/data/pioneer/slurm/transport/p55-QSK41set=-0.64-pi0001/p55-QSK41set=-0.64-pi0001-profile-211.txt"
-          , "/Users/ursl/data/pioneer/slurm/transport/p55-QSK41set=-0.68-pi0001/p55-QSK41set=-0.68-pi0001-profile-211.txt"
-          , "/Users/ursl/data/pioneer/slurm/transport/p55-QSK41set=-0.72-pi0001/p55-QSK41set=-0.72-pi0001-profile-211.txt"
-          );
+  TH1D *h1 = anaScan("N", z, "QSK41set"
+                     , 3
+                     , "/Users/ursl/data/pioneer/slurm/transport/p55-QSK41set=-0.64-pi0001/p55-QSK41set=-0.64-pi0001-profile-211.txt"
+                     , "/Users/ursl/data/pioneer/slurm/transport/p55-QSK41set=-0.68-pi0001/p55-QSK41set=-0.68-pi0001-profile-211.txt"
+                     , "/Users/ursl/data/pioneer/slurm/transport/p55-QSK41set=-0.72-pi0001/p55-QSK41set=-0.72-pi0001-profile-211.txt"
+                     );
   
+  h1->Draw();
+  h1->SetMinimum(0.);
+  c0.SaveAs("anaScan-N-QSK41scan.pdf");
+}
+
+// ----------------------------------------------------------------------
+void tripletOff(double z = 17999.) {
+  TH1D *h1 = cmpMulti("N", z 
+                     , 2
+                     , "/Users/ursl/data/pioneer/slurm/transport/p65-muprod0002-initial-pi0001/p65-muprod0002-initial-pi0001-profile-211.txt"
+                     , "/Users/ursl/data/pioneer/slurm/transport/p65-muprod0002-tripletOff-pi0003/p65-muprod0002-tripletOff-pi0003-profile-211.txt"
+                     );
+  
+  h1->Draw();
+  h1->SetMinimum(0.);
+  h1->GetXaxis()->SetBinLabel(1, "default");
+  h1->GetXaxis()->SetBinLabel(2, "triplet off");
+  c0.SaveAs("cmpTwo-N-tripletOff.pdf");
 }
