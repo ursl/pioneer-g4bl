@@ -4,7 +4,25 @@
 #include <cstdarg>
 
 struct profileData {
-  //Declaration of leaves types
+  Double_t        getVar(string var) {
+    if ("N" == var) return N;
+    if ("Z" == var) return Z;
+    if ("meanX" == var) return meanX;
+    if ("sigmaX" == var) return sigmaX;
+    if ("meanY" == var) return meanY;
+    if ("sigmaY" == var) return sigmaY;
+    if ("emitX" == var) return emitX;
+    if ("emitY" == var) return emitY;
+    if ("emitTrans" == var) return emitTrans;
+    if ("betaX" == var) return betaX;
+    if ("betaY" == var) return betaY;
+    if ("betaTrans" == var) return betaTrans;
+    if ("alphaX" == var) return alphaX;
+    if ("alphaY" == var) return alphaY;
+    if ("alphaTrans" == var) return alphaTrans;
+    if ("meanP" == var) return meanP;
+    return -1.; 
+  }
   Double_t        Z;
   Double_t        N;
   Double_t        meanX;
@@ -186,8 +204,8 @@ TH1D* anaScan(string var1 = "meanX", double z = 18000., string scan = "QSK41set"
     
     TTree *t = fillTree(filename);
     struct profileData a = readData(z, t);
-    cout << "z = " << a.Z <<  " N =  " << a.N << endl;
-    h1->SetBinContent(i+1, a.N);
+    cout << "z = " << a.getVar("Z") <<  " N =  " << a.getVar("N") <<  var1 << " =  " << a.getVar(var1) << endl;
+    h1->SetBinContent(i+1, a.getVar(var1));
   }    
   gPad->SetLeftMargin(0.15);
   //  h1->GetYaxis()->SetTitle(var1.c_str());
@@ -243,8 +261,8 @@ TH1D* cmpMulti(string var1 = "meanX", double z = 18000., int n = 2, ...) {
     
     TTree *t = fillTree(filename);
     struct profileData a = readData(z, t);
-    cout << "z = " << a.Z <<  " N =  " << a.N << endl;
-    h1->SetBinContent(i+1, a.N);
+    cout << "z = " << a.getVar("Z") <<  " N =  " << a.getVar("N") <<  var1 << " =  " << a.getVar(var1) << endl;
+    h1->SetBinContent(i+1, a.getVar(var1));
   }    
   gPad->SetLeftMargin(0.15);
   h1->GetYaxis()->SetTitle((var1 + Form(" (at z = %5.0f mm)", z)).c_str());
@@ -280,4 +298,44 @@ void tripletOff(double z = 17999.) {
   h1->GetXaxis()->SetBinLabel(1, "default");
   h1->GetXaxis()->SetBinLabel(2, "triplet off");
   c0.SaveAs("cmpTwo-N-tripletOff.pdf");
+}
+
+// ----------------------------------------------------------------------
+void iQSK(double z = 17999.) {
+  TH1D *h1 = cmpMulti("N", z 
+                     , 2
+                     , "~/data/pioneer/slurm/transport/p65-muprod0002-iQSKv0-pi0002/p65-muprod0002-iQSKv0-pi0002-profile-211.txt"
+                     , "~/data/pioneer/slurm/transport/p65-muprod0002-iQSKv1-QSK41cur=-24.075_QSK42cur=41.088_QSK43cur=-26.710-pi0004/p65-muprod0002-iQSKv1-QSK41cur=-24.075_QSK42cur=41.088_QSK43cur=-26.710-pi0004-profile-211.txt"
+                     );
+  
+  h1->Draw();
+  h1->SetMinimum(0.);
+  h1->GetXaxis()->SetBinLabel(1, "QSKset");
+  h1->GetXaxis()->SetBinLabel(2, "QSKcur");
+  c0.SaveAs("cmpTwo-N-iQSK.pdf");
+}
+
+// ----------------------------------------------------------------------
+void momentumScan(string var = "sigmaX", double z = 17999.) {
+  TH1D *h1 = cmpMulti(var, z 
+                     , 7
+                     , "/Users/ursl/data/pioneer/slurm/transport/p28-muprod0002-initial-pi0001/p28-muprod0002-initial-pi0001-profile-211.txt"
+                     , "/Users/ursl/data/pioneer/slurm/transport/p35-muprod0002-initial-pi0001/p35-muprod0002-initial-pi0001-profile-211.txt"
+                     , "/Users/ursl/data/pioneer/slurm/transport/p45-muprod0002-initial-pi0001/p45-muprod0002-initial-pi0001-profile-211.txt"
+                     , "/Users/ursl/data/pioneer/slurm/transport/p55-muprod0002-initial-pi0001/p55-muprod0002-initial-pi0001-profile-211.txt"
+                     , "/Users/ursl/data/pioneer/slurm/transport/p65-muprod0002-initial-pi0001/p65-muprod0002-initial-pi0001-profile-211.txt"
+                     , "/Users/ursl/data/pioneer/slurm/transport/p75-muprod0002-initial-pi0001/p75-muprod0002-initial-pi0001-profile-211.txt"
+                     , "/Users/ursl/data/pioneer/slurm/transport/p85-muprod0002-initial-pi0001/p85-muprod0002-initial-pi0001-profile-211.txt"
+                     );
+  
+  h1->Draw();
+  if (string::npos == var.find("mean")) h1->SetMinimum(0.);
+  h1->GetXaxis()->SetBinLabel(1, "28");
+  h1->GetXaxis()->SetBinLabel(2, "35");
+  h1->GetXaxis()->SetBinLabel(3, "45");
+  h1->GetXaxis()->SetBinLabel(4, "55");
+  h1->GetXaxis()->SetBinLabel(5, "65");
+  h1->GetXaxis()->SetBinLabel(6, "75");
+  h1->GetXaxis()->SetBinLabel(7, "85");
+  c0.SaveAs(Form("cmpTwo-%s-pi-pscan.pdf", var.c_str()));
 }
