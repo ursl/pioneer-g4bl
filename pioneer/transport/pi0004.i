@@ -1,13 +1,15 @@
 # ----------------------------------------------------------------------
 # -- pi0004.i
 # -----------
-# -- specify   QSK41cur=24.075 QSK42cur=-41.088 QSK43cur=26.710
+# -- specify   QSK41cur=-24.075 QSK42cur=41.088 QSK43cur=-26.710
+#              QSB and AST/ASC as in Giovanni's setup
 # ----------------------------------------------------------------------
-param AST41set=-0.38710867378611935
-param ASC41set=-1.1354996108759758
-param QSB41set=-6.822881
-param QSB42set=11.210779
-param QSB43set=-4.73587
+param AST41set=-0.3896
+param ASC41set=-1.19
+param QSB41set=-8.3444275
+param QSB42set=10.140709
+param QSB43set=-3.184896
+
 ##################################################################################
 param -unset momentum=28.
 param scaleMom=$momentum/28.
@@ -61,7 +63,7 @@ place killCap z=-250
 
 
 ################################# Elements Strengths ####################################
-param -unset sign=-1 		       # sign=-1 for backtracking ::: sign=1 for normal DS tracking
+param -unset sign=1 		       # sign=-1 for backtracking ::: sign=1 for normal DS tracking
 # currents according to setpoint
 include "$G4BLPIONEER/pie5/CurrentsCMBL2018.txt" 		    
 # Deviations between Soll and Ist value that is corrected in the Scalefactors.txt
