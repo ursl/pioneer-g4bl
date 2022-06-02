@@ -19,7 +19,7 @@ double dedx(double p, int id) {
   }
 
   double beta  = p/TMath::Sqrt(p*p + m*m);
-  double gamma = 1/TMath::Sqrt(1. - beta*beta);
+  double gamma = 1./TMath::Sqrt(1. - beta*beta);
 
   cout << "beta = " << beta << " gamma = " << gamma << endl;
   
@@ -36,8 +36,8 @@ double dedx(double p, int id) {
 
   double K = 0.307075; // MeV / mol * cm2
   
-  double Wmax = 2*mel*c*c*beta*beta*gamma*gamma/
-    (1. + 2*gamma*mel/m + (mel/m)*(mel/m));
+  double Wmax = (2*mel*c*c*beta*beta*gamma*gamma)/
+    (1. + (2*gamma*mel/m) + (mel/m)*(mel/m));
 
   double z = 1.;
   
