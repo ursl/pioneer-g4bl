@@ -1,6 +1,6 @@
 #include <cstdarg>
 
-void rangeScan(string pdfname, int n, ...) {
+void rangeScan(string pdfname, int wdb, int n, ...) {
   va_list vl;
   va_start(vl, n);
   vector<int> vrun;
@@ -22,7 +22,8 @@ void rangeScan(string pdfname, int n, ...) {
   vector<TH1F*> vhist;
   for (unsigned int i = 0; i < vrun.size(); ++i) {
     cout << "run " << vrun[i] << endl;
-    string filename = Form("../2022/run%d-WD035_0_histos.root", vrun[i]);
+    string filename = Form("../../2022/run%d-WD0%d_0_histos.root", vrun[i], wdb);
+    cout << "==> " << filename << endl;
     f = TFile::Open(filename.c_str());
     TH1F *h = (TH1F*)f->Get("hAvT_35_5_py");
     vhist.push_back((TH1F*)h->Clone());
