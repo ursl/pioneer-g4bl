@@ -361,8 +361,12 @@ place CALOENTR z=$posCALOENTR
 place CALOCNTR z=$posATAR
 #######################################################################################################################
 place CALO z=$posCALO
-profile zloop=$posQSF41,$posATAR,1 filename=$G4BLOUTPUTDIR/profile-211.txt particle=pi+
+profile zloop=13000,$posATAR,1 filename=$G4BLOUTPUTDIR/profile-211.txt particle=pi+
+profile zloop=13000,$posATAR,1 filename=$G4BLOUTPUTDIR/profile-11.txt particle=e+
+profile zloop=13000,$posATAR,1 filename=$G4BLOUTPUTDIR/profile-13.txt particle=mu+
 
 #########
-beam particle=pi+ nEvents=100 x=0.0 y=0.0 z=13000.0 P=65.0 sigmaP=0.1 sigmaX=0.1 sigmaY=0.1
+beam particle=pi+ nEvents=1000 x=0.0 y=0.0 z=13000.0 P=65.0 sigmaP=0.1 sigmaX=0.1 sigmaY=0.1
+beam particle=mu+ nEvents=1000 x=0.0 y=0.0 z=13000.0 P=65.0 sigmaP=0.1 sigmaX=0.1 sigmaY=0.1
+beam particle=e+ nEvents=1000 x=0.0 y=0.0 z=13000.0 P=65.0 sigmaP=0.1 sigmaX=0.1 sigmaY=0.1
 
