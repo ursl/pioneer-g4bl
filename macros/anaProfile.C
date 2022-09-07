@@ -334,7 +334,7 @@ void markup(double ymax = 0., double ymin = -60., double xmax = 20000., string f
     pl->DrawLine(it->second.z, ymin, it->second.z, 0.9*ymax);
   }
 
-  pl->SetLineStyle(kDashed);
+  pl->SetLineStyle(kDotted);
   pl->SetLineColor(kBlack);
   pl->DrawLine(0., 0., xmax, 0.);
 }
@@ -403,8 +403,6 @@ TTree* fillTree(string filename) {
 
 // ----------------------------------------------------------------------
 void graphExtrema(TGraph *gr, double& xmin, double& xmax, double& ymin, double& ymax) {
-  xmin = ymin = 99999.;
-  xmax = ymax = -99999.;
   for (int i = 0; i < gr->GetN(); ++i) {
     double x = gr->GetPointX(i); 
     double y = gr->GetPointY(i); 
@@ -468,7 +466,7 @@ void anaProfile(string var1 = "meanX",
   TTree *t = fillTree(filename);
   t->Print();
 
-  double xmin, xmax, ymin, ymax;
+  double xmin(99999.), xmax(-99999.), ymin(99999.), ymax(-99999.);
   TGraph *grX = t2g(t, var1, "Z");
   graphExtrema(grX, xmin, xmax, ymin, ymax);
   grX->Draw("alp");
@@ -518,7 +516,7 @@ void cmpProfile(string vary = "sigmaX", string varx = "Z",
   
   TTree *t1 = fillTree(filename1);
 
-  double xmin, xmax, ymin, ymax;
+  double xmin(99999.), xmax(-99999.), ymin(99999.), ymax(-99999.);
   TGraph *gr1 = t2g(t1, vary, varx);
   graphExtrema(gr1, xmin, xmax, ymin, ymax);
 
@@ -586,6 +584,153 @@ void cmpProfile(string vary = "sigmaX", string varx = "Z",
 
 
 // ----------------------------------------------------------------------
+// -- collect all particles into one comparison plot (i.e. six curves)
+void cmpProfilesElMuPi(string vary = "sigmaX", string varx = "Z", 
+                       string dir1 = "data/p65-0001-v0",
+                       string dir2 = "data/p65-0001-v1",
+                       double offset2   = 0.,
+                       string positions = "../pie5/Positions.txt") {
+
+  vector<string> v1 = split(dir1, '/');
+  vector<string> v2 = split(dir2, '/');
+
+  string filename("cmpProfilesElMuPi");
+  
+  string pdfname1 = v1[v1.size()-1];
+  string pdfname2 = v2[v1.size()-1];
+
+  string pdfname = pdfname1 + "-" + pdfname2 + "-" + filename;
+  cout << "pdfname: ->" << pdfname << "<-" << endl;
+  
+  gStyle->SetOptTitle(0);
+
+  TLatex *tl = new TLatex();
+  tl->SetTextSize(0.07);
+  Color_t mcol; 
+  
+  TCanvas *c1 = new TCanvas("c1", "");
+  c1->SetWindowSize(700, 800); 
+  c1->SetRightMargin(0.01); 
+  c1->SetLeftMargin(0.05); 
+  
+  string profilename = dir1 + "/11.prof"; 
+  cout << "profilename = " << profilename << endl;
+  TTree *t1El = fillTree(profilename);
+  profilename = dir1 + "/13.prof"; 
+  cout << "profilename = " << profilename << endl;
+  TTree *t1Mu = fillTree(profilename);
+  profilename = dir1 + "/211.prof"; 
+  cout << "profilename = " << profilename << endl;
+  TTree *t1Pi = fillTree(profilename);
+
+  double xmin(99999.), xmax(-99999.), ymin(99999.), ymax(-99999.);
+  TGraph *gr1El = t2g(t1El, vary, varx);
+  graphExtrema(gr1El, xmin, xmax, ymin, ymax);
+  TGraph *gr1Mu = t2g(t1Mu, vary, varx);
+  graphExtrema(gr1Mu, xmin, xmax, ymin, ymax);
+  TGraph *gr1Pi = t2g(t1Mu, vary, varx);
+  graphExtrema(gr1Pi, xmin, xmax, ymin, ymax);
+
+  gStyle->SetOptStat(0);
+  TH1D *h1 = new TH1D("h1", "", 100, 0, xmax);
+  double hmax(1.5*ymax);
+  double hmin(ymin > 0.? 0.: 1.5*ymin);
+  if (vary == "N") {
+    hmin = 0.5;
+    gPad->SetLogy(1);
+  } else {
+    gPad->SetLogy(0);
+  }
+  if (vary == "meanX") {
+    hmin = -100.;
+    hmax = 100.;
+  } else if (vary == "meanY") {
+    hmin = -40.;
+    hmax = 40.;
+  }
+  h1->SetMinimum(hmin); 
+  h1->SetMaximum(hmax);
+
+  h1->GetXaxis()->SetLabelSize(0.05);
+  h1->GetYaxis()->SetLabelSize(0.05);
+
+  h1->GetYaxis()->SetTitleSize(0.05);
+  h1->GetYaxis()->SetTitleOffset(0.4);
+  h1->GetYaxis()->SetTitle(varTitle(vary).c_str());
+  h1->GetXaxis()->SetTitleSize(0.05);
+  h1->GetXaxis()->SetTitle(varTitle(varx).c_str());
+  h1->Draw("axis");
+
+  tl->SetTextColor(kBlack);
+  tl->DrawLatexNDC(0.1, 0.92, (pdfname1 + ":").c_str());
+  
+  mcol = kCyan; 
+  gr1El->SetLineColor(mcol);
+  gr1El->SetMarkerColor(mcol);
+  gr1El->Draw("lp");
+  tl->SetTextColor(mcol);
+  tl->DrawLatexNDC(0.20, 0.92, "El");
+
+  mcol = kAzure; 
+  gr1Mu->SetLineColor(mcol);
+  gr1Mu->SetMarkerColor(mcol);
+  gr1Mu->Draw("lp");
+  tl->SetTextColor(mcol);
+  tl->DrawLatexNDC(0.25, 0.92, "Mu");
+
+  mcol = kBlue + 1; 
+  gr1Pi->SetLineColor(mcol);
+  gr1Pi->SetMarkerColor(mcol);
+  gr1Pi->Draw("lp");
+  tl->SetTextColor(mcol);
+  tl->DrawLatexNDC(0.30, 0.92, "Pi");
+
+  profilename = dir2 + "/11.prof"; 
+  TTree *t2El = fillTree(profilename);
+  TGraph *gr2El = t2g(t2El, vary, varx, offset2);
+  profilename = dir2 + "/13.prof"; 
+  TTree *t2Mu = fillTree(profilename);
+  TGraph *gr2Mu = t2g(t2Mu, vary, varx, offset2);
+  profilename = dir2 + "/211.prof"; 
+  TTree *t2Pi = fillTree(profilename);
+  TGraph *gr2Pi = t2g(t2Pi, vary, varx, offset2);
+
+  tl->SetTextColor(kBlack);
+  tl->DrawLatexNDC(0.60, 0.92, (pdfname2 + ":").c_str());
+  
+  mcol = kMagenta - 7;
+  gr2El->SetLineColor(mcol);
+  gr2El->SetMarkerColor(mcol);
+  gr2El->Draw("lp");
+  tl->SetTextColor(mcol);
+  tl->DrawLatexNDC(0.70, 0.92, "El");
+
+  mcol = kPink;
+  gr2Mu->SetLineColor(mcol);
+  gr2Mu->SetMarkerColor(mcol);
+  gr2Mu->Draw("lp");
+  tl->SetTextColor(mcol);
+  tl->DrawLatexNDC(0.75, 0.92, "Mu");
+
+  mcol = kRed + 1;
+  gr2Mu->SetLineColor(mcol);
+  gr2Mu->SetMarkerColor(mcol);
+  gr2Mu->Draw("lp");
+  tl->SetTextColor(mcol);
+  tl->DrawLatexNDC(0.80, 0.92, "Pi");
+
+  if (vary == "N") {
+    markup(10., 0.5, xmax, positions);
+  } else {
+    markup(ymax, ymin, xmax, positions);
+  }
+  c1->SaveAs(Form("cmp-%s-%s-%s.pdf", vary.c_str(), varx.c_str(), pdfname.c_str()));
+
+    
+}
+
+
+// ----------------------------------------------------------------------
 void cmpProfileAll(string filename1 = "../../CMBL_g4beamline/profiles/CMBL2021_QSK41newLQ_final_profile.dat",
                    string filename2 = "../../CMBL_g4beamline/profiles/profileCMBL2021_05_COSY_coll1_new.dat"
                    ) {
@@ -593,6 +738,16 @@ void cmpProfileAll(string filename1 = "../../CMBL_g4beamline/profiles/CMBL2021_Q
   cmpProfile("sigmaY", "Z", filename1, filename2);
   cmpProfile("meanX", "Z", filename1, filename2);
   cmpProfile("meanY", "Z", filename1, filename2);
+}
+
+// ----------------------------------------------------------------------
+void cmpProfilesElMuPiAll(string filename1 = "data/p65-0001-v0",
+                          string filename2 = "data/p65-0001-v1"
+                          ) {
+  cmpProfilesElMuPi("sigmaX", "Z", filename1, filename2);
+  cmpProfilesElMuPi("sigmaY", "Z", filename1, filename2);
+  cmpProfilesElMuPi("meanX", "Z", filename1, filename2);
+  cmpProfilesElMuPi("meanY", "Z", filename1, filename2);
 }
 
 // ----------------------------------------------------------------------
