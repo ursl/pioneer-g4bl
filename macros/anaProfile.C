@@ -480,42 +480,29 @@ void anaProfile(string var1 = "meanX",
 
 // ----------------------------------------------------------------------
 void cmpProfile(string vary = "sigmaX", string varx = "Z", 
-                string filename1 = "../../CMBL_g4beamline/profiles/CMBL2021_QSK41newLQ_final_profile.dat",
-                string filename2 = "../../CMBL_g4beamline/profiles/profileCMBL2021_05_COSY_coll1_new.dat",
+                string filename1 = "data/p65-0001-v0/11.prof",
+                string filename2 = "data/p65-0001-v1/11.prof",
                 double offset2   = 0.,
-                string positions = "../../CMBL_g4beamline/Settings/Positions.txt") {
-  if (string::npos != filename1.find("~")) {
-    string home = gSystem->Getenv("HOME");
-    filename1.replace(filename1.find("~"), 1, home);
-  }
-  if (string::npos != filename2.find("~")) {
-    string home = gSystem->Getenv("HOME");
-    filename2.replace(filename2.find("~"), 1, home);
-  }
-  string pdfname1 = filename1; 
-  if (string::npos != pdfname1.rfind("/")) {
-    pdfname1.replace(pdfname1.begin(), pdfname1.begin() + pdfname1.rfind("/") + 1, "");
-  }
+                string positions = "../pie5/Positions.txt") {
 
-  if (string::npos != pdfname1.find(".dat")) {
-    pdfname1.replace(pdfname1.find(".dat"), 4, "");
-  }
-  if (string::npos != pdfname1.find(".txt")) {
-    pdfname1.replace(pdfname1.find(".txt"), 4, "");
-  }
-  string pdfname2 = filename2; 
-  if (string::npos != pdfname2.rfind("/")) {
-    pdfname2.replace(pdfname2.begin(), pdfname2.begin() + pdfname2.rfind("/") + 1, "");
-  }
+  vector<string> v1 = split(filename1, '/');
+  vector<string> v2 = split(filename2, '/');
 
-  if (string::npos != pdfname2.find(".dat")) {
-    pdfname2.replace(pdfname2.find(".dat"), 4, "");
-  }
-  if (string::npos != pdfname2.find(".txt")) {
-    pdfname2.replace(pdfname2.find(".txt"), 4, "");
+  string filename("");
+  if (v1[v1.size()-1] == v2[v2.size()-1]) {
+    filename = v1[v1.size()-1];
+    cout << "filename = " << filename << endl;
+  } else{
+    cout << "v1[v1.size()-1] = ->" << v1[v1.size()-1]
+         << "<- v2[v2.size()-1] = ->" << v2[v2.size()-1]
+         << "<-" 
+         << endl;
   }
   
-  string pdfname = pdfname1 + "-" + pdfname2;
+  string pdfname1 = v1[v1.size()-2];
+  string pdfname2 = v2[v1.size()-2];
+
+  string pdfname = pdfname1 + "-" + pdfname2 + "-" + filename;
   cout << "pdfname: ->" << pdfname << "<-" << endl;
   
   gStyle->SetOptTitle(0);
@@ -599,11 +586,13 @@ void cmpProfile(string vary = "sigmaX", string varx = "Z",
 
 
 // ----------------------------------------------------------------------
-void cmpProfileAll() {
-  cmpProfile("sigmaX");
-  cmpProfile("sigmaY");
-  cmpProfile("meanX");
-  cmpProfile("meanY");
+void cmpProfileAll(string filename1 = "../../CMBL_g4beamline/profiles/CMBL2021_QSK41newLQ_final_profile.dat",
+                   string filename2 = "../../CMBL_g4beamline/profiles/profileCMBL2021_05_COSY_coll1_new.dat"
+                   ) {
+  cmpProfile("sigmaX", "Z", filename1, filename2);
+  cmpProfile("sigmaY", "Z", filename1, filename2);
+  cmpProfile("meanX", "Z", filename1, filename2);
+  cmpProfile("meanY", "Z", filename1, filename2);
 }
 
 // ----------------------------------------------------------------------
