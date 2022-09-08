@@ -1,0 +1,16 @@
+f77 \
+mentw.o \
+gramentw.o \
+sag2w.o \
+mentps.o \
+sag2ps.o \
+pssubs.o \
+maxmin.o \
+erf.o \
+phspc.o \
+xwi.o \
+system.o \
+-o mentx \
+-lX11
+
+

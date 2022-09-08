@@ -1,0 +1,18 @@
+#
+# command file for compilation of MENT source files
+# created by Urs Rohrer (PSI)
+#
+/opt/psi/Programming/gcc/7.3.0/bin/gfortran -c -finit-local-zero -fno-automatic erf.f
+/opt/psi/Programming/gcc/7.3.0/bin/gfortran -c -finit-local-zero -fno-automatic maxmin.f
+/opt/psi/Programming/gcc/7.3.0/bin/gfortran -c -finit-local-zero -fno-automatic phspc.f
+/opt/psi/Programming/gcc/7.3.0/bin/gfortran -c -finit-local-zero -fno-automatic mentw.f
+/opt/psi/Programming/gcc/7.3.0/bin/gfortran -c -finit-local-zero -fno-automatic gramentw.f
+/opt/psi/Programming/gcc/7.3.0/bin/gfortran -c -finit-local-zero -fno-automatic sag2w.f
+/opt/psi/Programming/gcc/7.3.0/bin/gfortran -c -finit-local-zero -fno-automatic mentps.f
+/opt/psi/Programming/gcc/7.3.0/bin/gfortran -c -finit-local-zero -fno-automatic sag2ps.f
+/opt/psi/Programming/gcc/7.3.0/bin/gfortran -c -finit-local-zero -fno-automatic pssubs.f
+/opt/psi/Programming/gcc/7.3.0/bin/gcc -c inips.c
+/opt/psi/Programming/gcc/7.3.0/bin/gcc -c xwi.c
+/opt/psi/Programming/gcc/7.3.0/bin/gcc -c system.c
+
+

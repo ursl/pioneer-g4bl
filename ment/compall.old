@@ -1,0 +1,13 @@
+f77 -c erf.f
+f77 -c maxmin.f
+f77 -c phspc.f
+f77 -c mentw.f
+f77 -c gramentw.f
+f77 -c sag2w.f
+f77 -c mentps.f
+f77 -c sag2ps.f
+f77 -c pssubs.f
+gcc -c xwi.c
+gcc -c system.c
+
+
