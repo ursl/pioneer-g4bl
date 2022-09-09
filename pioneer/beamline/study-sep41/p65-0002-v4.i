@@ -340,8 +340,8 @@ place QSB42DUMMY z=$posQSB42
 place QSB rename=QSB43 current=$scaleMom*$QSB43set z=$posQSB43
 place QSB43DUMMY z=$posQSB43
 #######################################################################################################################
-place SEP41E195 z=$posSEP41 gradient=4*$SEP41vol/195
-place SEP41B45 z=$posSEP41 current=4*$SEP41cur/45
+place SEP41E195 z=$posSEP41 gradient=-$SEP41vol/195
+place SEP41B45 z=$posSEP41 current=0
 place SEP41_plates z=$posSEP41
 #######################################################################################################################
 place QSK rename=QSK41 current=$scaleMom*$QSK41set z=$posQSK41

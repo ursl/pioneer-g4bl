@@ -127,7 +127,7 @@ genericquad QSK43DUMMY kill=1 ironRadius=500 ironLength=400 ironColor=1,0,0,0.6 
 ######################################## SEP41 ##########################################
 fieldmap SEP41E195 file="$G4BLPIONEER/pie5/feldsep41E195_fine.dat"
 fieldmap SEP41B45 file="$G4BLPIONEER/pie5/feldsep41B45_newfine.dat"
-genericbend SEP41_plates fieldWidth=400 fieldHeight=190 By=10 fieldLength=1 ironWidth=800 ironHeight=600 ironLength=800 ironColor=0,0,1,0.7 kill=1
+genericbend SEP41_plates fieldWidth=400 fieldHeight=190 By=0 fieldLength=1 ironWidth=800 ironHeight=600 ironLength=800 ironColor=0,0,1,0.7 kill=1
 #########################################################################################
 
 #########################################################################################
@@ -340,8 +340,8 @@ place QSB42DUMMY z=$posQSB42
 place QSB rename=QSB43 current=$scaleMom*$QSB43set z=$posQSB43
 place QSB43DUMMY z=$posQSB43
 #######################################################################################################################
-place SEP41E195 z=$posSEP41 gradient=2*$SEP41vol/195
-place SEP41B45 z=$posSEP41 current=2*$SEP41cur/45
+place SEP41E195 z=$posSEP41 gradient=0
+place SEP41B45 z=$posSEP41 current=-$SEP41cur/45
 place SEP41_plates z=$posSEP41
 #######################################################################################################################
 place QSK rename=QSK41 current=$scaleMom*$QSK41set z=$posQSK41
