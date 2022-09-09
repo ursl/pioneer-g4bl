@@ -366,7 +366,7 @@ profile zloop=13000,$posATAR,1 filename=$G4BLOUTPUTDIR/11.prof  particle=e+
 profile zloop=13000,$posATAR,1 filename=$G4BLOUTPUTDIR/13.prof  particle=mu+
 
 #########
-beam particle=pi+ nEvents=1000 x=0.0 y=0.0 z=13000.0 P=65.0 sigmaP=0.1 sigmaX=0.1 sigmaY=0.1
-beam particle=mu+ nEvents=1000 x=0.0 y=0.0 z=13000.0 P=65.0 sigmaP=0.1 sigmaX=0.1 sigmaY=0.1
-beam particle=e+  nEvents=1000 x=0.0 y=0.0 z=13000.0 P=65.0 sigmaP=0.1 sigmaX=0.1 sigmaY=0.1
+beam particle=pi+ nEvents=1000 x=0.0 y=0.0 z=13000.0 P=65.0 sigmaP=0.01 sigmaX=0.01 sigmaY=0.01
+beam particle=mu+ nEvents=1000 x=0.0 y=0.0 z=13000.0 P=65.0 sigmaP=0.01 sigmaX=0.01 sigmaY=0.01
+beam particle=e+  nEvents=1000 x=0.0 y=0.0 z=13000.0 P=65.0 sigmaP=0.01 sigmaX=0.01 sigmaY=0.01
 
