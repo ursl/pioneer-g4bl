@@ -643,20 +643,20 @@ void cmpProfilesElMuPi(string vary = "sigmaX", string varx = "Z",
     ymin = 0.5;
     gPad->SetLogy(1);
   } else if (vary == "meanX") {
-    ymin = -4.;
-    ymax = +4;
+    ymin = -1.;
+    ymax = +1;
   } else if (vary == "sigmaX") {
-    ymin = -0.5;
-    ymax = +0.5;
+    ymin = -0.2;
+    ymax = +0.2;
   } else if (vary == "meanY") {
-    ymin = -100.;
-    ymax = +100.;
+    ymin = -200.;
+    ymax = +200.;
   } else if (vary == "sigmaY") {
-    ymin = -0.5;
-    ymax = +0.5;
+    ymin = -0.2;
+    ymax = +0.2;
   }
-  double hmax(1.5*ymax);
-  double hmin(ymin > 0.? 0.: 1.5*ymin);
+  double hmax(ymax);
+  double hmin(ymin);
 
 
   h1->SetMinimum(hmin); 
@@ -769,6 +769,15 @@ void cmpProfilesElMuPiAll(string filename1 = "data/p65-0001-v0",
   cmpProfilesElMuPi("meanX", "Z", filename1, filename2);
   cmpProfilesElMuPi("meanY", "Z", filename1, filename2);
   cmpProfilesElMuPi("N", "Z", filename1, filename2);
+}
+
+
+// ----------------------------------------------------------------------
+void allProfilesElMuPiAll() {
+  cmpProfilesElMuPiAll("data/p65-0001-v0", "data/p65-0001-v1");
+  cmpProfilesElMuPiAll("data/p65-0001-v1", "data/p65-0001-v2");
+  cmpProfilesElMuPiAll("data/p65-0001-v2", "data/p65-0001-v3");
+  cmpProfilesElMuPiAll("data/p65-0001-v2", "data/p65-0001-v4");
 }
 
 // ----------------------------------------------------------------------
