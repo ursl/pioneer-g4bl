@@ -330,6 +330,7 @@ void markup(double ymax = 0., double ymin = -60., double xmax = 20000., string f
   double dx = xmax*0.002;
   for (auto it = gBeamlinePositions.begin(); it != gBeamlinePositions.end(); ++it) {
     if (it->second.z > xmax) continue;
+    if (string::npos != it->first.find("frontarc")) continue;
     tl->DrawLatex(it->second.z - dx, 0.70*ymax, it->first.c_str());
     cout << "tl->DrawLatex(" << it->second.z << ", " << ymax << ", " << it->first.c_str() << ");" << endl;
     pl->DrawLine(it->second.z, ymin, it->second.z, 0.9*ymax);
@@ -636,23 +637,26 @@ void cmpProfilesElMuPi(string vary = "sigmaX", string varx = "Z",
   
   gStyle->SetOptStat(0);
   TH1D *h1 = new TH1D("h1", "", 100, 0, xmax);
-  double hmax(1.5*ymax);
-  double hmin(ymin > 0.? 0.: 1.5*ymin);
+  gPad->SetLogy(0);
   if (vary == "N") {
-    hmin = 0.5;
+    ymax = 20000;
+    ymin = 0.5;
     gPad->SetLogy(1);
-  } else {
-    gPad->SetLogy(0);
-  }
-  if (vary == "meanX") {
-    hmin = -100.;
-    hmax = 100.;
+  } else if (vary == "meanX") {
+    ymin = -1.;
+    ymax = +1;
+  } else if (vary == "sigmaX") {
+    ymin = -0.2;
+    ymax = +0.2;
   } else if (vary == "meanY") {
-    hmin = -40.;
-    hmax = 40.;
+    ymin = -200.;
+    ymax = +200.;
+  } else if (vary == "sigmaY") {
+    ymin = -0.2;
+    ymax = +0.2;
   }
-  hmin = ymin;
-  hmax = ymax;
+  double hmax(ymax);
+  double hmin(ymin);
 
 
   h1->SetMinimum(hmin); 
@@ -757,7 +761,7 @@ void cmpProfileAll(string filename1 = "../../CMBL_g4beamline/profiles/CMBL2021_Q
 }
 
 // ----------------------------------------------------------------------
-void cmpProfilesElMuPiAll(string filename1 = "data/p65-0001-v1",
+void cmpProfilesElMuPiAll(string filename1 = "data/p65-0001-v0",
                           string filename2 = "data/p65-0001-v2"
                           ) {
   cmpProfilesElMuPi("sigmaX", "Z", filename1, filename2);
@@ -765,6 +769,15 @@ void cmpProfilesElMuPiAll(string filename1 = "data/p65-0001-v1",
   cmpProfilesElMuPi("meanX", "Z", filename1, filename2);
   cmpProfilesElMuPi("meanY", "Z", filename1, filename2);
   cmpProfilesElMuPi("N", "Z", filename1, filename2);
+}
+
+
+// ----------------------------------------------------------------------
+void allProfilesElMuPiAll() {
+  cmpProfilesElMuPiAll("data/p65-0001-v0", "data/p65-0001-v1");
+  cmpProfilesElMuPiAll("data/p65-0001-v1", "data/p65-0001-v2");
+  cmpProfilesElMuPiAll("data/p65-0001-v2", "data/p65-0001-v3");
+  cmpProfilesElMuPiAll("data/p65-0001-v2", "data/p65-0001-v4");
 }
 
 // ----------------------------------------------------------------------
