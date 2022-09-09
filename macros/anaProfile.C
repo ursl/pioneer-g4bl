@@ -327,9 +327,10 @@ void markup(double ymax = 0., double ymin = -60., double xmax = 20000., string f
   tl->SetTextAngle(90.);
   tl->SetTextSize(0.03);
   tl->SetTextColor(kBlack);
+  double dx = xmax*0.002;
   for (auto it = gBeamlinePositions.begin(); it != gBeamlinePositions.end(); ++it) {
     if (it->second.z > xmax) continue;
-    tl->DrawLatex(it->second.z, 0.95*ymax, it->first.c_str());
+    tl->DrawLatex(it->second.z - dx, 0.70*ymax, it->first.c_str());
     cout << "tl->DrawLatex(" << it->second.z << ", " << ymax << ", " << it->first.c_str() << ");" << endl;
     pl->DrawLine(it->second.z, ymin, it->second.z, 0.9*ymax);
   }
@@ -628,9 +629,11 @@ void cmpProfilesElMuPi(string vary = "sigmaX", string varx = "Z",
   graphExtrema(gr1El, xmin, xmax, ymin, ymax);
   TGraph *gr1Mu = t2g(t1Mu, vary, varx);
   graphExtrema(gr1Mu, xmin, xmax, ymin, ymax);
-  TGraph *gr1Pi = t2g(t1Mu, vary, varx);
+  TGraph *gr1Pi = t2g(t1Pi, vary, varx);
   graphExtrema(gr1Pi, xmin, xmax, ymin, ymax);
-
+  ymax = +100;
+  ymin = -100;
+  
   gStyle->SetOptStat(0);
   TH1D *h1 = new TH1D("h1", "", 100, 0, xmax);
   double hmax(1.5*ymax);
@@ -648,6 +651,10 @@ void cmpProfilesElMuPi(string vary = "sigmaX", string varx = "Z",
     hmin = -40.;
     hmax = 40.;
   }
+  hmin = ymin;
+  hmax = ymax;
+
+
   h1->SetMinimum(hmin); 
   h1->SetMaximum(hmax);
 
@@ -667,21 +674,27 @@ void cmpProfilesElMuPi(string vary = "sigmaX", string varx = "Z",
   mcol = kCyan; 
   gr1El->SetLineColor(mcol);
   gr1El->SetMarkerColor(mcol);
-  gr1El->Draw("lp");
+  gr1El->SetMarkerSize(0.1);
+  gr1El->SetMarkerStyle(kOpenCircle);
+  gr1El->Draw("p");
   tl->SetTextColor(mcol);
   tl->DrawLatexNDC(0.20, 0.92, "El");
 
-  mcol = kAzure; 
+  mcol = kAzure-4; 
   gr1Mu->SetLineColor(mcol);
+  gr1Mu->SetMarkerSize(0.1);
   gr1Mu->SetMarkerColor(mcol);
-  gr1Mu->Draw("lp");
+  gr1Mu->SetMarkerStyle(kOpenCircle);
+  gr1Mu->Draw("p");
   tl->SetTextColor(mcol);
   tl->DrawLatexNDC(0.25, 0.92, "Mu");
 
   mcol = kBlue + 1; 
   gr1Pi->SetLineColor(mcol);
+  gr1Pi->SetMarkerSize(0.1);
   gr1Pi->SetMarkerColor(mcol);
-  gr1Pi->Draw("lp");
+  gr1Pi->SetMarkerStyle(kPlus);
+  gr1Pi->Draw("p");
   tl->SetTextColor(mcol);
   tl->DrawLatexNDC(0.30, 0.92, "Pi");
 
@@ -700,22 +713,25 @@ void cmpProfilesElMuPi(string vary = "sigmaX", string varx = "Z",
   
   mcol = kMagenta - 7;
   gr2El->SetLineColor(mcol);
+  gr2El->SetLineStyle(kDotted);
   gr2El->SetMarkerColor(mcol);
-  gr2El->Draw("lp");
+  gr2El->Draw("l");
   tl->SetTextColor(mcol);
   tl->DrawLatexNDC(0.70, 0.92, "El");
 
   mcol = kPink;
   gr2Mu->SetLineColor(mcol);
+  gr2Mu->SetLineStyle(kDashed);
   gr2Mu->SetMarkerColor(mcol);
-  gr2Mu->Draw("lp");
+  gr2Mu->Draw("l");
   tl->SetTextColor(mcol);
   tl->DrawLatexNDC(0.75, 0.92, "Mu");
 
   mcol = kRed + 1;
-  gr2Mu->SetLineColor(mcol);
-  gr2Mu->SetMarkerColor(mcol);
-  gr2Mu->Draw("lp");
+  gr2Pi->SetLineColor(mcol);
+  gr2Pi->SetLineStyle(kDashDotted);
+  gr2Pi->SetMarkerColor(mcol);
+  gr2Pi->Draw("l");
   tl->SetTextColor(mcol);
   tl->DrawLatexNDC(0.80, 0.92, "Pi");
 
@@ -741,13 +757,14 @@ void cmpProfileAll(string filename1 = "../../CMBL_g4beamline/profiles/CMBL2021_Q
 }
 
 // ----------------------------------------------------------------------
-void cmpProfilesElMuPiAll(string filename1 = "data/p65-0001-v0",
-                          string filename2 = "data/p65-0001-v1"
+void cmpProfilesElMuPiAll(string filename1 = "data/p65-0001-v1",
+                          string filename2 = "data/p65-0001-v2"
                           ) {
   cmpProfilesElMuPi("sigmaX", "Z", filename1, filename2);
   cmpProfilesElMuPi("sigmaY", "Z", filename1, filename2);
   cmpProfilesElMuPi("meanX", "Z", filename1, filename2);
   cmpProfilesElMuPi("meanY", "Z", filename1, filename2);
+  cmpProfilesElMuPi("N", "Z", filename1, filename2);
 }
 
 // ----------------------------------------------------------------------
