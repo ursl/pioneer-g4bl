@@ -1,0 +1,20 @@
+# -- some setup 
+source ../setup.csh
+
+# -- compilation and linking
+./compall
+./mmentw
+
+# -- run it
+./mentx
+
+
+# -- clean up
+rm *.o mentx
+
+# ----------------------------------------------------------------------
+# It should be obvious that this is legacy code taken from
+# http://aea.web.psi.ch/Urs_Rohrer/MyWeb/ment.htm
+#
+# This directory is just for my convenience to run it on merlin.
+# ----------------------------------------------------------------------

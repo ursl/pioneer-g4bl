@@ -1,0 +1,22 @@
+#
+# command file for linking the MENT object files
+# crated by Urs Rohrer (PSI)
+#
+/opt/psi/Programming/gcc/7.3.0/bin/gfortran \
+mentw.o \
+gramentw.o \
+sag2w.o \
+mentps.o \
+sag2ps.o \
+pssubs.o \
+maxmin.o \
+erf.o \
+phspc.o \
+inips.o \
+xwi.o \
+system.o \
+-o mentx \
+-L /usr/lib64 \
+-lX11
+
+

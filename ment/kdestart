@@ -1,0 +1,6 @@
+#!/bin/csh -f
+
+#change to directory in which ment stuff is
+cd /home/rohrer/mentx/
+
+xterm -sb -sl 500 -j -ls -fn 7x14 -fg black -bg grey -geometry 80x24 -e mentx
