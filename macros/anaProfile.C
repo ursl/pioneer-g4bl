@@ -330,6 +330,7 @@ void markup(double ymax = 0., double ymin = -60., double xmax = 20000., string f
   double dx = xmax*0.002;
   for (auto it = gBeamlinePositions.begin(); it != gBeamlinePositions.end(); ++it) {
     if (it->second.z > xmax) continue;
+    if (string::npos != it->first.find("frontarc")) continue;
     tl->DrawLatex(it->second.z - dx, 0.70*ymax, it->first.c_str());
     cout << "tl->DrawLatex(" << it->second.z << ", " << ymax << ", " << it->first.c_str() << ");" << endl;
     pl->DrawLine(it->second.z, ymin, it->second.z, 0.9*ymax);
