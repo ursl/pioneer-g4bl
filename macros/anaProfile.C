@@ -637,23 +637,26 @@ void cmpProfilesElMuPi(string vary = "sigmaX", string varx = "Z",
   
   gStyle->SetOptStat(0);
   TH1D *h1 = new TH1D("h1", "", 100, 0, xmax);
+  gPad->SetLogy(0);
+  if (vary == "N") {
+    ymax = 20000;
+    ymin = 0.5;
+    gPad->SetLogy(1);
+  } else if (vary == "meanX") {
+    ymin = -4.;
+    ymax = +4;
+  } else if (vary == "sigmaX") {
+    ymin = -0.5;
+    ymax = +0.5;
+  } else if (vary == "meanY") {
+    ymin = -100.;
+    ymax = +100.;
+  } else if (vary == "sigmaY") {
+    ymin = -0.5;
+    ymax = +0.5;
+  }
   double hmax(1.5*ymax);
   double hmin(ymin > 0.? 0.: 1.5*ymin);
-  if (vary == "N") {
-    hmin = 0.5;
-    gPad->SetLogy(1);
-  } else {
-    gPad->SetLogy(0);
-  }
-  if (vary == "meanX") {
-    hmin = -100.;
-    hmax = 100.;
-  } else if (vary == "meanY") {
-    hmin = -40.;
-    hmax = 40.;
-  }
-  hmin = ymin;
-  hmax = ymax;
 
 
   h1->SetMinimum(hmin); 
@@ -758,7 +761,7 @@ void cmpProfileAll(string filename1 = "../../CMBL_g4beamline/profiles/CMBL2021_Q
 }
 
 // ----------------------------------------------------------------------
-void cmpProfilesElMuPiAll(string filename1 = "data/p65-0001-v1",
+void cmpProfilesElMuPiAll(string filename1 = "data/p65-0001-v0",
                           string filename2 = "data/p65-0001-v2"
                           ) {
   cmpProfilesElMuPi("sigmaX", "Z", filename1, filename2);
