@@ -31,9 +31,6 @@ g4ui when=4 "/vis/viewer/addCutawayPlane 0 0 0 m -1 0 0"
 g4ui when=4 "/vis/viewer/addCutawayPlane 0 0 0 m 0 -1 0"
 
 box dummy height=2000 length=1 width=6000 color=invisible
-#genericquad qsmdummy gradient=0 kill=1 ironRadius=600 ironLength=300 ironColor=1,0,0,0.9 fieldLength=1000 poleTipRadius=200 coilRadius=250 coilHalfwidth=80
-virtualdetector DetPiE5 radius=250 length=0.1 format=rootExtended color=0.5,0.5,0,0.5
-virtualdetector Det_FromTarget radius=300 length=0.1 format=rootExtended color=0.5,0.5,0,0.5
 
 ######################## Target E ##########################
 material TargetEGraphite a=12 z=6 density=1.8
@@ -353,7 +350,14 @@ profile zloop=13000,$posATAR,1 filename=$G4BLOUTPUTDIR/$G4BLOUTPUTDIR-11.prof pa
 profile zloop=13000,$posATAR,1 filename=$G4BLOUTPUTDIR/$G4BLOUTPUTDIR-13.prof particle=mu+
 
 #######################################################################################################################
-beam particle=pi+ nEvents=1000 x=0.0 y=0.0 z=13000.0 P=65.0 sigmaP=0.1 sigmaX=0.1 sigmaY=0.1
-beam particle=mu+ nEvents=1000 x=0.0 y=0.0 z=13000.0 P=65.0 sigmaP=0.1 sigmaX=0.1 sigmaY=0.1
-beam particle=e+  nEvents=1000 x=0.0 y=0.0 z=13000.0 P=65.0 sigmaP=0.1 sigmaX=0.1 sigmaY=0.1
+# -- pencil beam
+#beam particle=pi+ nEvents=1000 x=0.0 y=0.0 z=13000.0 P=65.0 sigmaP=0.1 sigmaX=0.1 sigmaY=0.1
+#beam particle=mu+ nEvents=1000 x=0.0 y=0.0 z=13000.0 P=65.0 sigmaP=0.1 sigmaX=0.1 sigmaY=0.1
+#beam particle=e+  nEvents=1000 x=0.0 y=0.0 z=13000.0 P=65.0 sigmaP=0.1 sigmaX=0.1 sigmaY=0.1
 
+#######################################################################################################################
+##  BEAM LOCATION 1
+##  Use the beam file to send muons from downstream Target E through PiE5
+#######################################################################################################################
+beam ascii file="$G4BLPIONEER/data/bl2/$G4BLTRACKFILE"
+#######################################################################################################################
