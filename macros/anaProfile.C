@@ -590,6 +590,7 @@ void cmpProfile(string vary = "sigmaX", string varx = "Z",
 void cmpProfilesElMuPi(string vary = "sigmaX", string varx = "Z", 
                        string dir1 = "data/p65-0001-v0",
                        string dir2 = "data/p65-0001-v1",
+                       int mode = 0, 
                        double offset2   = 0.,
                        string positions = "../pie5/Positions.txt") {
 
@@ -645,15 +646,27 @@ void cmpProfilesElMuPi(string vary = "sigmaX", string varx = "Z",
   } else if (vary == "meanX") {
     ymin = -1.;
     ymax = +1;
+    if (3 == mode) {
+      ymin = -10.;
+      ymax = +10;
+    }
   } else if (vary == "sigmaX") {
     ymin = -0.2;
     ymax = +0.2;
+    if (3 == mode) {
+      ymin = -50.;
+      ymax = +50.;
+    }
   } else if (vary == "meanY") {
     ymin = -200.;
     ymax = +200.;
   } else if (vary == "sigmaY") {
     ymin = -0.2;
     ymax = +0.2;
+    if (3 == mode) {
+      ymin = -50.;
+      ymax = +50.;
+    }
   }
   double hmax(ymax);
   double hmin(ymin);
@@ -762,22 +775,43 @@ void cmpProfileAll(string filename1 = "../../CMBL_g4beamline/profiles/CMBL2021_Q
 
 // ----------------------------------------------------------------------
 void cmpProfilesElMuPiAll(string filename1 = "data/p65-0001-v0",
-                          string filename2 = "data/p65-0001-v2"
+                          string filename2 = "data/p65-0001-v2",
+                          int mode = 0
                           ) {
-  cmpProfilesElMuPi("sigmaX", "Z", filename1, filename2);
-  cmpProfilesElMuPi("sigmaY", "Z", filename1, filename2);
-  cmpProfilesElMuPi("meanX", "Z", filename1, filename2);
-  cmpProfilesElMuPi("meanY", "Z", filename1, filename2);
-  cmpProfilesElMuPi("N", "Z", filename1, filename2);
+  cmpProfilesElMuPi("sigmaX", "Z", filename1, filename2, mode);
+  cmpProfilesElMuPi("sigmaY", "Z", filename1, filename2, mode);
+  cmpProfilesElMuPi("meanX", "Z", filename1, filename2, mode);
+  cmpProfilesElMuPi("meanY", "Z", filename1, filename2, mode);
+  //  cmpProfilesElMuPi("N", "Z", filename1, filename2, mode);
 }
 
 
 // ----------------------------------------------------------------------
-void allProfilesElMuPiAll() {
-  cmpProfilesElMuPiAll("data/p65-0001-v0", "data/p65-0001-v1");
-  cmpProfilesElMuPiAll("data/p65-0001-v1", "data/p65-0001-v2");
-  cmpProfilesElMuPiAll("data/p65-0001-v2", "data/p65-0001-v3");
-  cmpProfilesElMuPiAll("data/p65-0001-v2", "data/p65-0001-v4");
+void allProfilesElMuPiAll(int mode = 0) {
+  // -- mode = 3
+  if (0) {
+    cmpProfilesElMuPiAll("data/p65-0002-v0", "data/p65-0003-v0", mode);
+    cmpProfilesElMuPiAll("data/p65-0002-v0", "data/p65-0003-v1", mode);
+  }
+
+  // -- mode = 0
+  if (0) {
+    cmpProfilesElMuPiAll("data/p65-0001-v1", "data/p65-0002-v0");
+    cmpProfilesElMuPiAll("data/p65-0001-v1", "data/p65-0002-v1");
+    cmpProfilesElMuPiAll("data/p65-0001-v1", "data/p65-0002-v2");
+
+    cmpProfilesElMuPiAll("data/p65-0002-v0", "data/p65-0002-v3");
+    cmpProfilesElMuPiAll("data/p65-0002-v0", "data/p65-0002-v4");
+  }
+  
+  // -- mode = 0
+  if (0) {
+    cmpProfilesElMuPiAll("data/p65-0001-v0", "data/p65-0001-v1");
+    cmpProfilesElMuPiAll("data/p65-0001-v1", "data/p65-0001-v2");
+    cmpProfilesElMuPiAll("data/p65-0001-v2", "data/p65-0001-v3");
+    cmpProfilesElMuPiAll("data/p65-0001-v2", "data/p65-0001-v4");
+  }
+
 }
 
 // ----------------------------------------------------------------------
