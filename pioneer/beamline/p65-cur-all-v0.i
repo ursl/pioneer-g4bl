@@ -275,12 +275,11 @@ boolean op=union exitflangeaperture exitflange vslitexit color=0.6,0.6,0.6 z=10.
 place exitflangeaperture z=1069.8 x=364.48 rotation=Y180-132.25+180 kill=1 # origin ~center of the frontflange of the AHSW vacuumchamber
 
 #######################################################################################################################
-##  BEAM LOCATION 0
-##  Use the beam file to send muons from  through PiE5
-#beam ascii file="$G4BLPIONEER/project-g4bl/bl2/$G4BLTRACKFILE" 
-#######################################################################################################################
 place AHSW41 z=$posAHSW41 x=0 rotation=Y165 current=$scaleMom*$AHSW41set
 cornerarc CAHSW z=$posfrontarcAHSW41 angle=47.5 centerRadius=676.15 radiusCut=500
+#######################################################################################################################
+##  BEAM LOCATION 1
+beam ascii file="$G4BLPIONEER/project-g4bl/bl2/$G4BLTRACKFILE" 
 #######################################################################################################################
 place QSF rename=QSF41 z=$posQSF41 current=$scaleMom*$QSF41set									
 place QSF41DUMMY z=$posQSF41
@@ -293,9 +292,6 @@ place QSF42DUMMY z=$posQSF42
 #######################################################################################################################
 place QSF rename=QSF43 z=$posQSF43 current=$scaleMom*$QSF43set								
 place QSF43DUMMY z=$posQSF43
-#######################################################################################################################
-##  BEAM LOCATION 1
-beam ascii file="$G4BLPIONEER/project-g4bl/bl2/$G4BLTRACKFILE" 
 #######################################################################################################################
 place FSH41 z=$posFSH41
 #######################################################################################################################
