@@ -812,6 +812,15 @@ void allProfilesElMuPiAll(int mode = 0) {
     cmpProfilesElMuPiAll("data/p65-0001-v2", "data/p65-0001-v4");
   }
 
+  if (0) {
+    cmpProfilesElMuPiAll("data/p65-0001-v0", "data/p65-0001-v1");
+    cmpProfilesElMuPiAll("data/p65-0001-v0", "data/p65-0003-v0");
+  }
+
+  if (1) {
+    cmpProfilesElMuPiAll("data/p65-0002-v0", "data/p28-0002-v0");
+  }
+
 }
 
 // ----------------------------------------------------------------------
