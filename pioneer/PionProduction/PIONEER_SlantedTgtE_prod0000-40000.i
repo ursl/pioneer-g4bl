@@ -5,7 +5,7 @@ trackcuts kineticEnergyCut=0.0 kill=gamma,nu_mu,anti_nu_mu,nu_e,anti_nu_e
 
 randomseed Set     40000
 param -unset first=1
-param -unset numEvents=10000000
+param -unset numEvents=1000000
 param -unset last=$first+$numEvents-1
 
 ######################## Primary Proton Beam ##########################
@@ -140,6 +140,5 @@ place QSF rename=QSF43 z=$posQSF43 current=$scaleMom*$QSF43set
 place QSF43DUMMY z=$posQSF43
 #######################################################################################################################
 place FSH41 z=$posFSH41
-#######################################################################################################################
 place DetPiE5 rename=DetFSH41 z=$posFSH41
 

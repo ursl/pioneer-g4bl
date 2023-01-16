@@ -1,4 +1,3 @@
-// include std libraries
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -30,7 +29,7 @@ int main(int argc, char *argv[]) {
     , fnameList("files.txt")
     , outdir("/psi/home/langenegger/data/data/pioneer-g4bl/bl2/")
     , name("prefix-")
-    , vdet("DetEMuPiFromTarget") /*DetFSH41*/
+    , vdet("DetTarget") /*DetPiE5*/
     ;
   int pdgid(211);
   bool removeFileList(false);

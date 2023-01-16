@@ -1,4 +1,12 @@
 # -- removed all *set to allow control via currents
+param AST41set=-0.3896
+param ASC41set=-1.19
+param QSB41set=-8.3444275
+param QSB42set=10.140709
+param QSB43set=-3.184896
+param QSK41set=-0.60187435
+param QSK42set=1.0272185
+param QSK43set=-0.66774813
 ##################################################################################
 param -unset momentum=65.
 param scaleMom=$momentum/28.
@@ -46,6 +54,15 @@ tubs killCyl innerRadius=500 radius=510 length=750 kill=1 color=1,1,1,0.2
 tubs killCap radius=500 length=1 kill=1 color=1,1,1,0.2
 place killCyl z=125
 place killCap z=-250
+
+
+
+#######################################################################################################################
+# -- pencil beam
+#param ZPOS=200
+#beam particle=pi+ nEvents=10000 x=0.0 y=0.0 z=$ZPOS P=65.0 sigmaP=10.1 sigmaX=10.1 sigmaY=10.1
+#beam particle=mu+ nEvents=10000 x=0.0 y=0.0 z=$ZPOS P=65.0 sigmaP=10.1 sigmaX=10.1 sigmaY=10.1
+#beam particle=e+  nEvents=10000 x=0.0 y=0.0 z=$ZPOS P=65.0 sigmaP=10.1 sigmaX=10.1 sigmaY=10.1
 
 
 ################################# Elements Strengths ####################################
@@ -261,6 +278,9 @@ place exitflangeaperture z=1069.8 x=364.48 rotation=Y180-132.25+180 kill=1 # ori
 place AHSW41 z=$posAHSW41 x=0 rotation=Y165 current=$scaleMom*$AHSW41set
 cornerarc CAHSW z=$posfrontarcAHSW41 angle=47.5 centerRadius=676.15 radiusCut=500
 #######################################################################################################################
+##  BEAM LOCATION 1
+beam ascii file="$G4BLPIONEER/project-g4bl/bl2/$G4BLTRACKFILE" 
+#######################################################################################################################
 place QSF rename=QSF41 z=$posQSF41 current=$scaleMom*$QSF41set									
 place QSF41DUMMY z=$posQSF41
 ###############################################
@@ -328,9 +348,9 @@ place QSB42DUMMY z=$posQSB42
 place QSB rename=QSB43 current=$scaleMom*$QSB43set z=$posQSB43
 place QSB43DUMMY z=$posQSB43
 #######################################################################################################################
-place SEP41E195 z=$posSEP41 gradient=$SEP41vol/195
-place SEP41B45 z=$posSEP41 current=$SEP41cur/45
-place SEP41_plates z=$posSEP41
+#place SEP41E195 z=$posSEP41 gradient=$SEP41vol/195
+#place SEP41B45 z=$posSEP41 current=$SEP41cur/45
+#place SEP41_plates z=$posSEP41
 #######################################################################################################################
 place QSK rename=QSK41 current=$scaleMom*$QSK41set z=$posQSK41
 place QSK41DUMMY z=$posQSK41
@@ -348,16 +368,3 @@ place CALO z=$posCALO
 profile zloop=13000,$posATAR,1 filename=$G4BLOUTPUTDIR/$G4BLOUTPUTDIR-211.prof particle=pi+
 profile zloop=13000,$posATAR,1 filename=$G4BLOUTPUTDIR/$G4BLOUTPUTDIR-11.prof particle=e+
 profile zloop=13000,$posATAR,1 filename=$G4BLOUTPUTDIR/$G4BLOUTPUTDIR-13.prof particle=mu+
-
-#######################################################################################################################
-# -- pencil beam
-#beam particle=pi+ nEvents=1000 x=0.0 y=0.0 z=13000.0 P=65.0 sigmaP=0.1 sigmaX=0.1 sigmaY=0.1
-#beam particle=mu+ nEvents=1000 x=0.0 y=0.0 z=13000.0 P=65.0 sigmaP=0.1 sigmaX=0.1 sigmaY=0.1
-#beam particle=e+  nEvents=1000 x=0.0 y=0.0 z=13000.0 P=65.0 sigmaP=0.1 sigmaX=0.1 sigmaY=0.1
-
-#######################################################################################################################
-##  BEAM LOCATION 1
-##  Use the beam file to send muons from downstream Target E through PiE5
-#######################################################################################################################
-beam ascii file="$G4BLPIONEER/data/bl2/$G4BLTRACKFILE"
-#######################################################################################################################
