@@ -264,7 +264,8 @@ void findConditions(Long64_t timeStamp,
       string tvar = varNames->at(i);
       tvar = tvar.substr(0, tvar.find('_'));
       if (header) cout << tvar;
-      cout << " &" <<  varValues->at(i);
+      double x = varValues->at(i);
+      cout << " &" <<  (TMath::Abs(x)<0.02? "0": Form("%.2f", x));
       if (header) {
         cout << "\\\\" << endl;
       } else {
