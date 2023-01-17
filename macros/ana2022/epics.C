@@ -108,6 +108,8 @@ void epics(int mode = 0) {
     std::istream_iterator<std::string> end;
     std::vector<std::string> vline(begin, end);
 
+    stime = vline[0];
+    
     // -- check whether this is a var declaration line
     cout << "vline[2] = " << vline[2] << endl;
     if ("AHSW41" == vline[2]) {
@@ -208,8 +210,12 @@ void readTree(int ievt = -1, int nevt = 0) {
 
 
 // ----------------------------------------------------------------------
-void findConditions(Long64_t timeStamp) {
-  TTree *T = (TTree*)gDirectory->Get("epics");
+void findConditions(Long64_t timeStamp, string tname  = "epics") {
+  TTree *T = (TTree*)gDirectory->Get(tname.c_str());
+  if (0 == T) {
+    cout << "no tree " << tname << " found" << endl;
+    return;
+  }
   vector<string> *varNames = 0;
   vector<double> *varValues = 0;
   string *stime = 0;
@@ -227,23 +233,37 @@ void findConditions(Long64_t timeStamp) {
   T->SetBranchAddress("varv",  &varValues, &b_varValues);
 
   Long64_t nentries(T->GetEntries());
-  
+
+  bool found(false);
+  Long64_t deltaT(0), bestDeltaT(9999), bestIdx(-1);
+  // -- get closest match
   for (Long64_t i = 0; i <= nentries; ++i) {
-    b_varNames->GetEntry(i);
-    b_varValues->GetEntry(i);
     b_utime->GetEntry(i);
-    b_stime->GetEntry(i);
     Long64_t ttime = utime;
-    if (0 == i%1000) cout << "Event " << i << " " << *stime << " utime = " << utime << endl;
-
-    if (TMath::Abs(ttime - timeStamp) > 20) continue;
-    
-    cout << "----------------------------------------------------------------------" << endl;
-    cout << "Event " << i << " " << *stime << " utime = " << utime << endl;
-
-    for (unsigned int i = 0; i < varNames->size(); ++i) {
-      cout << varNames->at(i) << ": " << varValues->at(i) << endl;
+    deltaT = TMath::Abs(ttime - timeStamp);
+    if (deltaT < bestDeltaT) {
+      bestIdx = i;
+      bestDeltaT = deltaT;
+      found = true;
     }
-    cout << "----------------------------------------------------------------------" << endl;
+  }
+  
+  // -- print it
+  b_varNames->GetEntry(bestIdx);
+  b_varValues->GetEntry(bestIdx);
+  b_utime->GetEntry(bestIdx);
+  b_stime->GetEntry(bestIdx);
+  cout << "----------------------------------------------------------------------" << endl;
+  cout << "Event " << bestIdx << " " << *stime << " utime = " << utime << endl;
+  for (unsigned int i = 0; i < varNames->size(); ++i) {
+    cout << varNames->at(i) << ": " << varValues->at(i) << endl;
+  }
+  cout << "----------------------------------------------------------------------" << endl;
+
+  if (!found) {
+    cout << "timestamp " << timeStamp << " (= "
+         << time2Str(static_cast<time_t>(timeStamp))
+         << ") not found"
+         << endl;
   }
 }
