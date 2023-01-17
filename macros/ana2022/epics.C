@@ -43,12 +43,22 @@ time_t str2Time(string stime) {
 
 
 // ----------------------------------------------------------------------
-void epics(string filename = "magnets.log") {
+void epics(int mode = 0) {
 
+  string filename = "nada";
+  vector<string> fileNames;
+  if (0 == mode) {
+    fileNames.push_back("magnets_before_20220525.log");
+    fileNames.push_back("magnets_until20220528.log");
+    fileNames.push_back("magnets.log");
+  } else if (1 == mode) {
+    fileNames.push_back("magnets.log");
+  }
+  
   std::string stime("blah");
   ULong64_t utime(0);
   
-  TFile *f = TFile::Open("epics.root", "RECREATE");
+  TFile *f = TFile::Open("epics2022.root", "RECREATE");
   TTree *T = new TTree("epics", "epics log 2022");
   T->Branch("stime", &stime);
   T->Branch("utime", &utime, "utime/l");
@@ -60,14 +70,37 @@ void epics(string filename = "magnets.log") {
   T->Branch("varn", &varNames);
   T->Branch("varv", &varValues);
   
+  vector<string> allLines;
+  string sline, ltime, otime("2012-05-22_16:55:45.167");
   ifstream INS;
-  string sline;
-  INS.open(filename);
-  int MAX(-1), cnt(0);
+  for (unsigned ifile = 0; ifile < fileNames.size(); ++ifile) {
+    INS.open(fileNames[ifile]);
+    while (getline(INS, sline)) {
+      // -- check whether this is already present in allLines
+      ltime = sline.substr(0, sline.find(' '));
+      if (ltime <= otime) continue;
+      allLines.push_back(sline);
+      otime = ltime;
+    }
+    INS.close();
+  }
+
+  // -- debug all lines
+  if (0) {
+    for (unsigned int iline = 0; iline < allLines.size(); ++iline) {
+      sline = allLines[iline];
+      ltime = sline.substr(0, sline.find(' '));
+      cout << ltime << endl;
+    }
+    return;
+  }
   
-  while (getline(INS, sline)) {
+  int iMAX(-1), cnt(0);
+  
+  for (unsigned int iline = 0; iline < allLines.size(); ++iline) {
+    sline = allLines[iline];
     ++cnt;
-    if (MAX > 0 && cnt == MAX) break;
+    if (iMAX > 0 && cnt == iMAX) break;
 
     // -- magic line splitting on whitespace
     std::stringstream ss(sline);
@@ -103,11 +136,11 @@ void epics(string filename = "magnets.log") {
     
     // -- debug printout
     if (1) {
-      stime = vline[0];
-      utime = str2Time(stime); 
+      ltime = vline[0];
+      utime = str2Time(ltime); 
       string bla = time2Str(static_cast<time_t>(utime));
       cout << "vline.size() = " << vline.size() << " for date = " << vline[0]
-           << " stime = " << stime
+           << " ltime = " << ltime
            << " utime = " << utime
            << " bla = " << bla
            << endl;
@@ -127,14 +160,13 @@ void epics(string filename = "magnets.log") {
 }
 
 
-
 // ----------------------------------------------------------------------
-void readTree(int ievt = -1) {
+void readTree(int ievt = -1, int nevt = 0) {
   TTree *T = (TTree*)gDirectory->Get("epics");
   vector<string> *varNames = 0;
   vector<double> *varValues = 0;
   string *stime = 0;
-  ULong64_t *utime = 0;
+  ULong64_t utime = 0;
   
   TBranch *b_utime = 0; 
   TBranch *b_stime = 0;
@@ -152,10 +184,13 @@ void readTree(int ievt = -1) {
   
   if (ievt > -1) {
     istart = ievt;
-    nentries = 1;
+    nentries = 0;
   }
-
-  for (Long64_t i = istart; i < nentries; ++i) {
+  if (nevt > 0) {
+    nentries = nevt; 
+  }
+  
+  for (Long64_t i = istart; i <= istart + nentries; ++i) {
     b_varNames->GetEntry(i);
     b_varValues->GetEntry(i);
     b_utime->GetEntry(i);
@@ -163,13 +198,52 @@ void readTree(int ievt = -1) {
 
     cout << "----------------------------------------------------------------------" << endl;
     //    cout << "Event " << i << " " << *stime << " " << *utime << endl;
-    cout << "Event " << i << " " << *stime << endl;
+    cout << "Event " << i << " " << *stime << " utime = " << utime << endl;
 
     for (unsigned int i = 0; i < varNames->size(); ++i) {
       cout << varNames->at(i) << ": " << varValues->at(i) << endl;
     }
-
-    
   }
+}
+
+
+// ----------------------------------------------------------------------
+void findConditions(Long64_t timeStamp) {
+  TTree *T = (TTree*)gDirectory->Get("epics");
+  vector<string> *varNames = 0;
+  vector<double> *varValues = 0;
+  string *stime = 0;
+  ULong64_t utime = 0;
   
+  TBranch *b_utime = 0; 
+  TBranch *b_stime = 0;
+  TBranch *b_varNames = 0;
+  TBranch *b_varValues = 0;
+
+  T->SetBranchAddress("utime", &utime,     &b_utime);
+  T->SetBranchAddress("stime", &stime,     &b_stime);
+  T->SetBranchAddress("varn",  &varNames,  &b_varNames);
+  T->SetBranchAddress("varn",  &varNames,  &b_varNames);
+  T->SetBranchAddress("varv",  &varValues, &b_varValues);
+
+  Long64_t nentries(T->GetEntries());
+  
+  for (Long64_t i = 0; i <= nentries; ++i) {
+    b_varNames->GetEntry(i);
+    b_varValues->GetEntry(i);
+    b_utime->GetEntry(i);
+    b_stime->GetEntry(i);
+    Long64_t ttime = utime;
+    if (0 == i%1000) cout << "Event " << i << " " << *stime << " utime = " << utime << endl;
+
+    if (TMath::Abs(ttime - timeStamp) > 20) continue;
+    
+    cout << "----------------------------------------------------------------------" << endl;
+    cout << "Event " << i << " " << *stime << " utime = " << utime << endl;
+
+    for (unsigned int i = 0; i < varNames->size(); ++i) {
+      cout << varNames->at(i) << ": " << varValues->at(i) << endl;
+    }
+    cout << "----------------------------------------------------------------------" << endl;
+  }
 }
