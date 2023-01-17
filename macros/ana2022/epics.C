@@ -210,7 +210,10 @@ void readTree(int ievt = -1, int nevt = 0) {
 
 
 // ----------------------------------------------------------------------
-void findConditions(Long64_t timeStamp, string tname  = "epics") {
+void findConditions(Long64_t timeStamp,
+                    bool tex = false, bool header = true,
+                    bool prtSoll = false,
+                    string tname  = "epics") {
   TTree *T = (TTree*)gDirectory->Get(tname.c_str());
   if (0 == T) {
     cout << "no tree " << tname << " found" << endl;
@@ -256,7 +259,20 @@ void findConditions(Long64_t timeStamp, string tname  = "epics") {
   cout << "----------------------------------------------------------------------" << endl;
   cout << "Event " << bestIdx << " " << *stime << " utime = " << utime << endl;
   for (unsigned int i = 0; i < varNames->size(); ++i) {
-    cout << varNames->at(i) << ": " << varValues->at(i) << endl;
+    if (!prtSoll && (string::npos != varNames->at(i).find("_SOL_"))) continue;
+    if (tex) {
+      string tvar = varNames->at(i);
+      tvar = tvar.substr(0, tvar.find('_'));
+      if (header) cout << tvar;
+      cout << " &" <<  varValues->at(i);
+      if (header) {
+        cout << "\\\\" << endl;
+      } else {
+        cout << endl;
+      }
+    } else {
+      cout << varNames->at(i) << ": " << varValues->at(i) << endl;
+    }
   }
   cout << "----------------------------------------------------------------------" << endl;
 
@@ -266,4 +282,15 @@ void findConditions(Long64_t timeStamp, string tname  = "epics") {
          << ") not found"
          << endl;
   }
+}
+
+
+// ----------------------------------------------------------------------
+void findConditions(string stime,
+                    bool tex = false, bool header = true,
+                    bool prtSoll = false,
+                    string tname  = "epics") {
+  
+  time_t ts = str2Time(stime);
+  findConditions(ts, tex, header, prtSoll, tname);
 }
