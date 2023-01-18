@@ -1,4 +1,3 @@
-# -- removed all *set to allow control via currents
 param AST41set=-0.3896
 param ASC41set=-1.19
 param QSB41set=-8.3444275
@@ -12,10 +11,8 @@ param -unset momentum=65.
 param scaleMom=$momentum/28.
 ##################################################################################
 
-physics QGSP_BERT_EMY disable=Decay
-#physics QGSP_BIC_HIMB_HYBRID_HP_EMY splittingFactor=100
-#physics QGSP_BIC_HIMB_HYBRID_HP_BIAS_EMY splittingFactor=100
-particlecolor proton=1,0,0 pi+=0.2,0.6,1 mu+=0,1,0 reference=1,0,0
+#ul physics QGSP_BERT_EMY disable=Decay
+physics QGSP_BERT_EMY 
 
 param eventTimeLimit=1000
 param M=938.272 KE=585.00
@@ -282,6 +279,7 @@ cornerarc CAHSW z=$posfrontarcAHSW41 angle=47.5 centerRadius=676.15 radiusCut=50
 beam ascii file="$G4BLPIONEER/project-g4bl/bl2/$G4BLTRACKFILE" 
 #######################################################################################################################
 place QSF rename=QSF41 z=$posQSF41 current=$scaleMom*$QSF41set									
+place QSF rename=QSF41 z=$posQSF41 current=0
 place QSF41DUMMY z=$posQSF41
 ###############################################
 place HSC rename=HSC41 z=$posHSC41 current=$scaleMom*$HSC41set
@@ -348,9 +346,9 @@ place QSB42DUMMY z=$posQSB42
 place QSB rename=QSB43 current=$scaleMom*$QSB43set z=$posQSB43
 place QSB43DUMMY z=$posQSB43
 #######################################################################################################################
-#place SEP41E195 z=$posSEP41 gradient=$SEP41vol/195
-#place SEP41B45 z=$posSEP41 current=$SEP41cur/45
-#place SEP41_plates z=$posSEP41
+place SEP41E195 z=$posSEP41 gradient=$SEP41vol/195
+place SEP41B45 z=$posSEP41 current=$SEP41cur/45
+place SEP41_plates z=$posSEP41
 #######################################################################################################################
 place QSK rename=QSK41 current=$scaleMom*$QSK41set z=$posQSK41
 place QSK41DUMMY z=$posQSK41
@@ -365,6 +363,6 @@ place QSK43DUMMY z=$posQSK43
 #place SML41DUMMY z=$posSML41
 #######################################################################################################################
 place CALO z=$posCALO
-profile zloop=13000,$posATAR,1 filename=$G4BLOUTPUTDIR/$G4BLOUTPUTDIR-211.prof particle=pi+
-profile zloop=13000,$posATAR,1 filename=$G4BLOUTPUTDIR/$G4BLOUTPUTDIR-11.prof particle=e+
-profile zloop=13000,$posATAR,1 filename=$G4BLOUTPUTDIR/$G4BLOUTPUTDIR-13.prof particle=mu+
+profile zloop=1300,$posATAR,10 filename=$G4BLOUTPUTDIR/$G4BLOUTPUTDIR-211.prof particle=pi+
+profile zloop=1300,$posATAR,10 filename=$G4BLOUTPUTDIR/$G4BLOUTPUTDIR-11.prof particle=e+
+profile zloop=1300,$posATAR,10 filename=$G4BLOUTPUTDIR/$G4BLOUTPUTDIR-13.prof particle=mu+
