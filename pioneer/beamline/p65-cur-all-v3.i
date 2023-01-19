@@ -1,3 +1,31 @@
+# ------------------------------------------------------------------
+# -- PIONEER_65MeVc_plus_20220530_2000_good_tune_with_flipped_QSK.sp
+# -- raw currents
+# ------------------------------------------------------------------
+param AHSW41curraw=226.4
+param QSF41curraw=-216.473
+param HSC41curraw=-39.457
+param QSF42curraw=194.964
+param QSF43curraw=-150.865
+param HSC42curraw=0
+param QSF44curraw=190.309
+param QSF45curraw=199.606
+param HSC43curraw=113.729
+param QSF46curraw=-189.246
+param QSF47curraw=219.545
+param HSC44curraw=0
+param QSF48curraw=-119.494
+param AST41curraw=-227.5
+param ASC41curraw=253.95
+#param SSL41curraw=0
+param QSB41curraw=87.641
+param QSB42curraw=-111.408
+param QSB43curraw=34.815
+param SEP41curraw=-47
+param QSK41curraw=-29.67
+param QSK42curraw=74.86
+param QSK43curraw=-58.5
+
 ##################################################################################
 param -unset momentum=65.
 param scaleMom=$momentum/28.
@@ -264,31 +292,31 @@ boolean op=union exitflangeaperture exitflange vslitexit color=0.6,0.6,0.6 z=10.
 place exitflangeaperture z=1069.8 x=364.48 rotation=Y180-132.25+180 kill=1 # origin ~center of the frontflange of the AHSW vacuumchamber
 
 #######################################################################################################################
-place AHSW41 z=$posAHSW41 x=0 rotation=Y165 current=$scaleMom*$AHSW41set
+place AHSW41 z=$posAHSW41 x=0 rotation=Y165 current=$AHSW41curraw*$scaleAHSW
 cornerarc CAHSW z=$posfrontarcAHSW41 angle=47.5 centerRadius=676.15 radiusCut=500
 #######################################################################################################################
 ##  BEAM LOCATION 1
 beam ascii file="$G4BLPIONEER/project-g4bl/bl2/$G4BLTRACKFILE" 
 #######################################################################################################################
-place QSF rename=QSF41 z=$posQSF41 current=$scaleMom*$QSF41set									
+place QSF rename=QSF41 z=$posQSF41 current=$QSF41curraw*$scaleQSF
 place QSF rename=QSF41 z=$posQSF41 current=0
 place QSF41DUMMY z=$posQSF41
 ###############################################
-place HSC rename=HSC41 z=$posHSC41 current=$scaleMom*$HSC41set
+place HSC rename=HSC41 z=$posHSC41 current=$HSC41curraw*$scaleHSC
 place HSC41DUMMY z=$posHSC41
 #######################################################################################################################
-place QSF rename=QSF42 z=$posQSF42 current=$scaleMom*$QSF42set			 
+place QSF rename=QSF42 z=$posQSF42 current=$QSF42curraw*$scaleQSF
 place QSF42DUMMY z=$posQSF42
 #######################################################################################################################
-place QSF rename=QSF43 z=$posQSF43 current=$scaleMom*$QSF43set								
+place QSF rename=QSF43 z=$posQSF43 current=$QSF43curraw*$scaleQSF
 place QSF43DUMMY z=$posQSF43
 #######################################################################################################################
 place FSH41 z=$posFSH41
 #######################################################################################################################
-place HSC rename=HSC42 z=$posHSC42 current=$scaleMom*$HSC42set
+place HSC rename=HSC42 z=$posHSC42 current=$HSC42curraw*$scaleHSC
 place HSC42DUMMY z=$posHSC42
 #######################################################################################################################
-place QSF rename=QSF44 z=$posQSF44 current=$scaleMom*$QSF44set
+place QSF rename=QSF44 z=$posQSF44 current=$QSF44curraw*$scaleQSF
 place QSF44DUMMY z=$posQSF44
 #######################################################################################################################
 place FS42H z=$posFS42H
@@ -296,59 +324,59 @@ place FS42V z=$posFS42V
 #######################################################################################################################
 place ColPiE5 z=$posColPiE5
 #######################################################################################################################
-place QSF rename=QSF45 z=$posQSF45 current=$scaleMom*$QSF45set
+place QSF rename=QSF45 z=$posQSF45 current=$QSF45curraw*$scaleQSF
 place QSF45DUMMY z=$posQSF45
 #######################################################################################################################
-place HSC rename=HSC43 z=$posHSC43 current=$scaleMom*$HSC43set
+place HSC rename=HSC43 z=$posHSC43 current=$HSC43curraw*$scaleHSC
 place HSC43DUMMY z=$posHSC43
 #######################################################################################################################
 place FSH43 z=$posFSH43
 #######################################################################################################################
-place QSF rename=QSF46 z=$posQSF46 current=$scaleMom*$QSF46set
+place QSF rename=QSF46 z=$posQSF46 current=$QSF46curraw*$scaleQSF
 place QSF46DUMMY z=$posQSF46
 #######################################################################################################################
-place QSF rename=QSF47 z=$posQSF47 current=$scaleMom*$QSF47set
+place QSF rename=QSF47 z=$posQSF47 current=$QSF47curraw*$scaleQSF
 place QSF47DUMMY z=$posQSF47
 #######################################################################################################################
-place HSC rename=HSC44 z=$posHSC44 current=$scaleMom*$HSC44set
+place HSC rename=HSC44 z=$posHSC44 current=$HSC44curraw*$scaleHSC
 place HSC44DUMMY z=$posHSC44
 #######################################################################################################################
-place QSF rename=QSF48 z=$posQSF48 current=$scaleMom*$QSF48set
+place QSF rename=QSF48 z=$posQSF48 current=$QSF48curraw*$scaleQSF
 place QSF48DUMMY z=$posQSF48
 #######################################################################################################################
 place ASTapertIn z=$posASTapertIn
 place ASTdummy x=$posxAST41 z=$poszAST41 y=-210 rotation=X90
 place ASTdummy x=$posxAST41 z=$poszAST41 y=210 rotation=X90
-place ASTfieldmap x=$posxAST41 rotation=Y0 z=$poszAST41 current=$scaleMom*$AST41set
+place ASTfieldmap x=$posxAST41 rotation=Y0 z=$poszAST41 current=$AST41curraw*$scaleAST
 cornerarc CAST z=$posfrontarcAST41 angle=-47.5 centerRadius=774.4 radiusCut=500
 #######################################################################################################################
 place flangeASTASC z=$posflangeASTASC
-place ASCfieldmap x=$posxASC41 rotation=Y82.5 z=$poszASC41 current=$scaleMom*$ASC41set
+place ASCfieldmap x=$posxASC41 rotation=Y82.5 z=$poszASC41 current=$ASC41curraw*$scaleASC
 place ASCdummy z=$poszASC41+223.5 y=-210 rotation=Y82.5 x=-289.3
 place ASCdummy z=$poszASC41+223.5 y=210 rotation=Y82.5 x=-289.3
 cornerarc CASC z=$posfrontarcASC41 angle=75 centerRadius=580.6 radiusCut=500
 place ASCapertOut z=$posASCapertOut
 #######################################################################################################################
-place QSB rename=QSB41 current=$scaleMom*$QSB41set z=$posQSB41
+place QSB rename=QSB41 current=$QSB41curraw*$scaleQSB z=$posQSB41
 place QSB41DUMMY z=$posQSB41
 #######################################################################################################################
-place QSB rename=QSB42 current=$scaleMom*$QSB42set z=$posQSB42
+place QSB rename=QSB42 current=$QSB42curraw*$scaleQSB z=$posQSB42
 place QSB42DUMMY z=$posQSB42
 #######################################################################################################################
-place QSB rename=QSB43 current=$scaleMom*$QSB43set z=$posQSB43
+place QSB rename=QSB43 current=$QSB43curraw*$scaleQSB z=$posQSB43
 place QSB43DUMMY z=$posQSB43
 #######################################################################################################################
 place SEP41E195 z=$posSEP41 gradient=$SEP41vol/195
-place SEP41B45 z=$posSEP41 current=$SEP41cur/45
+#ul place SEP41B45 z=$posSEP41 current=$SEP41cur/45
 place SEP41_plates z=$posSEP41
 #######################################################################################################################
-place QSK rename=QSK41 current=$scaleMom*$QSK41set z=$posQSK41
+place QSK rename=QSK41 current=$QSK41curraw*$scaleQSK z=$posQSK41
 place QSK41DUMMY z=$posQSK41
 #######################################################################################################################
-place QSK rename=QSK42 current=$scaleMom*$QSK42set z=$posQSK42
+place QSK rename=QSK42 current=$QSK42curraw*$scaleQSK z=$posQSK42
 place QSK42DUMMY z=$posQSK42
 #######################################################################################################################
-place QSK rename=QSK43 current=$scaleMom*$QSK43set z=$posQSK43
+place QSK rename=QSK43 current=$QSK43curraw*$scaleQSK z=$posQSK43
 place QSK43DUMMY z=$posQSK43
 #######################################################################################################################
 #place SML41 z=$posSML41
