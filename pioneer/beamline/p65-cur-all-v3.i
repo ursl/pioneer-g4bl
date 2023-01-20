@@ -1,5 +1,6 @@
 # ------------------------------------------------------------------
 # -- PIONEER_65MeVc_plus_20220530_2000_good_tune_with_flipped_QSK.sp
+# -- https://maxwell.npl.washington.edu/elog/pienuxe/Run+2022/132
 # -- raw currents
 # ------------------------------------------------------------------
 param AHSW41curraw=226.4
