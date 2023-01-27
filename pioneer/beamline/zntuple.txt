@@ -1,0 +1,46 @@
+zntuple format=rootExtended z=1276
+
+zntuple format=rootExtended z=$posQSF41
+zntuple format=rootExtended z=$posHSC41
+zntuple format=rootExtended z=$posQSF42
+zntuple format=rootExtended z=$posQSF43
+
+zntuple format=rootExtended z=$posFSH41
+
+zntuple format=rootExtended z=$posHSC42
+zntuple format=rootExtended z=$posQSF44
+
+zntuple format=rootExtended z=$posFS42H
+zntuple format=rootExtended z=$posQSF45
+
+zntuple format=rootExtended z=$posHSC43
+
+zntuple format=rootExtended z=$posQSF46
+zntuple format=rootExtended z=$posQSF47
+
+zntuple format=rootExtended z=$posHSC44
+
+zntuple format=rootExtended z=$posQSF48
+
+zntuple format=rootExtended z=$posASTapertIn
+zntuple format=rootExtended z=$posASCapertOut
+
+zntuple format=rootExtended z=$posQSB41
+zntuple format=rootExtended z=$posQSB42
+zntuple format=rootExtended z=$posQSB43
+
+zntuple format=rootExtended z=$posSEP41-801
+zntuple format=rootExtended z=$posSEP41
+zntuple format=rootExtended z=$posSEP41+801
+
+zntuple format=rootExtended z=$posQSK41-201
+zntuple format=rootExtended z=$posQSK41
+zntuple format=rootExtended z=$posQSK42
+zntuple format=rootExtended z=$posQSK43
+zntuple format=rootExtended z=$posQSK43+201
+
+zntuple format=rootExtended z=16300 
+zntuple format=rootExtended z=16500 
+zntuple format=rootExtended z=16700 
+
+zntuple format=rootExtended z=$posATAR
