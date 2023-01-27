@@ -1,0 +1,14 @@
+
+ V7M Mu3e PiE5Z Split Triplet(2xQSN+1xQSM) P=28MEV                             
+
+
+
+                            BEAM-AXIS SHIFTS and SLITS
+
+    TYPE      LABEL      x          x'           y          y'          z
+    *SLIT*     FS1H    6.00 cm    0.00 mrad    0.00 cm    0.00 mrad    1.945 m
+    *SLIT*     FS2H    6.00 cm    0.00 mrad    0.00 cm    0.00 mrad    3.490 m
+    *SLIT*     FS2V    0.00 cm    0.00 mrad    6.60 cm    0.00 mrad    3.650 m
+    *SLIT*            15.00 cm    0.00 mrad   15.00 cm    0.00 mrad    3.790 m
+    *SLIT*     FS3H    5.00 cm    0.00 mrad    0.00 cm    0.00 mrad    5.085 m
+    *SLIT*     COLL    6.00 cm    0.00 mrad    6.00 cm    0.00 mrad   15.642 m

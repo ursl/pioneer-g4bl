@@ -1,0 +1,20 @@
+
+ V7M Mu3e PiE5Z Split Triplet(2xQSN+1xQSM) P=28MEV                             
+
+
+
+     INITIAL  BEAM  CONDITION
+
+     z        0.000 m 
+     x       14.150 cm
+     x'     230.209 mrad
+     r12     -0.980
+     epsx   645.467 cmmrad
+     y       23.430 cm
+     y'     241.374 mrad
+     r34      1.000
+     epsy    24.622 cmmrad
+     R16      0.493 cm/% 
+     R26      5.263 mrad/% 
+     p      0.02800 GeV/c
+     dp/p     3.000 % 
