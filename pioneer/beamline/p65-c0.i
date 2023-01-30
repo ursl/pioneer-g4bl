@@ -290,7 +290,6 @@ cornerarc CAHSW z=$posfrontarcAHSW41 angle=47.5 centerRadius=676.15 radiusCut=50
 beam ascii file="$G4BLPIONEER/project-g4bl/bl2/$G4BLTRACKFILE" # lastEvent=$lastEvent
 #######################################################################################################################
 place QSF rename=QSF41 z=$posQSF41 current=$QSF41curraw*$scaleQSF
-place QSF rename=QSF41 z=$posQSF41 current=0
 place QSF41DUMMY z=$posQSF41
 ###############################################
 place HSC rename=HSC41 z=$posHSC41 current=$HSC41curraw*$scaleHSC
