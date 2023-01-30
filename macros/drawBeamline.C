@@ -5,41 +5,44 @@ struct bl {
   double tsiz;
 };
 
+double genSize(0.09);
+
 // -- quadrupoles
-double  qsiz(0.1);
+double  qsiz(genSize);
 Color_t qcol(kRed);
 
 // -- sextupoles
-double  ssiz(0.05);
+double  ssiz(genSize); // 0.05
 Color_t scol(kYellow+2);
 
 // -- dipoles
-double  dsiz(0.05);
+double  dsiz(genSize); // 0.05
 Color_t dcol(kBlue+1);
 
 // -- AST/ASC dipoles
-double  dassiz(0.1);
+double  dassiz(genSize);
 Color_t dascol(kBlue+2);
 
 // -- separators
-double  sesiz(0.1);
+double  sesiz(genSize);
 Color_t secol(kBlue+4);
 
 // -- collimators/slits
-double  csiz(0.1);
+double  csiz(genSize);
 Color_t ccol(kGreen+2);
 
 // -- stuff
-double  stusiz(0.05);
+double  stusiz(genSize); // 0.05
 Color_t stucol(kGray+2);
 
 // -- det
-double  detsiz(0.05);
+double  detsiz(genSize); // 0.05
 Color_t detcol(kOrange-3);
 
 // -- map of beamline elements for which the positions should be read in 
 map<string, struct bl> gBeamlinePositions = {
-  {"QSF41", {-9999., qcol, qsiz}}
+  {"frontarcAHSW41", {-9999., qcol, qsiz}}
+  ,{"QSF41", {-9999., qcol, qsiz}}
   ,{"HSC41", {-9999., scol, ssiz}}
   ,{"QSF42", {-9999., qcol, qsiz}}
   ,{"QSF43", {-9999., qcol, qsiz}}
@@ -64,6 +67,7 @@ map<string, struct bl> gBeamlinePositions = {
   ,{"frontarcAST41", {-9999., dascol, dassiz}}  
   ,{"zASC41", {-9999., dascol, dassiz}}  
   ,{"frontarcASC41", {-9999., dascol, dassiz}}  
+  ,{"ASCapertOut", {-9999., dascol, dassiz}}  
 
   ,{"QSB41", {-9999., qcol, qsiz}}  
   ,{"QSB42", {-9999., qcol, qsiz}}  
@@ -120,12 +124,24 @@ void readPositions(string g4blPositions) {
   }
 }
 
+
+// ----------------------------------------------------------------------
+void addSSL41(TLatex *tl) {
+  double bla =  tl->GetTextSize();
+  tl->SetTextSize(0.05);
+  tl->SetTextColor(kCyan+3);
+  tl->DrawLatex(11400., 0.31, "[missing: SSL41]");
+  tl->SetTextSize(bla);
+ 
+}
+
+
 // ----------------------------------------------------------------------
 void drawBeamline(string filename = "../pie5/Positions.txt", string pdfname = "pie5-zach-positions.pdf",
                   double zmax = 24000.) {
   
   TCanvas *c1 = new TCanvas("c1", "");
-  c1->SetWindowSize(1200, 200); 
+  c1->SetWindowSize(1400, 300); 
   c1->SetRightMargin(0.02); 
   c1->SetLeftMargin(0.02); 
   c1->Draw();
@@ -155,12 +171,17 @@ void drawBeamline(string filename = "../pie5/Positions.txt", string pdfname = "p
     tl->SetTextAlign(kVAlignCenter);
     tl->SetTextColor(it->second.col);
     tl->SetTextSize(it->second.tsiz);
-    tl->DrawLatex(it->second.z, 0.11, it->first.c_str());
+    double lz(it->second.z);
+    // -- shift label to avoid overlap
+    if (it->first == "FS42H") lz = it->second.z - 100.;
+    tl->DrawLatex(lz, 0.11, it->first.c_str());
 
     pl->SetLineColor(it->second.col);
     pl->DrawLine(it->second.z, 0., it->second.z, 0.1);
   }
 
+  addSSL41(tl); 
+  
   c1->SaveAs(pdfname.c_str());
   
 }
