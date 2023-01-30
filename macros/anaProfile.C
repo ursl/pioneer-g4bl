@@ -312,7 +312,7 @@ string varTitle(string var) {
 
 
 //----------------------------------------------------------------------
-void markup(double ymax = 0., double ymin = -60., double xmax = 20000., string filename = "nada") {
+void markup(double ymax = 0., double ymin = -60., double xmax = 16500., string filename = "nada") {
   if (gBeamlinePositions["QSF41"].z < 0.) readPositions(filename);
 
   TLine  *pl = new TLine();
@@ -430,7 +430,8 @@ TGraph* t2g(TTree *t, string sy, string sx, double offsetX = 0.) {
   
   for (long long int entry = 0; entry < n_entries; ++entry) {
     t->GetEntry(entry);
-    gr->AddPoint(valx + offsetX, valy);
+    //    gr->AddPoint(valx + offsetX, valy);
+    gr->SetPoint(gr->GetN(), valx + offsetX, valy);
   }
 
   cout << "DBX gr: " << gr->GetPointX(0) << "  " << gr->GetPointY(0) << endl;
