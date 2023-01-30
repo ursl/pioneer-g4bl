@@ -1,4 +1,5 @@
 zntuple format=rootExtended z=1276
+zntuple format=rootExtended zloop=1300,18000,100
 
 zntuple format=rootExtended z=$posQSF41
 zntuple format=rootExtended z=$posHSC41
