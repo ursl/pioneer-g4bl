@@ -370,11 +370,11 @@ place QSK43DUMMY z=$posQSK43
 #place SML41DUMMY z=$posSML41
 #######################################################################################################################
 #place MEGCOL z=$posMEGCOL
-place PILL rename=CALOENTR z=$posCALOENTR
-place CALOCNTR z=$posATAR
+#place PILL rename=CALOENTR z=$posCALOENTR
+#place CALOCNTR z=$posATAR
 #######################################################################################################################
-place CALO z=$posCALO
-profile zloop=$posQSF41,$posATAR,10 filename="profile.txt" particle=pi+
+#place CALO z=$posCALO
+#profile zloop=$posQSF41,$posATAR,10 filename="profile.txt" particle=pi+
 
 #######################################################################################################################
 include "$G4BLPIONEER/pioneer/beamline/zntuple.txt"

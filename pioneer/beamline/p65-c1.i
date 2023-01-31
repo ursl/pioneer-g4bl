@@ -1,20 +1,20 @@
 # ------------------------------------------------------------------
 # -- PIONEER_65MeVc_plus_20220530_2000_good_tune_with_flipped_QSK.sp
 # -- https://maxwell.npl.washington.edu/elog/pienuxe/Run+2022/132
-# -- raw currents, verbatim!
+# -- raw currents, modified to match G4V7M_piE5_pions.i
 # ------------------------------------------------------------------
 param AHSW41curraw=226.4
 param QSF41curraw=-216.473
-param HSC41curraw=-39.457
+param HSC41curraw=-43.0     #-39.457
 param QSF42curraw=194.964
 param QSF43curraw=-150.865
-param HSC42curraw=0
+param HSC42curraw=68.3      #0
 param QSF44curraw=190.309
 param QSF45curraw=199.606
-param HSC43curraw=113.729
+param HSC43curraw=107.0     #113.729
 param QSF46curraw=-189.246
 param QSF47curraw=219.545
-param HSC44curraw=0
+param HSC44curraw=-22.0     #0
 param QSF48curraw=-119.494
 param AST41curraw=-227.5
 param ASC41curraw=253.95
