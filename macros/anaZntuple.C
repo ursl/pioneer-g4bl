@@ -53,7 +53,7 @@ void draw2d(TNtuple *t, string varx, string vary, string cuts, double xmin, doub
 
   string drawVar = vary + ":" + varx + ">>h2";
   t->Draw(drawVar.c_str(), cuts.c_str(), "goff");
-  h2->SetTitle((t->GetName() + string(" ") + cuts + string("(") + std::to_string(h2->GetEntries()) + string(")")).c_str());
+  h2->SetTitle((t->GetName() + string(" ") + cuts + string("(") + std::to_string(static_cast<int>(h2->GetEntries())) + string(")")).c_str());
   h2->DrawCopy(opt.c_str());
 }
 
@@ -63,16 +63,39 @@ void mkGif(string varx, string vary, string cuts, double xmin, double xmax, doub
 
   gStyle->SetOptStat(0);
 
-  string gifname = Form("anaz-%s-%s.gif+", varx.c_str(), vary.c_str());
+  string svary = vary; 
+  replaceAll(svary, "/", "DIV");
+  replaceAll(svary, "TMath::Sqrt(Px*Px+Py*Py+Pz*Pz)", "P");
 
+  string scuts = cuts;
+  replaceAll(scuts, "PDGid==211", "pions");
+  replaceAll(scuts, "PDGid!=0", "all");
+  
+  string gifname = Form("anaz-%s-%s-%s.gif+", varx.c_str(), svary.c_str(), scuts.c_str());
+
+  gPad->SetGridx(1); 
+  gPad->SetGridy(1); 
+  int z(-1);
   for (unsigned int i = 0; i < vTrees.size(); ++i) {
+    TString hname(vTrees[i]->GetName());
+    sscanf(hname.Data(), "Z%d", &z);
+    if (z > zmax) continue;
     draw2d(vTrees[i], varx, vary, cuts, xmin, xmax, ymin, ymax);
     gPad->Modified(); 
     gPad->Update(); 
     gPad->Print(gifname.c_str());
   }
 
-  gifname = Form("anaz-%s-%s.gif++", varx.c_str(), vary.c_str());
+  gifname += "+";
   gPad->Print(gifname.c_str());
   
+}
+
+
+// ----------------------------------------------------------------------
+void mkGifs(string file = "g4beamline.root", double zmax = 16700.) {
+  load(file);
+  mkGif("x", "y", "PDGid==211", -250., 250.,-250., 250., 0., zmax);
+  mkGif("x", "Px/TMath::Sqrt(Px*Px+Py*Py+Pz*Pz)", "PDGid==211", -250., 250.,-0.2, 0.2, 0., zmax);
+  mkGif("x", "Pz", "PDGid==211", -250., 250.,40., 100., 0., zmax);
 }
