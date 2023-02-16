@@ -51,7 +51,7 @@ void draw2d(TNtuple *t, string varx, string vary, string cuts, double xmin, doub
   string svary = vary; 
   replaceAll(svary, "TMath::Sqrt(Px*Px+Py*Py+Pz*Pz)", "P");
 
-  h2->SetYTitle(vary.c_str()); 
+  h2->SetYTitle(svary.c_str()); 
   if (cuts == "") h2->SetTitle("(no cut)");
   
   gPad->SetLeftMargin(0.15);
