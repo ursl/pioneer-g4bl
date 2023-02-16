@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <stdio.h>
 
 // ----------------------------------------------------------------------
 // cd pioneer-g4bl/macros
@@ -8,6 +9,8 @@
 // root [0] .L anaZntuple.C 
 // root [1] load("some rootfile")
 // root [2] mkGif("y:x", "PDGid==211", double xmin, double xmax, double ymin, double ymax, zmin = 0, zmax = 18000)
+// root [n] mkGifs("g4beamline.root", 16700.)
+
 // ----------------------------------------------------------------------
 
 vector<TNtuple*> vTrees;
@@ -45,6 +48,9 @@ void load(string rootfile) {
 void draw2d(TNtuple *t, string varx, string vary, string cuts, double xmin, double xmax, double ymin, double ymax, string opt = "colz") {
   TH2D *h2 = new TH2D("h2", "bla", 200, xmin, xmax, 200, ymin, ymax);
   h2->SetXTitle(varx.c_str()); 
+  string svary = vary; 
+  replaceAll(svary, "TMath::Sqrt(Px*Px+Py*Py+Pz*Pz)", "P");
+
   h2->SetYTitle(vary.c_str()); 
   if (cuts == "") h2->SetTitle("(no cut)");
   
@@ -71,8 +77,14 @@ void mkGif(string varx, string vary, string cuts, double xmin, double xmax, doub
   replaceAll(scuts, "PDGid==211", "pions");
   replaceAll(scuts, "PDGid!=0", "all");
   
-  string gifname = Form("anaz-%s-%s-%s.gif+", varx.c_str(), svary.c_str(), scuts.c_str());
-
+  string gifname = Form("anaz-%s-%s-%s.gif", varx.c_str(), svary.c_str(), scuts.c_str());
+  if (remove(gifname.c_str()) != 0) {
+    cout <<  "Error deleting file ->" << gifname << "<-" << endl;
+  } else {
+    cout <<  "Success deleting file ->" << gifname << "<-" << endl;
+  }
+  gifname += "+";
+  
   gPad->SetGridx(1); 
   gPad->SetGridy(1); 
   int z(-1);
@@ -87,6 +99,7 @@ void mkGif(string varx, string vary, string cuts, double xmin, double xmax, doub
   }
 
   gifname += "+";
+  cout << "Printing ->" << gifname << "<-" << endl;
   gPad->Print(gifname.c_str());
   
 }
