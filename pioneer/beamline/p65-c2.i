@@ -32,7 +32,6 @@ param -unset momentum=65.
 param scaleMom=$momentum/28.
 ##################################################################################
 
-#ul physics QGSP_BERT_EMY disable=Decay
 physics QGSP_BERT_EMY  disable=Decay
 
 param eventTimeLimit=1000
