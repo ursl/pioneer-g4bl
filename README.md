@@ -13,6 +13,11 @@ g4bl G4V7M_piE5_pions.i G4BLTRACKFILE=p0000-BLTrackFile2_PDGid211_DetEMuPiFromTa
 merlin-l-002>cd /data/langenegger/g4bl/pioneer-g4bl/pioneer/MuonTransport
 merlin-l-002>g4bl m0000.i G4BLTRACKFILE=p0002-BLTrackFile2_PDGid-13_DetEMuPiFromTarget.txt G4BLOUTPUTDIR=m0000
 
+
+merlin-l-002>cd /data/user/langenegger/g4bl/pioneer-g4bl
+merlin-l-002>source setup.csh
+
+merlin-l-002>cd /data/user/langenegger/g4bl/pioneer-g4bl/pioneer/beamline
 merlin-l-l002>g4bl G4V7M_piE5_pions.i G4BLTRACKFILE=p0002-BLTrackFile2_PDGid211_DetEMuPiFromTarget.txt G4BLOUTPUTDIR=d0002  >& d0002/g4bl.log
 
 ```
