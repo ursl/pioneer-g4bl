@@ -10,6 +10,9 @@ ls -1 ~/data/slurm/pioneer-g4bl/muprod0001/PIONEERMU_SlantedTgtE_muprod0001-400*
 g4bl G4V7M_piE5_pions.i G4BLTRACKFILE=p0000-BLTrackFile2_PDGid211_DetEMuPiFromTarget.txt
 g4bl G4V7M_piE5_pions.i G4BLTRACKFILE=p0000-BLTrackFile2_PDGid211_DetEMuPiFromTarget.txt HSC42cur=0.0
 
-merlin-l-002>cd /psi/home/langenegger/data/g4bl/pioneer-g4bl/pioneer/MuonTransport
+merlin-l-002>cd /data/langenegger/g4bl/pioneer-g4bl/pioneer/MuonTransport
 merlin-l-002>g4bl m0000.i G4BLTRACKFILE=p0002-BLTrackFile2_PDGid-13_DetEMuPiFromTarget.txt G4BLOUTPUTDIR=m0000
+
+merlin-l-l002>g4bl G4V7M_piE5_pions.i G4BLTRACKFILE=p0002-BLTrackFile2_PDGid211_DetEMuPiFromTarget.txt G4BLOUTPUTDIR=d0002  >& d0002/g4bl.log
+
 ```
