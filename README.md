@@ -19,3 +19,5 @@ merlin-l-002>cd /data/user/langenegger/g4bl/pioneer-g4bl/pioneer/beamline
 merlin-l-l002>g4bl G4V7M_piE5_pions.i G4BLTRACKFILE=p0002-BLTrackFile2_PDGid211_DetEMuPiFromTarget.txt G4BLOUTPUTDIR=d0002  >& d0002/g4bl.log
 
 ```
+
+https://github.com/ursl/mu3eanca/tree/master/slurm
