@@ -22,6 +22,8 @@ merlin-l-l002>g4bl G4V7M_piE5_pions.i G4BLTRACKFILE=p0002-BLTrackFile2_PDGid211_
 
 https://github.com/ursl/mu3eanca/tree/master/slurm
 
+replace /psi/home/langenegger/data with /data/user/langenegger
+
 *Batch submission*
 ```
 replicate -f 40000 -l 40020 -p randomseed -t PIONEER_SlantedTgtE_prod-40000.i
