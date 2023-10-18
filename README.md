@@ -21,3 +21,13 @@ merlin-l-l002>g4bl G4V7M_piE5_pions.i G4BLTRACKFILE=p0002-BLTrackFile2_PDGid211_
 ```
 
 https://github.com/ursl/mu3eanca/tree/master/slurm
+
+*Batch submission*
+```
+replicate -f 40000 -l 40020 -p randomseed -t PIONEER_SlantedTgtE_prod-40000.i
+run -c ~/mu3e/mu3eanca/slurm/slurm-g4bl-pioneer.csh -r 'STORAGE1 /psi/home/langenegger/data/slurm/pioneer-g4bl/prod0000%SITE T3_CH_PSI' PIONEER_SlantedTgtE_prod0000-4000*
+
+run -c ~/mu3e/mu3eanca/slurm/slurm-g4bl-pioneer.csh -r 'STORAGE1 /psi/home/langenegger/data/slurm/pioneer-g4bl/muontransport/m0000%G4BLOUTPUTDIR .%G4BLTRACKFILE p0000-BLTrackFile2_PDGid211_DetEMuPiFromTarget.txt' m0000.i
+
+run -c ~/mu3e/mu3eanca/slurm/slurm-g4bl-pioneer.csh -r 'STORAGE1 /psi/home/langenegger/data/slurm/pioneer-g4bl/transport/mu0001%G4BLOUTPUTDIR .%G4BLTRACKFILE p28-muprod0003-BLTrackFile2_PDGid-13_DetEMuPiFromTarget.txt%MOMENTUM 28' mu0001.i
+```
