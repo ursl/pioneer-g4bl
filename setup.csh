@@ -1,6 +1,6 @@
 
-source /psi/home/langenegger/data/g4bl/root-062206/bin/thisroot.csh
-source /psi/home/langenegger/data/g4bl/geant4.10.05.p01/bin/geant4.csh /psi/home/langenegger/data/g4bl/geant4.10.05.p01/bin
+source /data/user/langenegger/g4bl/root-062206/bin/thisroot.csh
+source /data/user/langenegger/g4bl/geant4.10.05.p01/bin/geant4.csh /data/user/langenegger/g4bl/geant4.10.05.p01/bin
 
 module use unstable
 module load git/2.33.1
@@ -26,9 +26,9 @@ setenv PATH ${PATH}:/opt/psi/Programming/Qt/5.12.10/5.12.10/gcc_64/bin/
 setenv LD_LIBRARY_PATH /opt/psi/Programming/Qt/5.12.10/5.12.10/gcc_64/lib:${LD_LIBRARY_PATH}
 
 # g4bl stuff
-setenv GEANT4_DIR /psi/home/langenegger/data/g4bl/geant4.10.05.p01
-setenv G4BL_DIR /psi/home/langenegger/data/g4bl/G4beamline-3.06
-setenv G4BLPIONEER /psi/home/langenegger/data/g4bl/pioneer-g4bl
+setenv GEANT4_DIR /data/user/langenegger/g4bl/geant4.10.05.p01
+setenv G4BL_DIR /data/user/langenegger/g4bl/G4beamline-3.06
+setenv G4BLPIONEER /data/user/langenegger/g4bl/pioneer-g4bl
 
 setenv PATH ${PATH}:${G4BL_DIR}/bin
 #cd /psi/home/langenegger/data/g4bl/G4beamline-3.06/bin && source g4bl-setup.csh && cd /psi/home/langenegger
