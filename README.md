@@ -36,7 +36,7 @@ rm /data/project/general/pioneer/g4bl/bl2/p0008-p65BLTrackFile2_PDGid0_DetPiE5.t
 cd ~/data/g4bl/pioneer-g4bl/macros/
 ./bin/convertRootToBLTrack2 -p 0 -d /psi/home/langenegger/data/slurm/pioneer-g4bl/p65-prod0008 -n p0008-p65 -o /data/project/general/pioneer/g4bl/bl2 -v DetPiE5
 ```
-
+(The above relies heavily on my old-fashioned run setup and depends on [auxiliary tools](https://github.com/ursl/mu3eanca/tree/master/slurm))
 
 ### Propagation
 ```
@@ -67,10 +67,6 @@ merlin-l-002>cd /data/user/langenegger/g4bl/pioneer-g4bl/pioneer/beamline
 merlin-l-l002>g4bl G4V7M_piE5_pions.i G4BLTRACKFILE=p0002-BLTrackFile2_PDGid211_DetEMuPiFromTarget.txt G4BLOUTPUTDIR=d0002  >& d0002/g4bl.log
 
 ```
-
-https://github.com/ursl/mu3eanca/tree/master/slurm
-
-replace /psi/home/langenegger/data with /data/user/langenegger
 
 *Batch submission*
 ```
