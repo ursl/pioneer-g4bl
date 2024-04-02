@@ -1,4 +1,52 @@
 # pioneer-g4bl
+
+## Installation
+Prerequisites
+- g4bl (from [muonsinc.com](https://muonsinc.com/Website1/tiki-index.php?page=G4beamline)) Note: On merlin, I am still at 3.06.
+- ROOT
+Much of muonsinc.com requires a login, but that is (used to be) free after registration. 
+
+```
+git clone git@github.com:ursl/g4bl-pioneer
+cd g4bl-pioneer
+source setup.csh (translate for bash)
+```
+
+On merlin, [setup.csh](https://github.com/ursl/pioneer-g4bl/blob/master/setup.csh) will provide a working environment.
+
+## Operations
+`g4bl` studies normally split into two modes
+
+### Production
+Run the primary proton beam onto the target and store track files for propagation studies. Various options are of interest
+- Enhance muon production, with `QGSP_BIC_HIMB_HYBRID_HP_BIAS_EMY`, e.g. in [MuonProduction/PIONEERMU_SlantedTgtE_muprod0000-40000.i](https://github.com/ursl/pioneer-g4bl/blob/master/pioneer/MuonProduction/PIONEERMU_SlantedTgtE_muprod0000-40000.i)
+- Disable pion decays, with `physics QGSP_BERT_EMY disable=Decay`, e.g. in [PionTransport/G4V7M_piE5_pions.i](https://github.com/ursl/pioneer-g4bl/blob/master/pioneer/PionTransport/G4V7M_piE5_pions.i)
+
+Example on merlin
+```
+cd /data/user/langenegger/g4bl/pioneer-g4bl/pioneer/PionProduction
+[edit PIONEER_SlantedTgtE_prod0008-40000.i and test it]
+mkdir jobs/230124-p8 && cd jobs/230124-p8
+replicate -f 40000 -l 41000 -p randomseed -t ../../PIONEER_SlantedTgtE_prod0008-40000.i
+cd ~/data/g4bl/pioneer-g4bl/pioneer/PionProduction/jobs/230124-p8
+run -c ~/mu3e/mu3eanca/slurm/slurm-g4bl-pioneer.csh -r 'STORAGE1 /psi/home/langenegger/data/slurm/pioneer-g4bl/p65-prod0008/%SITE T3_CH_PSI' PIONEER_SlantedTgtE_prod0008-40[8,9]*.i
+
+rm /data/project/general/pioneer/g4bl/bl2/p0008-p65BLTrackFile2_PDGid0_DetPiE5.txt
+
+cd ~/data/g4bl/pioneer-g4bl/macros/
+./bin/convertRootToBLTrack2 -p 0 -d /psi/home/langenegger/data/slurm/pioneer-g4bl/p65-prod0008 -n p0008-p65 -o /data/project/general/pioneer/g4bl/bl2 -v DetPiE5
+```
+
+
+### Propagation
+```
+g4bl G4V7M_piE5_pions.i G4BLTRACKFILE=p0008-p65BLTrackFile2_PDGid0_DetPiE5.txt G4BLOUTPUTDIR=testG histoFile=testG/g4beamline.root >& testG/bla.log &
+```
+
+
+
+
+### Various notes
 ```
 ./bin/convertRootToBLTrack2
 ./bin/convertRootToBLTrack2 -p -13 
