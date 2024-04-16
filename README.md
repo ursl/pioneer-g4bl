@@ -1,18 +1,21 @@
 # pioneer-g4bl
 
 ## Installation
-Prerequisites
+### Prerequisites
 - g4bl (from [muonsinc.com](https://muonsinc.com/Website1/tiki-index.php?page=G4beamline)) Note: On merlin, I am still at 3.06.
 - ROOT
-Much of muonsinc.com requires a login, but that is (used to be) free after registration. 
+Much of muonsinc.com requires a login, but that is (used to be) free after registration.
 
+I am (still) trying to install the current most advanced version 3.08 on merlin (the PSI cluster and attached SLURM batch system) but so far I am stuck with issues related to multithreading (job finishing)/gcc versions/dependencies.
+
+### PIONEER g4bl repository
 ```
 git clone git@github.com:ursl/g4bl-pioneer
 cd g4bl-pioneer
 source setup.csh (translate for bash)
 ```
+On merlin, [setup.csh](https://github.com/ursl/pioneer-g4bl/blob/master/setup.csh) will provide a working environment. The above repository is a clone/combination of Zach Hodge's repositories [pie5](https://gitlab.com/zhodge/pie5), [g4bl_himbmodel](https://gitlab.com/zhodge/g4bl_himbmodel), and  [g4bl_pioneer_example](https://gitlab.com/zhodge/g4bl_pioneer_example).
 
-On merlin, [setup.csh](https://github.com/ursl/pioneer-g4bl/blob/master/setup.csh) will provide a working environment.
 
 ## Operations
 `g4bl` studies normally split into two modes
