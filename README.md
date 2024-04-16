@@ -66,7 +66,7 @@ g4bl G4V7M_piE5_pions.i G4BLTRACKFILE=p0008-p65BLTrackFile2_PDGid0_DetPiE5.txt G
 - The piE5 beamline parameters (magnet field maps, positions, scale factors, etc) are in [pioneer-g4bl/pie5](https://github.com/ursl/pioneer-g4bl/tree/master/pie5)
 - In some of the input files the magnets are not configured using (scaled) currents but rather with `set` parameters (e.g. [pioneer-g4bl/pie5/Scalefactors.txt#L60](https://github.com/ursl/pioneer-g4bl/blob/master/pie5/Scalefactors.txt#L60))
 - There are parameter variations between Zach and Giovanni (dal Maso). The latter is not interested in pions, but surface muons for mu3e.
-- SSL41 is missing
+- SSL41 is missing (between ASC41 and QSB41)
 - For reference the beamline element positions:
 
 ![https://github.com/ursl/pioneer-g4bl/assets/5073648/8a2d43f4-66d6-45fd-90ee-e84e26862db1](https://github.com/ursl/pioneer-g4bl/files/14998185/doc-pie5-Positions.pdf)
