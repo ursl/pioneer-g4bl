@@ -48,7 +48,11 @@ cd ~/data/g4bl/pioneer-g4bl/macros/
 (The above relies heavily on my old-fashioned run setup and depends on [auxiliary tools](https://github.com/ursl/mu3eanca/tree/master/slurm))
 </details>
 
+This saves tracks in a (combined, if you ran many batch jobs) "BLTrack2" file (ASCII) that serves as input to the next step.
+
 ### Propagation
+The beam line setup/study/optimization normally starts from the "BLTrack2" file produced in the production step. 
+
 ```
 g4bl G4V7M_piE5_pions.i G4BLTRACKFILE=p0008-p65BLTrackFile2_PDGid0_DetPiE5.txt G4BLOUTPUTDIR=testG histoFile=testG/g4beamline.root >& testG/bla.log &
 ```
