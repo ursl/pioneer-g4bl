@@ -2,9 +2,11 @@
 
 ## Installation
 ### Prerequisites
-- g4bl (from [muonsinc.com](https://muonsinc.com/Website1/tiki-index.php?page=G4beamline)) Note: On merlin, I am still at 3.06.
+- g4bl (from [muonsinc.com](https://muonsinc.com/Website1/tiki-index.php?page=G4beamline)) 
 - ROOT
 Much of muonsinc.com requires a login, but that is (used to be) free after registration.
+
+Note: On merlin, I am still at 3.06. This version should be useable by any merlin user.
 
 I am (still) trying to install the current most advanced version 3.08 on merlin (the PSI cluster and attached SLURM batch system) but so far I am stuck with issues related to multithreading (job finishing)/gcc versions/dependencies.
 
@@ -61,6 +63,15 @@ g4bl G4V7M_piE5_pions.i G4BLTRACKFILE=p0008-p65BLTrackFile2_PDGid0_DetPiE5.txt G
 
 
 ### Various notes
+- The piE5 beamline parameters (magnet field maps, positions, scale factors, etc) are in [pioneer-g4bl/pie5](https://github.com/ursl/pioneer-g4bl/tree/master/pie5)
+- In some of the input files the magnets are not configured using (scaled) currents but rather with `set` parameters
+- There are parameter variations between Zach and Giovanni (dal Maso). The latter is not interested in pions, but surface muons for mu3e.
+- For reference the beamline element positions:
+
+![doc-pie5-Positions](https://github.com/ursl/pioneer-g4bl/assets/5073648/8a2d43f4-66d6-45fd-90ee-e84e26862db1)
+
+
+
 ```
 ./bin/convertRootToBLTrack2
 ./bin/convertRootToBLTrack2 -p -13 
