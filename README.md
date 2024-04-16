@@ -68,5 +68,6 @@ g4bl G4V7M_piE5_pions.i G4BLTRACKFILE=p0008-p65BLTrackFile2_PDGid0_DetPiE5.txt G
 - There are parameter variations between Zach and Giovanni (dal Maso). The latter is not interested in pions, but surface muons for mu3e.
 - For reference the beamline element positions:
 
-![doc-pie5-Positions](https://github.com/ursl/pioneer-g4bl/assets/5073648/8a2d43f4-66d6-45fd-90ee-e84e26862db1)
+![https://github.com/ursl/pioneer-g4bl/assets/5073648/8a2d43f4-66d6-45fd-90ee-e84e26862db1](https://github.com/ursl/pioneer-g4bl/files/14998185/doc-pie5-Positions.pdf)
+[doc-pie5-Positions.pdf](https://github.com/ursl/pioneer-g4bl/files/14998185/doc-pie5-Positions.pdf)
 
