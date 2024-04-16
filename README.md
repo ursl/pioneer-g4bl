@@ -58,8 +58,7 @@ The beam line setup/study/optimization normally starts from the "BLTrack2" file 
 ```
 g4bl G4V7M_piE5_pions.i G4BLTRACKFILE=p0008-p65BLTrackFile2_PDGid0_DetPiE5.txt G4BLOUTPUTDIR=testG histoFile=testG/g4beamline.root >& testG/bla.log &
 ```
-
-
+The output obtained depends on the configuration (e.g. particles through virtual planes, etc)
 
 
 ## Various notes
