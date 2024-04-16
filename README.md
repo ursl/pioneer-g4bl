@@ -28,18 +28,24 @@ Run the primary proton beam onto the target and store track files for propagatio
 Example on merlin
 ```
 cd /data/user/langenegger/g4bl/pioneer-g4bl/pioneer/PionProduction
+g4bl PIONEER_SlantedTgtE_prod0008-40000.i
+```
+
+<details>
+<summary>Batch submission example</summary>
+```
 [edit PIONEER_SlantedTgtE_prod0008-40000.i and test it]
 mkdir jobs/230124-p8 && cd jobs/230124-p8
 replicate -f 40000 -l 41000 -p randomseed -t ../../PIONEER_SlantedTgtE_prod0008-40000.i
 cd ~/data/g4bl/pioneer-g4bl/pioneer/PionProduction/jobs/230124-p8
 run -c ~/mu3e/mu3eanca/slurm/slurm-g4bl-pioneer.csh -r 'STORAGE1 /psi/home/langenegger/data/slurm/pioneer-g4bl/p65-prod0008/%SITE T3_CH_PSI' PIONEER_SlantedTgtE_prod0008-40[8,9]*.i
-
 rm /data/project/general/pioneer/g4bl/bl2/p0008-p65BLTrackFile2_PDGid0_DetPiE5.txt
-
 cd ~/data/g4bl/pioneer-g4bl/macros/
 ./bin/convertRootToBLTrack2 -p 0 -d /psi/home/langenegger/data/slurm/pioneer-g4bl/p65-prod0008 -n p0008-p65 -o /data/project/general/pioneer/g4bl/bl2 -v DetPiE5
 ```
+
 (The above relies heavily on my old-fashioned run setup and depends on [auxiliary tools](https://github.com/ursl/mu3eanca/tree/master/slurm))
+</details>
 
 ### Propagation
 ```
