@@ -145,7 +145,7 @@ void mkGif(string varx, string vary, string cuts, double xmin, double xmax, doub
 
 
 // ----------------------------------------------------------------------
-void pkGifs(string file = "/Users/ursl/data/pioneer/test/g4beamline.root", double zmax = 16700.) {
+void pkGifs(string file = "/Users/ursl/data/pioneer/test/g4beamline.root", double zmax = 17500.) {
   load(file);
   double xmax(150.), ymax(150.);
   mkGif("x", "Px/Pz", "PDGid==211", -xmax, xmax,-0.2, 0.2, 0., zmax);
@@ -156,7 +156,7 @@ void pkGifs(string file = "/Users/ursl/data/pioneer/test/g4beamline.root", doubl
 
 
 // ----------------------------------------------------------------------
-void mkGifs(string file = "g4beamline.root", double zmax = 16700.) {
+void mkGifs(string file = "g4beamline.root", double zmax = 17500.) {
   load(file);
   double xmax(250.), ymax(250.);
   mkGif("x", "y", "PDGid==211", -xmax, xmax, -ymax, ymax, 0., zmax);
