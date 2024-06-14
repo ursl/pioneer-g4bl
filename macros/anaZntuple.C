@@ -19,8 +19,7 @@ map<int, TNtuple*> mTrees;
 
 // ----------------------------------------------------------------------
 string z2name(string z) {
-  if (z == "Z1533") { return "QSF41";
-  } else if (z == "Z1533") { return "(QSF41)";
+  if (z == "Z1533") { return "(QSF41)";
   } else if (z == "Z2023") { return "(HSC41)";
   } else if (z == "Z2513") { return "(QSF42)";
   } else if (z == "Z3128") { return "(QSF43)";
