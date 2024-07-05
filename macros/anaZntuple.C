@@ -7,6 +7,9 @@
 // cd pioneer-g4bl/macros
 // root
 // root [0] .L anaZntuple.C
+// root [1] mkGifs("/Users/ursl/data/pioneer/test/g4beamline.root", 17500., "PDGid==-13")
+//
+// decrepit:
 // root [1] load("some rootfile")
 // root [2] mkGif("y:x", "PDGid==211", double xmin, double xmax, double ymin, double ymax, zmin = 0, zmax = 18000)
 // root [n] mkGifs("g4beamline.root", 16700.)
@@ -16,6 +19,7 @@
 vector<TNtuple*> vTrees;
 map<int, TNtuple*> mTrees;
 
+vector<int> vGoodTracks;
 
 // ----------------------------------------------------------------------
 string z2name(string z) {
@@ -80,6 +84,7 @@ void load(string rootfile) {
   }
 }
 
+
 // ----------------------------------------------------------------------
 void draw2d(TNtuple *t, string varx, string vary, string cuts, double xmin, double xmax, double ymin, double ymax, string opt = "colz") {
   TH2D *h2 = new TH2D("h2", "bla", 200, xmin, xmax, 200, ymin, ymax);
@@ -112,6 +117,7 @@ void mkGif(string varx, string vary, string cuts, double xmin, double xmax, doub
 
   string scuts = cuts;
   replaceAll(scuts, "PDGid==211", "pions");
+  replaceAll(scuts, "PDGid==-13", "muons");
   replaceAll(scuts, "PDGid!=0", "all");
 
   string gifname = Form("anaz-%s-%s-%s.gif", varx.c_str(), svary.c_str(), scuts.c_str());
@@ -156,18 +162,21 @@ void pkGifs(string file = "/Users/ursl/data/pioneer/test/g4beamline.root", doubl
 
 
 // ----------------------------------------------------------------------
-void mkGifs(string file = "g4beamline.root", double zmax = 17500.) {
+void mkGifs(string file = "g4beamline.root", double zmax = 17500., string spid = "PDGid==211") {
   load(file);
   double xmax(250.), ymax(250.);
-  mkGif("x", "y", "PDGid==211", -xmax, xmax, -ymax, ymax, 0., zmax);
+  mkGif("x", "y", spid, -xmax, xmax, -ymax, ymax, 0., zmax);
 
-  mkGif("x", "Px/TMath::Sqrt(Px*Px+Py*Py+Pz*Pz)", "PDGid==211", -xmax, xmax,-0.2, 0.2, 0., zmax);
-  mkGif("x", "Px/Pz", "PDGid==211", -xmax, xmax,-0.2, 0.2, 0., zmax);
+  mkGif("x", "Px/TMath::Sqrt(Px*Px+Py*Py+Pz*Pz)", spid, -xmax, xmax,-0.2, 0.2, 0., zmax);
+  mkGif("x", "Px/Pz", spid, -xmax, xmax,-0.2, 0.2, 0., zmax);
 
-  mkGif("x", "Pz", "PDGid==211", -xmax, xmax, 50., 100., 0., zmax);
-  mkGif("Pz", "x", "PDGid==211", 50., 100., -xmax, xmax, 0., zmax);
+  mkGif("x", "Pz", spid, -xmax, xmax, 50., 100., 0., zmax);
+  mkGif("Pz", "x", spid, 50., 100., -xmax, xmax, 0., zmax);
 
-  mkGif("Pz", "Px/Pz", "PDGid==211", 50., 100., -0.2, 0.2, 0., zmax);
+  mkGif("Pz", "Px/Pz", spid, 50., 100., -0.2, 0.2, 0., zmax);
 
-  mkGif("x", "Pz", "PDGid==211", -xmax, xmax, 50., 100., 0., zmax);
+  mkGif("x", "Pz", spid, -xmax, xmax, 50., 100., 0., zmax);
+
+  mkGif("x", "t", spid, -xmax, xmax, 20., 160., 0., zmax);
+
 }
