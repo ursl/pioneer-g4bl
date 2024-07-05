@@ -29,7 +29,7 @@ EXTHEADERS    = -I..
 # -- Source code
 STUFF = convertRootToBLTrack2.o
 
-CLASSES = 
+CLASSES = anaZntuple.o
 
 DICT = ${CLASSES:.o=Dict.o}
 DICTHEADERS = ${CLASSES:.o=Dict.h}
@@ -43,23 +43,12 @@ $(addprefix obj/,%.o) : %.cc %.hh
 $(addprefix obj/,%.o) : %.cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-%Dict.cc : %.hh %LinkDef.h
-	$(ROOTCINT) $@ $^
-	mv $(subst Dict.cc,Dict_rdict.pcm,$@) lib
-
-%Dict.cc : %.hh
-	$(ROOTCINT) $@  $^
-	mv $(subst Dict.cc,Dict_rdict.pcm,$@) lib
-
-$(addprefix lib/,%.pcm) :
-	cd lib && ln -s $< && cd -
-
 # -- Targets
 all: prep lib convertRootToBLTrack2 checkDuplicateTracks
 
 
-lib: $(addprefix obj/,$(STUFF)  $(DICT))
-	$(CXX) $(SOFLAGS) $(addprefix obj/,$(STUFF) $(DICT)) -o lib/libStuff.so $(GLIBS) -lMinuit
+lib: $(addprefix obj/,$(STUFF)  $(CLASSES))
+	$(CXX) $(SOFLAGS) $(addprefix obj/,$(STUFF) $(CLASSES)) -o lib/libStuff.so $(GLIBS) -lMinuit
 
 
 convertRootToBLTrack2:  $(addprefix obj/,$(STUFF)) obj/runConvertRootToBLTrack2.o
@@ -67,6 +56,9 @@ convertRootToBLTrack2:  $(addprefix obj/,$(STUFF)) obj/runConvertRootToBLTrack2.
 
 checkDuplicateTracks:  $(addprefix obj/,$(STUFF)) obj/runCheckDuplicateTracks.o
 	$(LD) $(LDFLAGS) -o bin/checkDuplicateTracks obj/runCheckDuplicateTracks.o $(GLIBS)
+
+runAna:  $(addprefix obj/,$(STUFF)) obj/runAna.o
+	$(LD) $(LDFLAGS) -o bin/runAna obj/runAna.o $(GLIBS) lib/libStuff.so
 
 
 # -- create directories if not yet existing
@@ -76,6 +68,6 @@ prep:
 clean:
 	rm -f obj/*
 	rm -f bin/*
-	rm -f $(DICTHEADERS)
+#	rm -f $(DICTHEADERS)
 	rm -f lib/*.pcm
 	rm -f lib/libStuff.so
