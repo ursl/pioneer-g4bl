@@ -1,0 +1,11 @@
+{
+    "principalInvestigator": "urs.langenegger@psi.ch",
+    "creationLocation": "/data/project/general/pioneer/data/2022",
+    "dataFormat": "mid.lz4",
+    "sourceFolder": "/data/project/general/pioneer/data/2022",
+    "owner": "pioneer collaboration",
+    "ownerEmail": "urs.langenegger@psi.ch",
+    "type": "raw",
+    "description": "pioneer piE5 2022 data",
+    "ownerGroup": "a-41538"
+}
