@@ -1,0 +1,11 @@
+{
+    "principalInvestigator": "urs.langenegger@psi.ch",
+    "creationLocation": "/data/project/general/pioneer/data/2025/000",
+    "dataFormat": "binary",
+    "sourceFolder": "/data/project/general/pioneer/data/2025/000",
+    "owner": "pioneer collaboration",
+    "ownerEmail": "urs.langenegger@psi.ch",
+    "type": "raw",
+    "description": "pioneer piM1 2025 data",
+    "ownerGroup": "a-41538"
+}
