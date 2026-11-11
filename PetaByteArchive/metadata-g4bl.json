@@ -1,0 +1,11 @@
+{
+    "principalInvestigator": "urs.langenegger@psi.ch",
+    "creationLocation": "/data/project/general/pioneer/data/g4bl",
+    "dataFormat": "binary",
+    "sourceFolder": "/data/project/general/pioneer/data/g4bl",
+    "owner": "pioneer collaboration",
+    "ownerEmail": "urs.langenegger@psi.ch",
+    "type": "raw",
+    "description": "backup of pioneer G4BL software stack",
+    "ownerGroup": "a-41538"
+}
